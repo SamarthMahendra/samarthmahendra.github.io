@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Theme toggle functionality
 function initThemeToggle() {
-    // Check for saved theme
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Default to dark theme, check for saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     
     // Create theme toggle if it doesn't exist
     if (!document.querySelector('.theme-switch-wrapper')) {
@@ -37,14 +37,20 @@ function initThemeToggle() {
     }
     
     // Apply saved theme
-    document.body.classList.add(`theme-${savedTheme}`);
+    if (savedTheme === 'light') {
+        document.documentElement.classList.add('theme-light');
+    }
     
     // Setup event listener for toggle
     const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.checked = savedTheme === 'dark';
     themeToggle.addEventListener('change', function() {
         const newTheme = this.checked ? 'dark' : 'light';
-        document.body.classList.remove('theme-light', 'theme-dark');
-        document.body.classList.add(`theme-${newTheme}`);
+        if (newTheme === 'light') {
+            document.documentElement.classList.add('theme-light');
+        } else {
+            document.documentElement.classList.remove('theme-light');
+        }
         localStorage.setItem('theme', newTheme);
     });
 }

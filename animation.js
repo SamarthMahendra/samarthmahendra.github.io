@@ -149,24 +149,19 @@ function initSmoothScroll() {
     ScrollTrigger.refresh();
 }
 
-// Project carousel using Swiper
+// Project animation (no carousel)
 function initProjectCarousel() {
-    const projectsSwiper = new Swiper('.projects-carousel', {
-        slidesPerView: 'auto',
-        spaceBetween: 30,
-        grabCursor: true,
-        keyboard: {
-            enabled: true
+    // Animate project cards
+    gsap.from(".featured-projects-grid .project-card", {
+        scrollTrigger: {
+            trigger: ".featured-projects-grid",
+            start: "top 85%",
         },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-            dynamicBullets: true
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        }
+        y: 50,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power2.out"
     });
 }
 
