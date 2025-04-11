@@ -3,313 +3,677 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <!-- Add a Google Font (Optional, but nice) -->
+    <meta name="description" content="Samarth Mahendra - Software Engineer & Backend Specialist | Portfolio showcasing skills, projects, and professional experience">
+    <meta name="keywords" content="software developer, engineer, portfolio, backend, full stack, React, Python, AWS, Kubernetes">
+    <meta name="author" content="Samarth Mahendra">
+    
+    <title>Samarth Mahendra | Software Engineer Portfolio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/49726134?v=4">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <title>Samarth Mahendra - Software Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Splitting.js for text animation -->
+    <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+    <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css">
+    
+    <!-- Swiper for project carousel -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+    
+    <!-- Locomotive Scroll for smooth scrolling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.11/dist/locomotive-scroll.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-scroll-container>
 
-<header class="profile-header">
-    <div class="container text-center">
-        <img height="150" src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" alt="Coding GIF" class="header-gif"/>
+<!-- Theme Toggle -->
+<div class="theme-switch-wrapper">
+    <label class="theme-switch" for="theme-toggle">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<!-- Navigation -->
+<nav class="nav-menu">
+    <div class="container nav-container">
+        <a href="#" class="nav-logo magnetic-button">SM</a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact" class="nav-cta magnetic-button">Contact</a></li>
+        </ul>
+        <div class="nav-mobile-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <div class="parallax-bg">
+        <div class="parallax-shape shape-1" data-depth="0.2"></div>
+        <div class="parallax-shape shape-2" data-depth="0.3"></div>
+        <div class="parallax-shape shape-3" data-depth="0.1"></div>
+    </div>
+    
+    <div class="container hero-content">
+        <div id="developer-animation"></div>
+        <h1 class="reveal-text" data-splitting>Samarth Mahendra</h1>
+        <div class="typing-container">
+            <span id="typing-text"></span>
+        </div>
+        
         <div class="social-links">
             <a href="https://www.linkedin.com/in/samarth-mahendra-7aab5a114/" target="_blank" aria-label="LinkedIn Profile">
-                <img src="https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/linkedin/default.svg" width="52" height="40" alt="linkedin logo" />
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://github.com/SamarthMahendra" target="_blank" aria-label="GitHub Profile">
+                <i class="fab fa-github"></i>
             </a>
             <a href="https://www.youtube.com/@msamarthmahendra8082" target="_blank" aria-label="YouTube Channel">
-                <img src="https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/youtube/default.svg" width="52" height="40" alt="youtube logo" />
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="mailto:contact@samarthmahendra.com" aria-label="Email">
+                <i class="fas fa-envelope"></i>
             </a>
         </div>
-        <div class="visitor-badge">
-            <img src="https://visitor-badge.laobi.icu/badge?page_id=samarthmahendra.samarthmahendra" alt="Visitor Badge"/>
-        </div>
-        <h1>Hey there 👋, I'm Samarth Mahendra</h1>
+        
+        <a href="#about" class="button magnetic-button">Discover More</a>
+        
+        <div id="scroll-indicator"></div>
     </div>
-</header>
+</section>
 
-<main>
-    <section id="about" class="section">
-        <div class="container">
-            <h2>About Me</h2>
-            <div class="about-grid">
-                <p><strong>🎯 Currently working on:</strong><br> A distributed job tracking system (JobStats) that scrapes and analyzes job postings from 15+ sources, processing over 50,000 records daily, using Celery, Redis, Prometheus, and Puppeteer.</p>
-                <p><strong>🤝 Looking to collaborate on:</strong><br> LLM-powered productivity tools, scalable backend infrastructure, or real-time systems.</p>
-                <p><strong>🧠 Looking for help with:</strong><br> Fine-tuning LLMs for production, designing stealth scraping systems, and optimizing data-intensive systems.</p>
-                <p><strong>🌱 Currently learning:</strong><br> Advanced database systems, mobile app development, and system design for distributed platforms.</p>
-                <p><strong>💬 Ask me about:</strong><br> How I improved chatbot performance by 60%, or how I optimized API costs using query partitioning and dynamic Query generation.</p>
-                <p><strong>⚡ Fun fact:</strong><br> I skated 22.3 km in a single session!</p>
+<!-- About Section -->
+<section id="about" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>About Me</h2>
+        
+        <div class="about-grid">
+            <p><strong>🎯 Currently working on</strong><br>A distributed job tracking system (JobStats) that scrapes and analyzes job postings from 15+ sources, processing over 50,000 records daily, using Celery, Redis, Prometheus, and Puppeteer.</p>
+            <p><strong>🤝 Looking to collaborate on</strong><br>LLM-powered productivity tools, scalable backend infrastructure, or real-time systems.</p>
+            <p><strong>🧠 Looking for help with</strong><br>Fine-tuning LLMs for production, designing stealth scraping systems, and optimizing data-intensive systems.</p>
+            <p><strong>🌱 Currently learning</strong><br>Advanced database systems, mobile app development, and system design for distributed platforms.</p>
+            <p><strong>💬 Ask me about</strong><br>How I improved chatbot performance by 60%, or how I optimized API costs using query partitioning and dynamic Query generation.</p>
+            <p><strong>⚡ Fun fact</strong><br>I skated 22.3 km in a single session!</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="50000">0</div>
+                <div class="stat-label">Records processed daily</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="60">0</div>
+                <div class="stat-label">Percent performance boost</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="15">0</div>
+                <div class="stat-label">Job sources integrated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="3">0</div>
+                <div class="stat-label">Years of Experience</div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Your existing Current Work section - integrated -->
-    <section id="current-work" class="section highlight-section">
-        <div class="container">
-            <h2 id="jobstats-title">Currently Building: JobStats</h2>
-            <div id="jobstats-visual">
-                <span class="tech-icon">Celery</span>
-                <span class="tech-icon">Redis</span>
-                <span class="tech-icon">Prometheus</span>
-                <span class="tech-icon">Puppeteer</span>
-                <span class="tech-icon">PostgreSQL</span>
-                <span class="tech-icon">React</span>
-            </div>
-            <p id="jobstats-description">A distributed job tracking system scraping and analyzing 50,000+ records daily from 15+ sources using stealth techniques and dynamic HTML processing.</p>
-            <p><a href="https://github.com/SamarthMahendra/StealthProject" target="_blank" class="button">View on GitHub</a></p>
+<!-- Current Work Highlight Section -->
+<section id="current-work" class="section highlight-section">
+    <div class="container">
+        <h2 id="jobstats-title" class="reveal-text" data-splitting>Currently Building: JobStats</h2>
+        <div id="jobstats-visual">
+            <span class="tech-icon">Celery</span>
+            <span class="tech-icon">Redis</span>
+            <span class="tech-icon">Prometheus</span>
+            <span class="tech-icon">Puppeteer</span>
+            <span class="tech-icon">PostgreSQL</span>
+            <span class="tech-icon">React</span>
         </div>
-    </section>
+        <p id="jobstats-description">A distributed job tracking system scraping and analyzing 50,000+ records daily from 15+ sources using stealth techniques and dynamic HTML processing.</p>
+        <a href="https://github.com/SamarthMahendra/StealthProject" target="_blank" class="button magnetic-button">View on GitHub</a>
+    </div>
+</section>
 
-    <section id="skills" class="section">
-        <div class="container">
-            <h2>🛠 Languages & Tools</h2>
-            <div class="skills-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" height="40" alt="python logo" title="Python" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" height="40" alt="javascript logo" title="JavaScript" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" height="40" alt="typescript logo" title="TypeScript" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" height="40" alt="java logo" title="Java" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" height="40" alt="cplusplus logo" title="C++" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" height="40" alt="c logo" title="C" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" height="40" alt="django logo" title="Django" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" height="40" alt="react logo" title="React" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" height="40" alt="redis logo" title="Redis" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" height="40" alt="postgresql logo" title="PostgreSQL" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" height="40" alt="mysql logo" title="MySQL" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" height="40" alt="mongodb logo" title="MongoDB" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" height="40" alt="sqlite logo" title="SQLite" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" height="40" alt="amazonwebservices logo" title="AWS" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" height="40" alt="kubernetes logo" title="Kubernetes" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" height="40" alt="prometheus logo" title="Prometheus" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" height="40" alt="terraform logo" title="Terraform" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" height="40" alt="git logo" title="Git" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" height="40" alt="linux logo" title="Linux" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" height="40" alt="firebase logo" title="Firebase" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/digitalocean/digitalocean-original.svg" height="40" alt="digitalocean logo" title="DigitalOcean" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" height="40" alt="css3 logo" title="CSS3" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" height="40" alt="jest logo" title="Jest" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytest/pytest-original.svg" height="40" alt="pytest logo" title="Pytest" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-line.svg" height="40" alt="jenkins logo" title="Jenkins" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" height="40" alt="jira logo" title="Jira" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg" height="40" alt="gitlab logo" title="GitLab" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bitbucket/bitbucket-original.svg" height="40" alt="bitbucket logo" title="Bitbucket" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" height="40" alt="android logo" title="Android" />
-            </div>
-        </div>
-    </section>
-
-    <section id="experience" class="section">
-        <div class="container">
-            <h2>💼 Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Associate Software Development Engineer – Backend</h3>
-                    <p class="timeline-sub">Draup · Full-time | Aug 2022 – Nov 2023 (1 yr 4 mos) · Bangalore (Hybrid)</p>
-                    <ul>
-                        <li>Led platform modules for digital tech stack, outsourcing, and customer intelligence.</li>
-                        <li>Revamped insights page for complex comparisons, boosting engagement by 40%.</li>
-                        <li>Designed a dynamic query generation engine for chatbot pipelines — improved performance by 60% and cut dev time by 80%.</li>
-                        <li>Migrated APIs to Elasticsearch for real-time aggregation (5× speedup).</li>
-                        <li>Introduced advanced Boolean filter logic (e.g., `(a AND b) OR c`) for enhanced search.</li>
-                        <li>Built subscription-based access control and enhanced platform performance (400% speedup, 50% cost reduction).</li>
-                        <li>Reduced platform downtime from 4% to 1%; resolved issues with Datadog & AWS (75% faster).</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <h3>Backend Engineering Intern</h3>
-                    <p class="timeline-sub">Draup · Internship | Apr 2022 – Jul 2022 (4 mos) ngaluru</p>
-                    <ul>
-                        <li>Debugged API issues using Datadog.</li>
-                        <li>Implemented caching for image requests to boost performance.</li>
-                        <li>Created automated DB scripts to streamline data workflows.</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <h3>Research Assistant (Patent Co-Inventor)</h3>
-                    <p class="timeline-sub">Dayananda Sagar College of Engineering · Part-time | Nov 2021 – Sep 2023 (1 yr 11 mos) · Bengaluru (Hybrid)</p>
-                    <ul>
-                        <li><strong>Project:</strong> <em>Myocardium Wall Motion & Thickness Mapping (Patent Pending)</em> App No: 202341086278 (India)</li>
-                        <li>Developed novel image processing techniques for MRI cine scans.</li>
-                        <li>Built algorithms for myocardium thickness + fibrosis mapping during cardiac cycles.</li>
-                        <li>Optimized using NumPy, CuPy (GPU), multiprocessing with ThreadPoolExecutor.</li>
-                        <li>Worked alongside clinicians from Sri Jayadeva Institute of Cardiovascular Sciences.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="education" class="section">
-        <div class="container">
-            <h2>🎓 Education</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Northeastern University, Boston, MA</h3>
-                    <p class="timeline-sub">Master of Science (MS), Computer Science | Jan 2024 – Dec 2025</p>
-                    <p><strong>Khoury College of Computer Sciences</strong></p>
-                    <p><em>Relevant Courses:</em></p>
-                    <ul>
-                        <li>CS 5010: Programming Design Paradigm</li>
-                        <li>CS 5200: Database Management Systems</li>
-                        <li>CS 5800: Algorithms</li>
-                        <li>CS 6120: Natural Language Processing</li>
-                        <li>CS 6140: Machine Learning</li>
-                        <li>CS 5520: Mobile Application Development</li>
-                        <li>CS 5500: Foundations of Software Engineering</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <h3>Dayananda Sagar College of Engineering, Bangalore, India</h3>
-                    <p class="timeline-sub">Bachelor of Engineering (BE), Computer Science | Aug 2018 – Jul 2022 | CGPA: 8.59</p>
+<!-- Skills Section -->
+<section id="skills" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Skills & Technologies</h2>
+        <div id="skills-animation"></div>
+        
+        <div class="skills-container">
+            <!-- Programming Languages -->
+            <div class="skill-category">
+                <h3>Programming Languages</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                        <p>Python</p>
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-percent="95"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>Expert</span>
+                                <span class="progress-percent">95%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                        <p>JavaScript</p>
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-percent="90"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>Advanced</span>
+                                <span class="progress-percent">90%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript">
+                        <p>TypeScript</p>
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-percent="85"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>Proficient</span>
+                                <span class="progress-percent">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">
+                        <p>Java</p>
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-percent="75"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>Proficient</span>
+                                <span class="progress-percent">75%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++">
+                        <p>C++</p>
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-percent="70"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>Competent</span>
+                                <span class="progress-percent">70%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="projects" class="section">
-        <div class="container">
-            <h2>🚀 Featured Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h4>📊 JobStats - FANG Job Trends</h4>
-                    <p>Scrapes job data from 15+ platforms with stealth headers & dynamic HTML processing using LLMs; built with Celery, PostgreSQL, Redis, Prometheus, Puppeteer, and React.</p>
-                    <a href="https://github.com/SamarthMahendra/StealthProject" target="_blank" class="button">View on GitHub</a>
-                </div>
-                <div class="project-card">
-                    <h4>🎧 Live Bluetooth Silent Disco</h4>
-                    <p>Built real-time audio streaming over WebSockets using Python and BlackHole to broadcast system audio to multiple Bluetooth clients.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>nkedInAssist (LLM-powered)</h4>
-                    <p>Chrome extension that filters LinkedIn job posts using natural language prompts with GPT-3.5 + Flask backend.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>💬 Chatbot for Account Intelligence</h4>
-                    <p>Hackathon @ Draup: Built with Langchain + RAG, includes cross-encoder reranking, query expansion, Redis cache, and PostgreSQL backend.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>📈 Unemployment vs Job Openings</h4>
-                    <p>Analyzed labor market dynamics (Beveridge Curve) using PyTorch and Pandas.</p>
-                    <a href="https://github.com/SamarthMahendra/Unemployment-Rate-vs.-Job-Openings-Beveridge-Curve" target="_blank" class="button">View on GitHub</a>
-                </div>
-                <div class="project-card">
-                    <h4>📚 MapReduce-style Grade Analyzer</h4>
-                    <p>Used Python multiprocessing for parallel analysis of student datasets — inspired by MapReduce.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>🧪 Breast Cancer Detection</h4>
-                    <p>Built models with logistic regression, GNB, and GDA for diagnosis classification using scikit-learn.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>💬 Aspect-Based Sentiment Analysis</h4>
-                    <p>Implemented an attention-based LSTM for aspect classification in SemEval datasets using PyTorch.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>📕 Custom Word2Vec</h4>
-                    <p>Built co-occurrence matrix from *Merchant of Venice* and visualized embeddings using PCA.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4> Java Portfolio Manager</h4>
-                    <p>Designed MVC-based investment simulator with stock API integration, 100+ JUnit test cases, and charting.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>200d♂️ Bike Rental Platform</h4>
-                    <p>End-to-end BlueBikes clone using React.js, Django REST, Redis, JWT, and Azure.</p>
-                    <!-- Add GitHub link if available -->
-                </div>
-                <div class="project-card">
-                    <h4>🩺 Myocardium Wall Motion Mapper</h4>
-                    <p>Patent Pending: Used custom image processing on cine MRI scans to analyze heart wall motion and fibrosis. Leveraged NumPy, multiprocessing, and interpolation.</p>
-                    <!-- Add GitHub link if available -->
+            
+            <!-- Frameworks & Libraries -->
+            <div class="skill-category">
+                <h3>Frameworks & Libraries</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django">
+                        <p>Django</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+                        <p>React</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI">
+                        <p>FastAPI</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" alt="Flask">
+                        <p>Flask</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express">
+                        <p>Express.js</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="certifications" class="section">
-        <div class="container">
-            <h2>📜 Noteworthy Certifications</h2>
-            <div class="certifications-list">
-                <div class="certification-item">
-                    <h4>🧠 Expert - Programming and Algorithms (CodeSignal)</h4>
-                    <p>Credential ID: <code>cm6lagnfc01ihm8i3wldt2po3</code></p>
-                    <sub><i>Mastery of advanced data structures, algorithms, and Python.</i></sub>
+            
+            <!-- Database & Data -->
+            <div class="skill-category">
+                <h3>Database & Data</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL">
+                        <p>PostgreSQL</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB">
+                        <p>MongoDB</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis">
+                        <p>Redis</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL">
+                        <p>MySQL</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch">
+                        <p>Elasticsearch</p>
+                    </div>
                 </div>
-                <div class="certification-item">
-                    <h4>🔍 Advanced Retrieval for AI with Chroma (DeepLearning.AI)</h4>
-                    <p>Credential ID: <code>e7856493-e9ca-40f3-81a2-62e86fc6267c</code></p>
-                    <sub><i>Hands-on experience with ChromaDB, cross-encoder reranking, and embedding-based RAG pipelines.</i></sub>
-                </div>
-                <div class="certification-item">
-                    <h4>🧪 Supervised ML: Regression & Classification (Stanford / DeepLearning.AI)</h4>
-                    <p>Credential ID: <code>W7RGEA3RE44U</code></p>
-                    <sub><i>In-depth foundation in ML pipelines and evaluation, taught by Andrew Ng.</i></sub>
-                </div>
-                <div class="certification-item">
-                    <h4>🧬 Advanced Learning Algorithms (Stanford / DeepLearning.AI)</h4>
-                    <p>Credential ID: <code>PC74JUPWD28G</code></p>
-                    <sub><i>Focus on deep generative models, regularization, and optimization.</i></sub>
-                </div>
-                <div class="certification-item">
-                    <h4>🌐 DOM API + JS Programming (CodeSignal)</h4>
-                    <p>Credential ID: <code>cm6po6406007ztmrk4bw7za5o</code></p>
-                    <sub><i>Strong understanding of DOM manipulation and frontend scripting fundamentals.</i></sub>
-                </div>
-                <div class="certification-item">
-                    <h4>🐍 Server-Side Web Scraping (Python + BeautifulSoup, CodeSignal)</h4>
-                    <p>Credential ID: <code>cm6n495fv00twy6hg7w0xihzf</code></p>
-                    <sub><i>Built robust scraping pipelines using Python and BS4.</i></sub>
-                </div>
-                <div class="certification-item">
-                    <h4>🧰 Mastering Data Structures & Algorithms in Python (CodeSignal)</h4>
-                    <p>Credential ID: <code>cm0adl6mm004lgpxn4gphel9o</code></p>
-                    <sub><i>Algorithmic thinking and real-world problem solving with Python.</i></sub>
+            </div>
+            
+            <!-- Cloud & DevOps -->
+            <div class="skill-category">
+                <h3>Cloud & DevOps</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" alt="AWS">
+                        <p>AWS</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
+                        <p>Kubernetes</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
+                        <p>Docker</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform">
+                        <p>Terraform</p>
+                    </div>
+                    <div class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins">
+                        <p>Jenkins</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="stats" class="section">
-        <div class="container text-center">
-            <h2>📈 My Stats & Contributions</h2>
-            <div class="stats-images">
-                <img src="https://github-readme-stats.vercel.app/api?username=samarthmahendra&show_icons=true&count_private=true&theme=dracula&hide_title=false&hide_border=false&bg_color=1e1e2e&border_color=302d41&title_color=cba6f7&text_color=cdd6f4&icon_color=f5c2e7" height="170" alt="GitHub Stats" class="stats-graph"/>
-                <img alt="GitHub Contribution Snake" src="https://raw.githubusercontent.com/samarthmahendra/samarthmahendra/output/github-contribution-grid-snake.svg" class="stats-snake"/>
+<!-- Experience Section -->
+<section id="experience" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Work Experience</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Associate Software Development Engineer – Backend</h3>
+                <p class="timeline-sub">Draup · Full-time | Aug 2022 – Nov 2023 (1 yr 4 mos) · Bangalore (Hybrid)</p>
+                <ul>
+                    <li>Led platform modules for digital tech stack, outsourcing, and customer intelligence.</li>
+                    <li>Revamped insights page for complex comparisons, boosting engagement by 40%.</li>
+                    <li>Designed a dynamic query generation engine for chatbot pipelines — improved performance by 60% and cut dev time by 80%.</li>
+                    <li>Migrated APIs to Elasticsearch for real-time aggregation (5× speedup).</li>
+                    <li>Introduced advanced Boolean filter logic (e.g., `(a AND b) OR c`) for enhanced search.</li>
+                    <li>Built subscription-based access control and enhanced platform performance (400% speedup, 50% cost reduction).</li>
+                    <li>Reduced platform downtime from 4% to 1%; resolved issues with Datadog & AWS (75% faster).</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Backend Engineering Intern</h3>
+                <p class="timeline-sub">Draup · Internship | Apr 2022 – Jul 2022 (4 mos) · Bengaluru</p>
+                <ul>
+                    <li>Debugged API issues using Datadog.</li>
+                    <li>Implemented caching for image requests to boost performance.</li>
+                    <li>Created automated DB scripts to streamline data workflows.</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Research Assistant (Patent Co-Inventor)</h3>
+                <p class="timeline-sub">Dayananda Sagar College of Engineering · Part-time | Nov 2021 – Sep 2023 (1 yr 11 mos) · Bengaluru (Hybrid)</p>
+                <ul>
+                    <li><strong>Project:</strong> <em>Myocardium Wall Motion & Thickness Mapping (Patent Pending)</em> App No: 202341086278 (India)</li>
+                    <li>Developed novel image processing techniques for MRI cine scans.</li>
+                    <li>Built algorithms for myocardium thickness + fibrosis mapping during cardiac cycles.</li>
+                    <li>Optimized using NumPy, CuPy (GPU), multiprocessing with ThreadPoolExecutor.</li>
+                    <li>Worked alongside clinicians from Sri Jayadeva Institute of Cardiovascular Sciences.</li>
+                </ul>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-</main>
+<!-- Education Section -->
+<section id="education" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Education</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Northeastern University, Boston, MA</h3>
+                <p class="timeline-sub">Master of Science (MS), Computer Science | Jan 2024 – Dec 2025</p>
+                <p><strong>Khoury College of Computer Sciences</strong></p>
+                <p><em>Relevant Courses:</em></p>
+                <ul>
+                    <li>CS 5010: Programming Design Paradigm</li>
+                    <li>CS 5200: Database Management Systems</li>
+                    <li>CS 5800: Algorithms</li>
+                    <li>CS 6120: Natural Language Processing</li>
+                    <li>CS 6140: Machine Learning</li>
+                    <li>CS 5520: Mobile Application Development</li>
+                    <li>CS 5500: Foundations of Software Engineering</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Dayananda Sagar College of Engineering, Bangalore, India</h3>
+                <p class="timeline-sub">Bachelor of Engineering (BE), Computer Science | Aug 2018 – Jul 2022 | CGPA: 8.59</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-<footer class="site-footer">
+<!-- Projects Section -->
+<section id="projects" class="section projects-section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Featured Projects</h2>
+        
+        <!-- Project Carousel -->
+        <div class="swiper projects-carousel">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--pdvpwWxp--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s4lw3cjr9tfep0my0ekr.png" alt="JobStats Project">
+                        </div>
+                        <h4>📊 JobStats - FANG Job Trends</h4>
+                        <div class="project-tech">
+                            <span>Celery</span>
+                            <span>PostgreSQL</span>
+                            <span>Redis</span>
+                            <span>React</span>
+                        </div>
+                        <p>Scrapes job data from 15+ platforms with stealth headers & dynamic HTML processing using LLMs; built with Celery, PostgreSQL, Redis, Prometheus, Puppeteer, and React.</p>
+                        <a href="https://github.com/SamarthMahendra/StealthProject" target="_blank" class="button">View on GitHub</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://cdn.geekwire.com/wp-content/uploads/2018/03/live-music-bluetooth-crowd-630x356.jpg" alt="Silent Disco">
+                        </div>
+                        <h4>🎧 Live Bluetooth Silent Disco</h4>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>WebSockets</span>
+                            <span>BlackHole</span>
+                        </div>
+                        <p>Built real-time audio streaming over WebSockets using Python and BlackHole to broadcast system audio to multiple Bluetooth clients.</p>
+                        <a href="#" class="button">Coming Soon</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://cdn.dribbble.com/users/1235346/screenshots/15297964/media/3a8c67b9393d6e9aa2a4d2f2d0aef679.png?resize=400x0" alt="LinkedInAssist">
+                        </div>
+                        <h4>🔍 LinkedInAssist (LLM-powered)</h4>
+                        <div class="project-tech">
+                            <span>JavaScript</span>
+                            <span>Flask</span>
+                            <span>GPT-3.5</span>
+                        </div>
+                        <p>Chrome extension that filters LinkedIn job posts using natural language prompts with GPT-3.5 + Flask backend.</p>
+                        <a href="#" class="button">Coming Soon</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://blog.chatbot.com/wp-content/uploads/2019/08/customer-intelligence-chatbot-1280x720.jpg" alt="Chatbot">
+                        </div>
+                        <h4>💬 Chatbot for Account Intelligence</h4>
+                        <div class="project-tech">
+                            <span>Langchain</span>
+                            <span>RAG</span>
+                            <span>Redis</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <p>Hackathon @ Draup: Built with Langchain + RAG, includes cross-encoder reranking, query expansion, Redis cache, and PostgreSQL backend.</p>
+                        <a href="#" class="button">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        
+        <!-- Regular Project Grid -->
+        <div class="projects-grid">
+            <div class="project-card">
+                <h4>📈 Unemployment vs Job Openings</h4>
+                <div class="project-tech">
+                    <span>PyTorch</span>
+                    <span>Pandas</span>
+                    <span>Data Analysis</span>
+                </div>
+                <p>Analyzed labor market dynamics (Beveridge Curve) using PyTorch and Pandas.</p>
+                <a href="https://github.com/SamarthMahendra/Unemployment-Rate-vs.-Job-Openings-Beveridge-Curve" target="_blank" class="button">View on GitHub</a>
+            </div>
+            <div class="project-card">
+                <h4>📚 MapReduce-style Grade Analyzer</h4>
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>Multiprocessing</span>
+                </div>
+                <p>Used Python multiprocessing for parallel analysis of student datasets — inspired by MapReduce.</p>
+                <a href="#" class="button">View Details</a>
+            </div>
+            <div class="project-card">
+                <h4>🧪 Breast Cancer Detection</h4>
+                <div class="project-tech">
+                    <span>Scikit-learn</span>
+                    <span>Logistic Regression</span>
+                    <span>GNB</span>
+                </div>
+                <p>Built models with logistic regression, GNB, and GDA for diagnosis classification using scikit-learn.</p>
+                <a href="#" class="button">View Details</a>
+            </div>
+            <div class="project-card">
+                <h4>💬 Aspect-Based Sentiment Analysis</h4>
+                <div class="project-tech">
+                    <span>PyTorch</span>
+                    <span>LSTM</span>
+                    <span>NLP</span>
+                </div>
+                <p>Implemented an attention-based LSTM for aspect classification in SemEval datasets using PyTorch.</p>
+                <a href="#" class="button">View Details</a>
+            </div>
+            <div class="project-card">
+                <h4>📕 Custom Word2Vec</h4>
+                <div class="project-tech">
+                    <span>NLP</span>
+                    <span>PCA</span>
+                    <span>Python</span>
+                </div>
+                <p>Built co-occurrence matrix from *Merchant of Venice* and visualized embeddings using PCA.</p>
+                <a href="#" class="button">View Details</a>
+            </div>
+            <div class="project-card">
+                <h4>💼 Java Portfolio Manager</h4>
+                <div class="project-tech">
+                    <span>Java</span>
+                    <span>MVC</span>
+                    <span>JUnit</span>
+                </div>
+                <p>Designed MVC-based investment simulator with stock API integration, 100+ JUnit test cases, and charting.</p>
+                <a href="#" class="button">View Details</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certifications Section -->
+<section id="certifications" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Certifications</h2>
+        
+        <div class="certifications-list">
+            <div class="certification-item">
+                <h4>🧠 Expert - Programming and Algorithms (CodeSignal)</h4>
+                <p>Credential ID: <code>cm6lagnfc01ihm8i3wldt2po3</code></p>
+                <sub><i>Mastery of advanced data structures, algorithms, and Python.</i></sub>
+            </div>
+            <div class="certification-item">
+                <h4>🔍 Advanced Retrieval for AI with Chroma (DeepLearning.AI)</h4>
+                <p>Credential ID: <code>e7856493-e9ca-40f3-81a2-62e86fc6267c</code></p>
+                <sub><i>Hands-on experience with ChromaDB, cross-encoder reranking, and embedding-based RAG pipelines.</i></sub>
+            </div>
+            <div class="certification-item">
+                <h4>🧪 Supervised ML: Regression & Classification (Stanford / DeepLearning.AI)</h4>
+                <p>Credential ID: <code>W7RGEA3RE44U</code></p>
+                <sub><i>In-depth foundation in ML pipelines and evaluation, taught by Andrew Ng.</i></sub>
+            </div>
+            <div class="certification-item">
+                <h4>🧬 Advanced Learning Algorithms (Stanford / DeepLearning.AI)</h4>
+                <p>Credential ID: <code>PC74JUPWD28G</code></p>
+                <sub><i>Focus on deep generative models, regularization, and optimization.</i></sub>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section id="stats" class="section">
     <div class="container text-center">
-        <p>&copy; <span id="current-year"></span> Samarth Mahendra. Happy developing ✨</p>
+        <h2 class="reveal-text" data-splitting>GitHub Stats</h2>
+        
+        <div class="stats-images">
+            <img src="https://github-readme-stats.vercel.app/api?username=samarthmahendra&show_icons=true&count_private=true&theme=dracula&hide_title=false&hide_border=false&bg_color=1e1e2e&border_color=302d41&title_color=cba6f7&text_color=cdd6f4&icon_color=f5c2e7" height="170" alt="GitHub Stats" class="stats-graph"/>
+            <img alt="GitHub Contribution Snake" src="https://raw.githubusercontent.com/samarthmahendra/samarthmahendra/output/github-contribution-grid-snake.svg" class="stats-snake"/>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Get In Touch</h2>
+        
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h4>Email</h4>
+                    <p><a href="mailto:contact@samarthmahendra.com" class="text-link">contact@samarthmahendra.com</a></p>
+                </div>
+                <div class="contact-card">
+                    <i class="fab fa-linkedin"></i>
+                    <h4>LinkedIn</h4>
+                    <p><a href="https://www.linkedin.com/in/samarth-mahendra-7aab5a114/" target="_blank" class="text-link">linkedin.com/in/samarth-mahendra</a></p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h4>Location</h4>
+                    <p>Boston, MA</p>
+                </div>
+            </div>
+            <div class="contact-form-container">
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="button magnetic-button">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Me</h3>
+                <p>Software Engineer with experience in backend development, data processing, and distributed systems. Currently pursuing MS in Computer Science at Northeastern University.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#certifications">Certifications</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/SamarthMahendra" target="_blank">GitHub</a></li>
+                    <li><a href="https://www.linkedin.com/in/samarth-mahendra-7aab5a114/" target="_blank">LinkedIn</a></li>
+                    <li><a href="https://www.youtube.com/@msamarthmahendra8082" target="_blank">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> Samarth Mahendra. All rights reserved. Happy developing ✨</p>
+        </div>
     </div>
 </footer>
 
-<!-- GSAP Core and ScrollTrigger Plugin -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+<!-- Scroll to top button -->
+<div class="scroll-top">
+    <i class="fas fa-chevron-up"></i>
+</div>
 
-<!-- Your Animations Script -->
-<!-- Make sure the script name matches your file: animations.js or animation.js -->
-<script src="animations.js"></script> <!-- Changed from animation.js based on previous context -->
+<!-- JavaScript Libraries -->
+<!-- GSAP Animation Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-<!-- Simple script for current year -->
-<script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-</script>
-<!-- Link to index.js if it contains necessary logic -->
+<!-- Lottie Animation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+<!-- Splitting.js for Text Animations -->
+<script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+
+<!-- Swiper for Project Carousel -->
+<script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Locomotive Scroll for Smooth Scrolling -->
+<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.11/dist/locomotive-scroll.min.js"></script>
+
+<!-- Custom JavaScript -->
 <script src="index.js"></script>
+<script src="animation.js"></script>
 
 </body>
 </html>
