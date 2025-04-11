@@ -1,0 +1,21 @@
+{
+  "name": "profile",
+  "version": "1.0.0",
+  "description": "Professional developer portfolio with dynamic animations",
+  "main": "index.js",
+  "scripts": {
+    "dev": "live-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "locomotive-scroll": "^5.0.0-beta.11",
+    "lottie-web": "^5.12.2",
+    "splitting": "^1.0.6",
+    "swiper": "^11.0.5"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
