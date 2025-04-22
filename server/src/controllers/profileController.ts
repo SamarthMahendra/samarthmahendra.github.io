@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import Profile from '../models/Profile';
 
-export const getProfile = async (req: Request, res: Response) => {
+export const getProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     const profile = await Profile.findOne();
     if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
+      res.status(404).json({ message: 'Profile not found' });
+      return;
     }
     res.json(profile);
   } catch (err) {
