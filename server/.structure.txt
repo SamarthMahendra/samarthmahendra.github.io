@@ -1,0 +1,7 @@
+src/
+  controllers/
+  models/
+  routes/
+  utils/
+  services/
+  mcp/
