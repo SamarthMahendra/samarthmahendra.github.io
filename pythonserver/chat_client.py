@@ -1,8 +1,9 @@
 import requests
 
-API_URL = "http://localhost:8000/agent/run"
+API_URL = "http://localhost:8000/chat"
 
 def chat():
+    conversation = []
     print("Welcome to the Python Agent Chat Client! Type 'exit' to quit.\n")
     while True:
         user_input = input("You: ")
@@ -12,11 +13,12 @@ def chat():
         try:
             resp = requests.post(
                 API_URL,
-                json={"message": user_input},
+                json={"message": user_input, "conversation": conversation},
                 timeout=60
             )
             if resp.ok:
                 data = resp.json()
+                conversation = data.get("conversation", [])
                 print(f"Agent: {data.get('output', '[No output]')}")
             else:
                 print(f"[Error] Server returned status {resp.status_code}: {resp.text}")

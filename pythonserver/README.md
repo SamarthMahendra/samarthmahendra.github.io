@@ -14,9 +14,7 @@ This Flask-based server implements an LLM agent using the `agents` framework. It
    pip install flask agents openai pydantic
    ```
 3. Set your OpenAI API key as an environment variable:
-   ```sh
-   export OPENAI_API_KEY=sk-...
-   ```
+
 4. Run the server:
    ```sh
    python app.py
