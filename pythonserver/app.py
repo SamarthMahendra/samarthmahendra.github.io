@@ -70,6 +70,21 @@ discord_tool_schema = {
     "strict": True
 }
 
+
+@app.route("/talk_to_samarth_discord", methods=["POST"])
+def talk_to_samarth_discord_api():
+    data = request.get_json()
+    message = data.get("message")
+    result = talk_to_manager_discord(message)
+    return jsonify({"result": result})
+
+@app.route("/mongo_query", methods=["POST"])
+def mongo_query_api():
+    result = mongo_tool.query_mongo_db_for_candidate_profile()
+    return jsonify({"result": result})
+
+
+
 @app.route("/health", methods=["GET"])
 def health():
     return "OK"
