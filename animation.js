@@ -223,23 +223,23 @@ function initGsapAnimations() {
     });
     
     // About section animations
-    animateAboutSection();
-    
+    if (document.querySelector('#about .about-grid p') || document.querySelector('.about-image')) {
+        animateAboutSection();
+    }
     // Skills section animations
-    animateSkillsSection();
-    
+    if (document.querySelector('#skills .skill-category')) {
+        animateSkillsSection();
+    }
     // Experience timeline animations
-    animateTimeline();
-    
+    if (document.querySelector('.timeline') && document.querySelector('.timeline-item')) {
+        animateTimeline();
+    }
     // Projects animations
     animateProjects();
-    
     // Stats animations
     animateStats();
-    
     // Magnetic button effects
     initMagneticButtons();
-    
     // Scroll-triggered progress bars
     animateProgressBars();
 }
@@ -259,34 +259,38 @@ function animateAboutSection() {
         ease: "power1.out"
     });
     
-    // Image reveal animation
-    gsap.from(".about-image", {
-        scrollTrigger: {
-            trigger: ".about-image",
-            start: "top 85%"
-        },
-        clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)",
-        duration: 1,
-        ease: "power3.inOut"
-    });
+    // Image reveal animation (only if .about-image exists)
+    if (document.querySelector('.about-image')) {
+        gsap.from(".about-image", {
+            scrollTrigger: {
+                trigger: ".about-image",
+                start: "top 85%"
+            },
+            clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)",
+            duration: 1,
+            ease: "power3.inOut"
+        });
+    }
 }
 
 // Skills section detailed animations
 function animateSkillsSection() {
-    // Icon animations
-    gsap.from("#skills .skills-icons img", {
-        scrollTrigger: {
-            trigger: "#skills",
-            start: "top 80%",
-            toggleActions: "play none none none"
-        },
-        opacity: 0,
-        scale: 0.5,
-        y: 20,
-        stagger: 0.05,
-        duration: 0.5,
-        ease: "back.out(1.4)"
-    });
+    // Icon animations (only if #skills .skills-icons img exists)
+    if (document.querySelector('#skills .skills-icons img')) {
+        gsap.from("#skills .skills-icons img", {
+            scrollTrigger: {
+                trigger: "#skills",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            scale: 0.5,
+            y: 20,
+            stagger: 0.05,
+            duration: 0.5,
+            ease: "back.out(1.4)"
+        });
+    }
     
     // Category groups animations
     gsap.utils.toArray('.skill-category').forEach((category, i) => {
@@ -305,18 +309,10 @@ function animateSkillsSection() {
 
 // Experience and education timeline animations
 function animateTimeline() {
-    // Timeline line drawing animation
-    gsap.from(".timeline::before", {
-        scrollTrigger: {
-            trigger: ".timeline",
-            start: "top 80%",
-            end: "bottom 20%",
-            scrub: true
-        },
-        scaleY: 0,
-        transformOrigin: "top center",
-        ease: "none"
-    });
+    // Timeline line drawing animation (pseudo-element cannot be animated directly)
+    // Instead, consider adding a child .timeline-line and animate that if needed.
+    // gsap.from('.timeline-line', { ... });
+    // Skipping direct animation of .timeline::before
     
     // Timeline items
     gsap.from(".timeline-item", {
@@ -332,18 +328,9 @@ function animateTimeline() {
         ease: "power2.out"
     });
     
-    // Timeline dots
-    gsap.from(".timeline-item::before", {
-        scrollTrigger: {
-            trigger: ".timeline",
-            start: "top 85%"
-        },
-        scale: 0,
-        opacity: 0,
-        stagger: 0.2,
-        duration: 0.5,
-        ease: "back.out(1.7)"
-    });
+    // Timeline dots (pseudo-element cannot be animated directly)
+    // Instead, consider adding a child element for the dot and animate that if needed.
+    // Skipping direct animation of .timeline-item::before
 }
 
 // Project cards animations
