@@ -23,11 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function initThemeToggle() {
     // Default to dark theme, check for saved theme
     // Always default to dark unless user explicitly chose light
-    let savedTheme = localStorage.getItem('theme');
-    if (!savedTheme) {
-        savedTheme = 'dark';
-        localStorage.setItem('theme', 'dark');
-    }
+    
+    savedTheme = 'dark';
+    localStorage.setItem('theme', 'dark');
+
     
     // Create theme toggle if it doesn't exist
     if (!document.querySelector('.theme-switch-wrapper')) {
