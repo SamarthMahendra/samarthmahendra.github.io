@@ -12,3 +12,4 @@ httpx
 discord.py
 # For CORS if using frontend
 fastapi[all]
+openai
