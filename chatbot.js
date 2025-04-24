@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isExpanded = false;
     let isDragging = false;
     let startHeight, startY;
-    const SERVER_URL = 'http://localhost:8001'; // Update this to your server URL
+    const SERVER_URL = 'https://samarthmahendra-github-io.onrender.com:8000'; // Update this to your server URL
 
     // Track completed message IDs to avoid re-sending them
     let completedMessageIds = [];
