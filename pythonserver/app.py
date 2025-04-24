@@ -289,9 +289,13 @@ async def chat(request: Request):
                 args = json.loads(tool_call.arguments)
                 call_id = tool_call.call_id
                 user = args.get("user")
-                if name == 'schedule_meeting_on_jitsi':
-                    print("schedule_meeting_on_jitsi")
-                    result = schedule_meeting(args)
+                if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
+                    if name == 'schedule_meeting_on_jitsi':
+                        print("schedule_meeting_on_jitsi")
+                        result = schedule_meeting(args)
+                    elif name == 'query_profile_info':
+                        print("query_profile_info")
+                        result = mongo_tool.query_mongo_db_for_candidate_profile()
                     output_str = json.dumps(result, ensure_ascii=False)
                     conversation += [tc for tc in tool_calls]
                     tool_outputs.append({
@@ -404,9 +408,13 @@ async def chat(request: Request):
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
             user = args.get("user")
-            if name == 'schedule_meeting_on_jitsi':
-                print("schedule_meeting_on_jitsi")
-                result = schedule_meeting(args)
+            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
+                if name == 'schedule_meeting_on_jitsi':
+                    print("schedule_meeting_on_jitsi")
+                    result = schedule_meeting(args)
+                elif name == 'query_profile_info':
+                    print("query_profile_info")
+                    result = mongo_tool.query_mongo_db_for_candidate_profile()
                 output_str = json.dumps(result, ensure_ascii=False)
                 conversation += [tc for tc in tool_calls]
                 tool_outputs.append({
