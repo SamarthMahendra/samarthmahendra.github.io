@@ -44,7 +44,7 @@ def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
 
 
 # get api key from environment variable
-api_key = "hslahfal"
+api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
 
@@ -86,24 +86,23 @@ discord_tool_schema = {
 }
 
 
-@app.route("/talk_to_samarth_discord", methods=["POST"])
-def talk_to_samarth_discord_api():
+@app.post("/talk_to_samarth_discord")
+async def talk_to_samarth_discord_api(request: Request):
     data = await request.json()
     message = data.get("message")
     result = talk_to_manager_discord(message)
-    return JSONResponse({"result": result})
+    return {"result": result}
 
-@app.route("/mongo_query", methods=["POST"])
-def mongo_query_api():
+@app.post("/mongo_query")
+async def mongo_query_api():
     result = mongo_tool.query_mongo_db_for_candidate_profile()
-    return JSONResponse({"result": result})
+    return {"result": result}
 
 
 
-@app.route("/health", methods=["GET"])
-def health():
-    response = JSONResponse({"status": "OK"})
-    return response
+@app.get("/health")
+async def health():
+    return {"status": "OK"}
 
 
 from celery import shared_task
@@ -122,8 +121,8 @@ def tool_call_fn(tool_name, call_id, args):
     return result
 
 
-@app.route("/chat", methods=["POST"])
-async def chat():
+@app.post("/chat")
+async def chat(request: Request):
 
 
 
@@ -312,6 +311,3 @@ async def chat():
         "conversation": serializable_convo(conversation)
     })
 
-if __name__ == "__main__":
-    # Run with host="0.0.0.0" to make it accessible from other devices on the network
-    app.run(host="0.0.0.0", port=8001, debug=True)
