@@ -238,7 +238,7 @@ async def chat(request: Request):
         conversation = [
             {
                 "role": "system",
-                "content": [{"type": "input_text", "text": "You are Samarth's AI Personal assistant that can talk to samarth on discord, query mongo db, and schedule meetings on jitsi., You are talking on behalf of samarth, Dont query mongodb for meeting availablity, check with samarth on discord"}]
+                "content": [{"type": "input_text", "text": "You are Samarth's AI Personal assistant that can talk to samarth on discord, query mongo db, and schedule meetings on jitsi., You are talking on behalf of samarth, Dont query mongodb for meeting availablity, check with samarth on discord, to check if he good match for a job, use mongodb tool"}]
             },
             {
                 "role": "user",
