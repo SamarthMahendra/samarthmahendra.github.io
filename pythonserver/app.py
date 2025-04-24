@@ -9,7 +9,16 @@ from openai import OpenAI, api_key
 load_dotenv()
 app = FastAPI()
 celery = Celery(__name__, broker="${REDIS_URL}")  # Reads REDIS_URL from env
-CORS(app)  # Enable CORS for all routes
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or restrict to your frontend domain(s)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 import discord_tool
@@ -35,7 +44,7 @@ def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
 
 
 # get api key from environment variable
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = "hslahfal"
 
 client = OpenAI(api_key=api_key)
 
@@ -79,21 +88,21 @@ discord_tool_schema = {
 
 @app.route("/talk_to_samarth_discord", methods=["POST"])
 def talk_to_samarth_discord_api():
-    data = request.get_json()
+    data = await request.json()
     message = data.get("message")
     result = talk_to_manager_discord(message)
-    return jsonify({"result": result})
+    return JSONResponse({"result": result})
 
 @app.route("/mongo_query", methods=["POST"])
 def mongo_query_api():
     result = mongo_tool.query_mongo_db_for_candidate_profile()
-    return jsonify({"result": result})
+    return JSONResponse({"result": result})
 
 
 
 @app.route("/health", methods=["GET"])
 def health():
-    response = jsonify({"status": "OK"})
+    response = JSONResponse({"status": "OK"})
     return response
 
 
@@ -120,7 +129,7 @@ async def chat():
 
 
 
-    data = request.get_json()
+    data = await request.json()
     message = data.get("message")
 
     conversation = data.get("conversation", [])
@@ -160,7 +169,7 @@ async def chat():
         conversation += [tc for tc in tool_calls]
         result  = mongo_tool.get_tool_message_status(message_id)
         if result is None or result ==-1:
-            return jsonify({
+            return JSONResponse({
                 "status": "pending",
             })
         if not isinstance(result, str):
@@ -211,7 +220,7 @@ async def chat():
             return serializable
         print("conversation after tool call response and before sending to frontend", conversation)
         print(response2.output_text)
-        return jsonify({
+        return JSONResponse({
             "output": response2.output_text,
             "conversation": serializable_convo(conversation),
             "status": "completed",
@@ -275,7 +284,7 @@ async def chat():
             return serializable
         # print(" Before returning tools call" , tool_calls)
         # print(response2.output_text)
-        return jsonify({
+        return JSONResponse({
             "output": response2.output_text,
             "conversation": serializable_convo(conversation),
             # Frontend should poll with tool_calls and message_id until status is 'completed'
@@ -298,7 +307,7 @@ async def chat():
             # else: skip non-serializable objects
         return serializable
     print(response.output_text)
-    return jsonify({
+    return JSONResponse({
         "output": response.output_text,
         "conversation": serializable_convo(conversation)
     })
