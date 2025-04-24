@@ -5,13 +5,27 @@ import datetime
 
 load_dotenv()
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://stackoverflow:stackoverflow%40123@cluster0.3kqbc.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.getenv("MONGO_DB_NAME", "profile_db")
 COLLECTION_NAME = os.getenv("MONGO_COLLECTION_NAME", "candidate_profiles")
 
 client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
 collection = db[COLLECTION_NAME]
+
+
+def insert_meeting(members, agenda, timing, meeting_url):
+    """Insert a meeting into the MongoDB 'meetings' collection."""
+    meeting_doc = {
+        "members": members,  # list of emails or names
+        "agenda": agenda,
+        "timing": timing,  # should be a datetime object or ISO string
+        "meeting_url": meeting_url,
+        "created_at": datetime.datetime.utcnow()
+    }
+    meetings_collection = db["meetings"]
+    result = meetings_collection.insert_one(meeting_doc)
+    return str(result.inserted_id)
 
 
 def insert_into_results(user, id, result):
@@ -198,4 +212,4 @@ if __name__ == "__main__":
     }
     print("Inserted profile ID:", insert_candidate_profile(profile_dict))
     # Example: query
-    print(query_mongo_db_for_candidate_profile({"name": "Samarth Mahendra"}))
+    print(query_mongo_db_for_candidate_profile())
