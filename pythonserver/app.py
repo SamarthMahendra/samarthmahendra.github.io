@@ -1,11 +1,14 @@
 import os
-from flask import Flask, request, jsonify
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from celery import Celery
 from dotenv import load_dotenv
 from openai import OpenAI, api_key
-from flask_cors import CORS
+
 
 load_dotenv()
-app = Flask(__name__)
+app = FastAPI()
+celery = Celery(__name__, broker="${REDIS_URL}")  # Reads REDIS_URL from env
 CORS(app)  # Enable CORS for all routes
 
 
