@@ -28,6 +28,9 @@ import discord_tool
 import asyncio
 import mongo_tool
 import json
+import uuid
+from datetime import datetime
+from fastapi import Body
 
 model_name = "gpt-4.1"
 
@@ -50,6 +53,110 @@ def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
 api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
+
+
+def generate_jitsi_meeting_url(user_name=None):
+    from mongo_tool import insert_meeting
+    base_url = "https://meet.jit.si/"
+    if user_name:
+        meeting_name = f"{user_name}-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
+    else:
+        meeting_name = f"SamarthMeeting-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
+
+    return base_url + meeting_name
+
+# Tool schema for ChatGPT function calling
+schedule_meeting_tool_schema = {
+    "type": "function",
+    "name": "schedule_meeting_on_jitsi",
+    "description": "Function to Schedule a meeting with Samarth and others on Jitsi, store meeting in MongoDB, and send an email invite with the Jitsi link. dont ask too much just schedule the meeting",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "members": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "List of member emails (apart from Samarth)"
+            },
+            "agenda": {"type": "string", "description": "Agenda for the meeting"},
+            "timing": {"type": "string", "description": "Meeting time/date in ISO format"},
+            "user_email": {"type": "string", "description": "Email of the user scheduling the meeting (for invite)"}
+        },
+        "required": ["members", "agenda", "timing", "user_email"]
+    }
+}
+
+def schedule_meeting(args):
+    # args: dict with keys members, agenda, timing, user_email
+    members = args.get("members", [])
+    agenda = args.get("agenda")
+    timing = args.get("timing")
+    user_email = args.get("user_email")
+    # Always include Samarth
+    if "samarth@samarthmahendra.com" not in members:
+        members.append("samarth@samarthmahendra.com")
+    print(members, agenda, timing, user_email)
+    meeting_url = generate_jitsi_meeting_url("samarth")
+    meeting_id = mongo_tool.insert_meeting(members, agenda, timing, meeting_url)
+    # # Send email invite via celery
+    # celery_app.send_task("tool_call_fn", args=("send_meeting_email", None, {"email": user_email, "meeting_url": meeting_url}))
+    # @celery_app.task(bind=True)
+    # def tool_call_fn(self, tool_name, call_id, args):
+    #     logger.info(
+    #         f"[Celery Worker] Received task: tool_call_fn with tool_name={tool_name}, call_id={call_id}, args={args}")
+    #     try:
+    #         if tool_name == "talk_to_samarth_discord":
+    #             logger.info("[Celery Worker] Calling discord_tool.ask_and_get_reply")
+    #             result = discord_tool.ask_and_get_reply(args["message"]["content"])
+    #         elif tool_name == "query_profile_info":
+    #             logger.info("[Celery Worker] Calling mongo_tool.query_mongo_db_for_candidate_profile")
+    #             result = mongo_tool.query_mongo_db_for_candidate_profile()
+    #         elif tool_name == "send_meeting_email":
+    #             logger.info("[Celery Worker] Sending meeting email to %s", args.get("email"))
+    #             import smtplib
+    #             from email.message import EmailMessage
+    #             smtp_host = os.getenv("SMTP_HOST")
+    #             smtp_port = int(os.getenv("SMTP_PORT", 587))
+    #             smtp_user = os.getenv("SMTP_USER")
+    #             smtp_pass = os.getenv("SMTP_PASS")
+    #             sender = smtp_user or "no-reply@samarthmahendra.com"
+    #             recipient = args.get("email")
+    #             meeting_url = args.get("meeting_url")
+    #             subject = "Your Meeting Link with Samarth"
+    #             body = f"Hello,\n\nHere is your Jitsi meeting link: {meeting_url}\n\nSee you there!\n\nRegards,\nSamarth Mahendra"
+    #             msg = EmailMessage()
+    #             msg["Subject"] = subject
+    #             msg["From"] = sender
+    #             msg["To"] = recipient
+    #             msg.set_content(body)
+    #             try:
+    #                 with smtplib.SMTP(smtp_host, smtp_port) as server:
+    #                     server.starttls()
+    #                     server.login(smtp_user, smtp_pass)
+    #                     server.send_message(msg)
+    #                 logger.info(f"[Celery Worker] Email sent to {recipient}")
+    #                 result = {"status": "sent", "recipient": recipient}
+    #             except Exception as e:
+    #                 logger.error(f"[Celery Worker] Failed to send email: {e}")
+    #                 result = {"status": "error", "error": str(e)}
+    #         else:
+    #             logger.warning(f"[Celery Worker] Unknown tool_name: {tool_name}")
+    #             result = None
+    #
+    #         logger.info(f"[Celery Worker] Task result: {result}")
+    #         mongo_tool.save_tool_message(call_id, tool_name, args, result)
+    #         logger.info(f"[Celery Worker] Saved tool message for call_id={call_id}")
+    #         return result
+    #     except Exception as e:
+    #         logger.error(f"[Celery Worker] Error in tool_call_fn: {e}", exc_info=True)
+    #         raise
+    print(" Sending email : ", user_email, meeting_url)
+    tool_call_fn.delay("send_meeting_email", None, {"email": user_email, "meeting_url": meeting_url})
+
+    # ping samarth on discord about the meeting
+    # celery_app.send_task("tool_call_fn", args=("talk_to_samarth_discord", None, {"action": "send", "message": {"content": f"Meeting scheduled with {', '.join(members)} on {timing} for {agenda}. Meeting link: {meeting_url}"}}))
+    tool_call_fn.delay("talk_to_samarth_discord", None, {"action": "send", "message": {"content": f"Meeting scheduled with {', '.join(members)} on {timing} for {agenda}. Meeting link: {meeting_url}"}})
+    return {"meeting_url": meeting_url, "meeting_id": meeting_id}
 
 mongo_query_tool_schema = {
 "type": "function",
@@ -131,7 +238,7 @@ async def chat(request: Request):
         conversation = [
             {
                 "role": "system",
-                "content": [{"type": "input_text", "text": "You are an AI assistant."}]
+                "content": [{"type": "input_text", "text": "You are Samarth's AI Personal assistant that can talk to samarth on discord, query mongo db, and schedule meetings on jitsi., You are talking on behalf of samarth, Dont query mongodb for meeting availablity, check with samarth on discord"}]
             },
             {
                 "role": "user",
@@ -192,7 +299,7 @@ async def chat(request: Request):
             input=conversation,
             text={"format": {"type": "text"}},
             reasoning={},
-            tools=[mongo_query_tool_schema, discord_tool_schema],
+            tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
             temperature=1,
             max_output_tokens=2048,
             top_p=1,
@@ -227,7 +334,7 @@ async def chat(request: Request):
         input=conversation,
         text={"format": {"type": "text"}},
         reasoning={},
-        tools=[mongo_query_tool_schema, discord_tool_schema],
+        tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
         temperature=1,
         max_output_tokens=2048,
         top_p=1,
@@ -237,12 +344,56 @@ async def chat(request: Request):
     tool_calls = [tc for tc in response.output if getattr(tc, 'type', None) == 'function_call']
     if tool_calls:
         for tool_call in tool_calls:
+            print("tool call", tool_call.name)
             name = tool_call.name
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
             user = args.get("user")
+            if name == 'schedule_meeting_on_jitsi':
+                print("schedule_meeting_on_jitsi")
+                result = schedule_meeting(args)
+                output_str = json.dumps(result, ensure_ascii=False)
+                conversation += [tc for tc in tool_calls]
+                tool_outputs.append({
+                    "type": "function_call_output",
+                    "call_id": call_id,
+                    "output": output_str
+                })
+                conversation += tool_outputs
+                response2 = client.responses.create(
+                    model=model_name,
+                    input=conversation,
+                    text={"format": {"type": "text"}},
+                    reasoning={},
+                    tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
+                    temperature=1,
+                    max_output_tokens=2048,
+                    top_p=1,
+                    store=True
+                )
 
-            tool_call_fn.delay(name, call_id, args)
+                #
+                # # Remove non-serializable objects from conversation before returning
+                def serializable_convo(convo):
+                    serializable = []
+                    for item in convo:
+                        if isinstance(item, dict):
+                            serializable.append(item)
+                        elif hasattr(item, '__dict__'):
+                            serializable.append(item.__dict__)
+                        elif isinstance(item, str):
+                            serializable.append(item)
+                        # else: skip non-serializable objects
+                    return serializable
+
+                return JSONResponse({
+                    "output": response2.output_text,
+                    "conversation": serializable_convo(conversation),
+                })
+
+
+            else:
+                tool_call_fn.delay(name, call_id, args)
 
         conversation.append(
             {
@@ -256,7 +407,7 @@ async def chat(request: Request):
             input=conversation,
             text={"format": {"type": "text"}},
             reasoning={},
-            tools=[mongo_query_tool_schema, discord_tool_schema],
+            tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
             temperature=1,
             max_output_tokens=2048,
             top_p=1,

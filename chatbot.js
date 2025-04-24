@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isExpanded = false;
     let isDragging = false;
     let startHeight, startY;
-    const SERVER_URL = 'https://samarthmahendra-github-io.onrender.com'; // Update this to your server URL
+    const SERVER_URL = 'http://localhost:8002'; // Update this to your server URL
 
     // Track completed message IDs to avoid re-sending them
     let completedMessageIds = [];
@@ -40,6 +40,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Get close button
     const chatbotClose = document.getElementById('chatbot-close');
+    // Get fullscreen button
+    const chatbotFullscreen = document.getElementById('chatbot-fullscreen');
+
+    // Fullscreen state
+    let isFullscreen = false;
+
+    // Toggle fullscreen
+    chatbotFullscreen.addEventListener('click', function() {
+        isFullscreen = !isFullscreen;
+        if (isFullscreen) {
+            chatbotContainer.classList.add('fullscreen');
+        } else {
+            chatbotContainer.classList.remove('fullscreen');
+        }
+    });
     
     // Toggle chatbot visibility (open)
     chatbotToggle.addEventListener('click', function() {
