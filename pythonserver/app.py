@@ -8,7 +8,7 @@ from openai import OpenAI, api_key
 
 load_dotenv()
 app = FastAPI()
-celery = Celery(__name__, broker="${REDIS_URL}")  # Reads REDIS_URL from env
+celery = Celery(__name__, broker=os.getenv("REDIS_URL"))  # Reads REDIS_URL from env
 
 from fastapi.middleware.cors import CORSMiddleware
 
