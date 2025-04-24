@@ -474,6 +474,13 @@ input:checked + .slider:before {
     overflow: hidden;
     padding-top: 160px; /* Add space for fixed navigation */
     margin-top: -60px; /* Offset to compensate for padding */
+    margin-bottom: 0 !important;
+}
+
+/* Ensure last .section before a new section has extra bottom margin */
+.section + .section {
+    margin-top: 0;
+    padding-top: 100px;
 }
 
 .section:nth-child(even) {
@@ -578,6 +585,7 @@ input:checked + .slider:before {
 /* Skills Section */
 .skills-container {
     margin-top: 2rem;
+    margin-bottom: 4rem; /* Add extra space below skills section */
 }
 
 .skill-category {

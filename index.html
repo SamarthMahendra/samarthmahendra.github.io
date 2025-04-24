@@ -31,6 +31,7 @@
     
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="./style.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
 </head>
 <body data-scroll-container>
 
@@ -70,8 +71,14 @@
     </div>
     
     <div class="container hero-content">
-        <div id="developer-animation"></div>
-        <div id="hero-lottie-animation" style="width:120px;height:120px;margin:0 auto 1.5rem;"></div>
+        <dotlottie-player
+    src="https://lottie.host/1bca963d-9f21-422b-a455-8656a4e61531/0akKFojK24.lottie"
+    background="transparent"
+    speed="1"
+    style="width: 300px; height: 300px; margin: 0 auto 1.5rem;"
+    loop
+    autoplay
+></dotlottie-player>
         <h1 class="reveal-text" data-splitting>Samarth Mahendra</h1>
         <div class="typing-container">
             <span id="typing-text"></span>
@@ -135,20 +142,8 @@
     </div>
 </section>
 
-<!-- Skills Section -->
-<section id="skills" class="section">
-    <div class="container">
-        <h2 class="reveal-text" data-splitting>Skills</h2>
-        <ul>
-            <li><strong>Languages:</strong> Python, Java, C/C++, NoSQL, JavaScript, TypeScript</li>
-            <li><strong>Frameworks & Libraries:</strong> Django restframework, Flask, React.js</li>
-            <li><strong>Databases:</strong> PostgreSQL, Redis, MongoDB, ChromaDB, Elasticsearch</li>
-            <li><strong>Cloud & DevOp:</strong> AWS, Terraform, Docker, Kubernetes, Prometheus, Datadog, Celery</li>
-            <li><strong>Tools & Platforms:</strong> Git, Linux/Unix, Puppeteer, LLM Integration</li>
-            <li><strong>Concepts:</strong> Microservices, Data Modeling, REST APIs, System Design, Distributed Systems, Problem Solving</li>
-        </ul>
-    </div>
-</section>
+<!-- Skills & Technologies Section -->
+<section id="skills-tech" class="section">
     <div class="container">
         <h2 class="reveal-text" data-splitting>Skills & Technologies</h2>
         <div id="skills-animation"></div>
@@ -309,25 +304,22 @@
     </div>
 </section>
 
-<!-- Experience Section -->
-<section id="education" class="section">
+<!-- Skills Section -->
+<section id="skills" class="section">
     <div class="container">
-        <h2 class="reveal-text" data-splitting>Education</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <h3>Northeastern University</h3>
-                <p class="timeline-sub">Master's, Computer Science | January 2024 - December 2025</p>
-                <ul>
-                    <li>Relevant coursework: Programming Design Paradigm, Database Management Systems, Algorithms, Natural Language Processing, Machine Learning, Foundation of Software Engineering, Mobile App development</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Dayananda Sagar College of Engineering</h3>
-                <p class="timeline-sub">Bachelor's, Computer Science | August 2018 - July 2022</p>
-            </div>
-        </div>
+        <h2 class="reveal-text" data-splitting>Skills</h2>
+        <ul>
+            <li><strong>Languages:</strong> Python, Java, C/C++, NoSQL, JavaScript, TypeScript</li>
+            <li><strong>Frameworks & Libraries:</strong> Django restframework, Flask, React.js</li>
+            <li><strong>Databases:</strong> PostgreSQL, Redis, MongoDB, ChromaDB, Elasticsearch</li>
+            <li><strong>Cloud & DevOp:</strong> AWS, Terraform, Docker, Kubernetes, Prometheus, Datadog, Celery</li>
+            <li><strong>Tools & Platforms:</strong> Git, Linux/Unix, Puppeteer, LLM Integration</li>
+            <li><strong>Concepts:</strong> Microservices, Data Modeling, REST APIs, System Design, Distributed Systems, Problem Solving</li>
+        </ul>
     </div>
 </section>
+
+<!-- Skills Section End -->
 
 <section id="experience" class="section">
     <div class="container">
@@ -679,9 +671,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-<!-- Lottie Animation -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-
 <!-- Splitting.js for Text Animations -->
 <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
 
@@ -729,7 +718,6 @@
 <script src="./index.js"></script>
 <script src="https://samarthmahendra.github.io/animation.js"></script>
 <script src="./chatbot.js"></script>
-<script src="./lottie-hero.js"></script>
 
 </body>
 </html>

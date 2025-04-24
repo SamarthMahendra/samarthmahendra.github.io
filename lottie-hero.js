@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'https://lottie.host/703bcf86-7138-48c0-bd8d-c1bc403722df/wgVlCeniwY.lottie',
+            path: './lotty_animation.json',
             rendererSettings: {
                 preserveAspectRatio: 'xMidYMid meet'
             }
