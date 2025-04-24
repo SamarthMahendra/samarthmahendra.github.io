@@ -41,23 +41,6 @@ function initThemeToggle() {
         document.body.insertAdjacentHTML('afterbegin', toggleHTML);
     }
     
-    // Apply saved theme
-    if (savedTheme === 'light') {
-        document.documentElement.classList.add('theme-light');
-    }
-    
-    // Setup event listener for toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.checked = savedTheme === 'dark';
-    themeToggle.addEventListener('change', function() {
-        const newTheme = this.checked ? 'dark' : 'light';
-        if (newTheme === 'light') {
-            document.documentElement.classList.add('theme-light');
-        } else {
-            document.documentElement.classList.remove('theme-light');
-        }
-        localStorage.setItem('theme', newTheme);
-    });
 }
 
 // Smooth scroll to section when clicking on navigation links
