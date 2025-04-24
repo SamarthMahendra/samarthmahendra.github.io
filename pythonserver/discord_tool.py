@@ -46,11 +46,8 @@ async def send_message_to_channel(message):
     client = DiscordSender(message, intents=intents)
     await client.start(DISCORD_TOKEN)
 
-async def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=60):
-    '''
-    Sends a message to the channel and waits for a reply from the specified user (or any user) in that channel.
-    Returns the content of the first reply received, or None if timeout.
-    '''
+def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=60):
+    import asyncio
     intents = discord.Intents.default()
     intents.messages = True
     intents.guilds = True
@@ -77,7 +74,6 @@ async def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=60):
             self.ready_event.set()
 
         async def on_message(self, message):
-            # Ignore messages from the bot itself
             if message.author.id == self.user.id:
                 return
             if message.channel.id != self.channel_id:
@@ -88,11 +84,14 @@ async def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=60):
                 self.reply_event.set()
                 await self.close()
 
-    bot = AskReplyBot(prompt_message, wait_user_id, intents=intents)
-    await bot.start(DISCORD_TOKEN, reconnect=False)
-    try:
-        await asyncio.wait_for(bot.ready_event.wait(), timeout=10)  # Wait for on_ready
-        await asyncio.wait_for(bot.reply_event.wait(), timeout=timeout)
-    except Exception as e:
-        print(f"[AskReplyBot] Timeout or error: {e}")
-    return bot.reply
+    async def run_bot():
+        bot = AskReplyBot(prompt_message, wait_user_id, intents=intents)
+        await bot.start(DISCORD_TOKEN, reconnect=False)
+        try:
+            await asyncio.wait_for(bot.ready_event.wait(), timeout=10)
+            await asyncio.wait_for(bot.reply_event.wait(), timeout=timeout)
+        except Exception as e:
+            print(f"[AskReplyBot] Timeout or error: {e}")
+        return bot.reply
+
+    return asyncio.run(run_bot())

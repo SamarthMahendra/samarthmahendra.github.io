@@ -687,9 +687,44 @@
 <!-- Locomotive Scroll for Smooth Scrolling -->
 <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.11/dist/locomotive-scroll.min.js"></script>
 
+<!-- Chatbot Interface -->
+<!-- Chatbot Toggle Button (Outside container to be always visible) -->
+<button class="chatbot-toggle" id="chatbot-toggle">
+    <i class="fas fa-comment"></i>
+</button>
+
+<div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+        <div class="chatbot-title">Chat with Samarth's Assistant</div>
+        <div class="chatbot-controls">
+            <button class="chatbot-resize" id="chatbot-resize" title="Resize">
+                <i class="fas fa-expand-alt"></i>
+            </button>
+            <button class="chatbot-close" id="chatbot-close" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="resize-handle" id="resize-handle"></div>
+    <div class="chatbot-body" id="chatbot-body">
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot-message">
+                <div class="message-content">Hi there! I'm Samarth's assistant. How can I help you today?</div>
+            </div>
+        </div>
+        <div class="chatbot-input-container">
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type your message here..." autocomplete="off">
+            <button id="chatbot-send" class="chatbot-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Custom JavaScript -->
 <script src="index.js"></script>
 <script src="animation.js"></script>
+<script src="chatbot.js"></script>
 
 </body>
 </html>
