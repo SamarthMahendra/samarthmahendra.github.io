@@ -9,24 +9,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Lottie animations
     initLottieAnimations();
     
-    // Initialize text animations (splitting)
+    // Initialize text animations (Splitting.js headings)
     initTextAnimations();
     
+    // Animate About section
+    animateAboutSection();
+    // Animate Skills section
+    animateSkillsSection();
+    // Animate Timeline (Experience/Education)
+    animateTimeline();
+    // Animate Projects section
+    animateProjects();
+    // Animate Stats section
+    animateStats();
+    // Animate Progress Bars
+    animateProgressBars();
+    // Animate Magnetic Buttons
+    initMagneticButtons();
+
     // Wait for LocomotiveScroll to be available
     window.addEventListener('load', function() {
-        // Give a small delay to ensure all scripts are loaded
         setTimeout(() => {
-            // Initialize LocomotiveScroll for smooth scrolling
             initSmoothScroll();
-            // Initialize swiper carousel
             initProjectCarousel();
-            // Initialize various GSAP animations
+            // Re-initialize all GSAP animations after scroll/carousel ready
             initGsapAnimations();
         }, 500);
     });
-    
-    // Initialize various GSAP animations
-    initGsapAnimations();
 });
 
 // Theme toggling
