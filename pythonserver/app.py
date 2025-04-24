@@ -86,6 +86,26 @@ schedule_meeting_tool_schema = {
     }
 }
 
+
+
+# Tool schema for ChatGPT function calling
+schedule_meeting_tool_schema = {
+    "type": "function",
+    "name": "check_tool_output",
+    "description": "Function to check previous tool output",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "call_id": {"type": "string", "description": "tool call id"}
+        },
+        "required": ["call_id"]
+    }
+}
+
+
+def
+
+
 def schedule_meeting(args):
     # args: dict with keys members, agenda, timing, user_email
     members = args.get("members", [])
@@ -145,6 +165,11 @@ discord_tool_schema = {
 }
 
 
+
+def check_tool_output(message_id):
+    result = mongo_tool.get_tool_message_status(message_id)
+    return result 
+
 @app.post("/talk_to_samarth_discord")
 async def talk_to_samarth_discord_api(request: Request):
     data = await request.json()
@@ -187,7 +212,7 @@ async def chat(request: Request):
         conversation = [
             {
                 "role": "system",
-                "content": [{"type": "input_text", "text": "You are Samarth's AI Personal assistant that can talk to samarth on discord, query mongo db, and schedule meetings on jitsi., You are talking on behalf of samarth, Dont query mongodb for meeting availablity, check with samarth on discord, to check if he good match for a job, use mongodb tool"}]
+                "content": [{"type": "input_text", "text": "You are Samarth Mahendra’s AI personal assistant.\n\nYour capabilities include:\n- Communicating with Samarth via Discord to ask questions or relay information.\n- Querying a MongoDB database to retrieve or verify candidate profiles and job fit.\n- Scheduling meetings using Jitsi and sending out meeting invitations.\n- You can query the database for any information about Samarth.\n\nGuidelines:\n- Before pinging Samarth on Discord, always gather all relevant information from the user or available sources.\n- When evaluating if someone is a good match for a job, always gather the job information first, then check the candidate profile using the MongoDB tool.\n- When checking Samarth’s availability for meetings, never query the database; always confirm with Samarth directly on Discord.\n- Always act professionally and on behalf of Samarth.\n- If you are unsure or need Samarth’s input, communicate with him via Discord."}]
             },
             {
                 "role": "user",
