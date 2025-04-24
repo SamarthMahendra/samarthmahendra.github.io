@@ -45,7 +45,7 @@
 <!-- Navigation -->
 <nav class="nav-menu">
     <div class="container nav-container">
-        <a href="#" class="nav-logo magnetic-button">SM</a>
+        <!-- SM icon removed as per user request -->
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
@@ -132,6 +132,18 @@
 
 <!-- Skills Section -->
 <section id="skills" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Skills</h2>
+        <ul>
+            <li><strong>Languages:</strong> Python, Java, C/C++, NoSQL, JavaScript, TypeScript</li>
+            <li><strong>Frameworks & Libraries:</strong> Django restframework, Flask, React.js</li>
+            <li><strong>Databases:</strong> PostgreSQL, Redis, MongoDB, ChromaDB, Elasticsearch</li>
+            <li><strong>Cloud & DevOp:</strong> AWS, Terraform, Docker, Kubernetes, Prometheus, Datadog, Celery</li>
+            <li><strong>Tools & Platforms:</strong> Git, Linux/Unix, Puppeteer, LLM Integration</li>
+            <li><strong>Concepts:</strong> Microservices, Data Modeling, REST APIs, System Design, Distributed Systems, Problem Solving</li>
+        </ul>
+    </div>
+</section>
     <div class="container">
         <h2 class="reveal-text" data-splitting>Skills & Technologies</h2>
         <div id="skills-animation"></div>
@@ -294,6 +306,25 @@
 </section>
 
 <!-- Experience Section -->
+<section id="education" class="section">
+    <div class="container">
+        <h2 class="reveal-text" data-splitting>Education</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Northeastern University</h3>
+                <p class="timeline-sub">Master's, Computer Science | January 2024 - December 2025</p>
+                <ul>
+                    <li>Relevant coursework: Programming Design Paradigm, Database Management Systems, Algorithms, Natural Language Processing, Machine Learning, Foundation of Software Engineering, Mobile App development</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Dayananda Sagar College of Engineering</h3>
+                <p class="timeline-sub">Bachelor's, Computer Science | August 2018 - July 2022</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section id="experience" class="section">
     <div class="container">
         <h2 class="reveal-text" data-splitting>Work Experience</h2>
@@ -373,23 +404,91 @@
         <!-- Featured Projects Grid -->
         <div class="featured-projects-grid">
             <div class="project-card">
-                <div class="project-image">
-                    <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--pdvpwWxp--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s4lw3cjr9tfep0my0ekr.png" alt="JobStats Project">
-                </div>
-                <h4>📊 JobStats - FANG Job Trends</h4>
+                <h4>🏢 Open Jobs - Analytics</h4>
                 <div class="project-tech">
                     <span>Celery</span>
-                    <span>PostgreSQL</span>
-                    <span>Redis</span>
-                    <span>React</span>
+                    <span>Prometheus</span>
+                    <span>Grafana</span>
+                    <span>Playwright</span>
+                    <span>Puppeteer</span>
                 </div>
-                <p>Scrapes job data from 15+ platforms with stealth headers & dynamic HTML processing using LLMs; built with Celery, PostgreSQL, Redis, Prometheus, Puppeteer, and React.</p>
-                <a href="https://github.com/SamarthMahendra/StealthProject" target="_blank" class="button">View on GitHub</a>
+                <p>Built Jobs, inspired by Levels.fyi, aggregating 500+ job postings across companies. Designed a producer-consumer architecture using Celery, integrated with Prometheus and Grafana, achieving 99.9% uptime and efficient task monitoring.</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
             <div class="project-card">
-                <div class="project-image">
-                    <img src="https://cdn.geekwire.com/wp-content/uploads/2018/03/live-music-bluetooth-crowd-630x356.jpg" alt="Silent Disco">
+                <h4>🤖 Intelligent Agent System with Multi-LLM Integration</h4>
+                <div class="project-tech">
+                    <span>OpenAI GPT-4</span>
+                    <span>Google Gemini</span>
+                    <span>FastAPI</span>
+                    <span>WebSockets</span>
+                    <span>Discord</span>
+                    <span>MongoDB</span>
                 </div>
+                <p>Architected a full-stack intelligent agent system integrating OpenAI GPT-4 and Google Gemini models with custom tools for profile information retrieval. Implemented real-time bidirectional communication using FastAPI WebSockets and Discord integration.</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
+            </div>
+            <div class="project-card">
+                <h4>❓ StackOverflow (Q&A web app)</h4>
+                <div class="project-tech">
+                    <span>TypeScript</span>
+                    <span>React.js</span>
+                    <span>Node.js</span>
+                    <span>MongoDB</span>
+                    <span>Cypress</span>
+                    <span>Jest</span>
+                </div>
+                <p>Developed a full-stack Q&A web application inspired by Stack Overflow using React and Node.js/Express with TypeScript. Architected backend controllers and models following the MVC pattern, leveraging design patterns such as Facade, Validator, Strategy, and Factory.</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
+            </div>
+            <div class="project-card">
+                <h4>🔍 LinkedInAssist (LLM-powered)</h4>
+                <div class="project-tech">
+                    <span>JavaScript</span>
+                    <span>Flask</span>
+                    <span>GPT-3.5</span>
+                </div>
+                <p>Developed a Chrome extension leveraging Flask for backend on CodeSandbox to filter job postings in LinkedIn using a prompt, improving job search efficiency by automating the filtering process.</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
+            </div>
+        </div>
+        
+        <!-- Regular Project Grid -->
+        <div class="projects-grid">
+            <div class="project-card">
+                <h4>🚲 Bike Rental System</h4>
+                <div class="project-tech">
+                    <span>React.js</span>
+                    <span>Django REST</span>
+                    <span>MySQL</span>
+                    <span>Redis</span>
+                    <span>Datadog</span>
+                </div>
+                <p>Developed full-stack bike rental system (similar to Blue Bikes) using React.js, Django REST Framework, and MySQL hosted over deployed across multiple platforms (Azure, Digital Ocean, Netlify).</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
+            </div>
+            <div class="project-card">
+                <h4>📈 Stock Market Simulation Application</h4>
+                <div class="project-tech">
+                    <span>Java</span>
+                    <span>MVC</span>
+                    <span>Stock API</span>
+                    <span>JUnit</span>
+                </div>
+                <p>Developed a Java MVC system managing investment portfolios, integrating a stock API, test coverage, and buy/sell on specified dates. Integrated data visualization to plot portfolio performance over time.</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
+            </div>
+            <div class="project-card">
+                <h4>❤️ Myocardium Wall Motion and Wall Thickness Map</h4>
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>NumPy</span>
+                    <span>Multiprocessing</span>
+                </div>
+                <p>Generated a visual map from cine-series MRI scans to investigate heart wall motion, thickness, thickness difference, fibrosis during systole and diastole phases. Patent App-no: 202341086278 (India).</p>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
+            </div>
+            <div class="project-card">
                 <h4>🎧 Live Bluetooth Silent Disco</h4>
                 <div class="project-tech">
                     <span>Python</span>
@@ -397,25 +496,9 @@
                     <span>BlackHole</span>
                 </div>
                 <p>Built real-time audio streaming over WebSockets using Python and BlackHole to broadcast system audio to multiple Bluetooth clients.</p>
-                <a href="#" class="button">Coming Soon</a>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
             <div class="project-card">
-                <div class="project-image">
-                    <img src="https://cdn.dribbble.com/users/1235346/screenshots/15297964/media/3a8c67b9393d6e9aa2a4d2f2d0aef679.png?resize=400x0" alt="LinkedInAssist">
-                </div>
-                <h4>🔍 LinkedInAssist (LLM-powered)</h4>
-                <div class="project-tech">
-                    <span>JavaScript</span>
-                    <span>Flask</span>
-                    <span>GPT-3.5</span>
-                </div>
-                <p>Chrome extension that filters LinkedIn job posts using natural language prompts with GPT-3.5 + Flask backend.</p>
-                <a href="#" class="button">Coming Soon</a>
-            </div>
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="https://blog.chatbot.com/wp-content/uploads/2019/08/customer-intelligence-chatbot-1280x720.jpg" alt="Chatbot">
-                </div>
                 <h4>💬 Chatbot for Account Intelligence</h4>
                 <div class="project-tech">
                     <span>Langchain</span>
@@ -424,12 +507,8 @@
                     <span>PostgreSQL</span>
                 </div>
                 <p>Hackathon @ Draup: Built with Langchain + RAG, includes cross-encoder reranking, query expansion, Redis cache, and PostgreSQL backend.</p>
-                <a href="#" class="button">View Details</a>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
-        </div>
-        
-        <!-- Regular Project Grid -->
-        <div class="projects-grid">
             <div class="project-card">
                 <h4>📈 Unemployment vs Job Openings</h4>
                 <div class="project-tech">
@@ -447,7 +526,7 @@
                     <span>Multiprocessing</span>
                 </div>
                 <p>Used Python multiprocessing for parallel analysis of student datasets — inspired by MapReduce.</p>
-                <a href="#" class="button">View Details</a>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
             <div class="project-card">
                 <h4>🧪 Breast Cancer Detection</h4>
@@ -457,7 +536,7 @@
                     <span>GNB</span>
                 </div>
                 <p>Built models with logistic regression, GNB, and GDA for diagnosis classification using scikit-learn.</p>
-                <a href="#" class="button">View Details</a>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
             <div class="project-card">
                 <h4>💬 Aspect-Based Sentiment Analysis</h4>
@@ -467,7 +546,7 @@
                     <span>NLP</span>
                 </div>
                 <p>Implemented an attention-based LSTM for aspect classification in SemEval datasets using PyTorch.</p>
-                <a href="#" class="button">View Details</a>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
             <div class="project-card">
                 <h4>📕 Custom Word2Vec</h4>
@@ -477,17 +556,7 @@
                     <span>Python</span>
                 </div>
                 <p>Built co-occurrence matrix from *Merchant of Venice* and visualized embeddings using PCA.</p>
-                <a href="#" class="button">View Details</a>
-            </div>
-            <div class="project-card">
-                <h4>💼 Java Portfolio Manager</h4>
-                <div class="project-tech">
-                    <span>Java</span>
-                    <span>MVC</span>
-                    <span>JUnit</span>
-                </div>
-                <p>Designed MVC-based investment simulator with stock API integration, 100+ JUnit test cases, and charting.</p>
-                <a href="#" class="button">View Details</a>
+                <a href="https://github.com/SamarthMahendra?tab=repositories" target="_blank" class="button">See on GitHub Repository Tab</a>
             </div>
         </div>
     </div>
@@ -558,27 +627,7 @@
                     <p>Boston, MA</p>
                 </div>
             </div>
-            <div class="contact-form-container">
-                <form id="contact-form" class="contact-form">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="button magnetic-button">Send Message</button>
-                </form>
-            </div>
+            <!-- Contact form removed as per user request -->
         </div>
     </div>
 </section>
