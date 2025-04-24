@@ -103,7 +103,7 @@ schedule_meeting_tool_schema = {
 }
 
 
-def
+
 
 
 def schedule_meeting(args):
