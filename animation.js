@@ -12,11 +12,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize text animations (splitting)
     initTextAnimations();
     
-    // Initialize LocomotiveScroll for smooth scrolling
-    initSmoothScroll();
-    
-    // Initialize swiper carousel
-    initProjectCarousel();
+    // Wait for LocomotiveScroll to be available
+    window.addEventListener('load', function() {
+        // Give a small delay to ensure all scripts are loaded
+        setTimeout(() => {
+            // Initialize LocomotiveScroll for smooth scrolling
+            initSmoothScroll();
+            // Initialize swiper carousel
+            initProjectCarousel();
+            // Initialize various GSAP animations
+            initGsapAnimations();
+        }, 500);
+    });
     
     // Initialize various GSAP animations
     initGsapAnimations();
@@ -84,7 +91,7 @@ function initLottieAnimations() {
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: 'https://assets9.lottiefiles.com/packages/lf20_iikbn0zt.json'
+        path: 'https://assets2.lottiefiles.com/packages/lf20_qdbb21wb.json' // Scroll down animation
     });
 }
 
@@ -115,38 +122,61 @@ function initTextAnimations() {
 
 // Smooth scroll using Locomotive Scroll
 function initSmoothScroll() {
-    const scroller = new LocomotiveScroll({
-        el: document.querySelector('[data-scroll-container]'),
-        smooth: true,
-        smartphone: {
-            smooth: true
-        },
-        tablet: {
-            smooth: true
-        }
-    });
+    // Check if LocomotiveScroll is available
+    if (typeof LocomotiveScroll === 'undefined') {
+        console.warn('LocomotiveScroll is not defined. Smooth scrolling disabled.');
+        return;
+    }
     
-    // Update ScrollTrigger when scroll updates
-    scroller.on('scroll', ScrollTrigger.update);
-    
-    // Update scroll position on page refresh
-    ScrollTrigger.scrollerProxy('[data-scroll-container]', {
-        scrollTop(value) {
-            return arguments.length ? scroller.scrollTo(value, 0, 0) : scroller.scroll.instance.scroll.y;
-        },
-        getBoundingClientRect() {
-            return {
-                top: 0, 
-                left: 0, 
-                width: window.innerWidth, 
-                height: window.innerHeight
-            };
+    try {
+        const scroller = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+            smartphone: {
+                smooth: true
+            },
+            tablet: {
+                smooth: true
+            }
+        });
+        
+        // Update ScrollTrigger when scroll updates (if ScrollTrigger is available)
+        if (typeof ScrollTrigger !== 'undefined') {
+            scroller.on('scroll', ScrollTrigger.update);
         }
-    });
+    } catch (error) {
+        console.warn('Error initializing smooth scroll:', error);
+    }
+    
+    // Update scroll position on page refresh (if ScrollTrigger is available)
+    if (typeof ScrollTrigger !== 'undefined') {
+        try {
+            ScrollTrigger.scrollerProxy('[data-scroll-container]', {
+                scrollTop(value) {
+                    if (typeof scroller !== 'undefined') {
+                        return arguments.length ? scroller.scrollTo(value, 0, 0) : scroller.scroll.instance.scroll.y;
+                    }
+                    return 0;
+                },
+                getBoundingClientRect() {
+                    return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+                },
+                pinType: document.querySelector('[data-scroll-container]').style.transform ? "transform" : "fixed"
+            });
+        } catch (error) {
+            console.warn('Error setting up ScrollTrigger proxy:', error);
+        }
+    }
     
     // Each time the window updates, refresh ScrollTrigger and locomotive scroll
-    ScrollTrigger.addEventListener('refresh', () => scroller.update());
-    ScrollTrigger.refresh();
+    if (typeof ScrollTrigger !== 'undefined' && typeof scroller !== 'undefined') {
+        try {
+            ScrollTrigger.addEventListener('refresh', () => scroller.update());
+            ScrollTrigger.refresh();
+        } catch (error) {
+            console.warn('Error refreshing ScrollTrigger:', error);
+        }
+    }
 }
 
 // Project animation (no carousel)

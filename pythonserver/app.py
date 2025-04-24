@@ -2,9 +2,15 @@ import os
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from openai import OpenAI, api_key
+from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+
+
+
+
 
 
 
@@ -87,7 +93,8 @@ def mongo_query_api():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return "OK"
+    response = jsonify({"status": "OK"})
+    return response
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -202,5 +209,5 @@ def chat():
     })
 
 if __name__ == "__main__":
-    app.run(port=8000, debug=True)
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    # Run with host="0.0.0.0" to make it accessible from other devices on the network
+    app.run(host="0.0.0.0", port=8001, debug=True)
