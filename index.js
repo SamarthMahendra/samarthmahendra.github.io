@@ -1,3 +1,4 @@
+
 // Main JavaScript for profile website
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Happy developing ✨');
@@ -21,7 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // Theme toggle functionality
 function initThemeToggle() {
     // Default to dark theme, check for saved theme
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    // Always default to dark unless user explicitly chose light
+    let savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+        savedTheme = 'dark';
+        localStorage.setItem('theme', 'dark');
+    }
     
     // Create theme toggle if it doesn't exist
     if (!document.querySelector('.theme-switch-wrapper')) {
