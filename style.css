@@ -596,6 +596,22 @@ input:checked + .slider:before {
     gap: 1.5rem;
 }
 
+@media (max-width: 900px) {
+  .skills-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+  }
+  .skill-item {
+    min-width: 140px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+}
+
 .skill-item {
     background-color: var(--background-alt);
     padding: 1.5rem;
@@ -1236,10 +1252,10 @@ input:checked + .slider:before {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 350px;
-    max-width: 90vw;
-    height: 450px;
-    max-height: 70vh;
+    width: 500px;
+    max-width: 98vw;
+    height: 650px;
+    max-height: 98vh;
     background: var(--background-alt);
     border-radius: 12px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
