@@ -27,7 +27,7 @@ celery_app.conf.update(
 @celery_app.task
 def tool_call_fn(tool_name, call_id, args):
     if tool_name == "talk_to_samarth_discord":
-        result = asyncio.run(discord_tool.ask_and_get_reply(args["message"]["content"]))
+        result = discord_tool.ask_and_get_reply(args["message"]["content"])
     elif tool_name == "query_profile_info":
         result = mongo_tool.query_mongo_db_for_candidate_profile()
     else:
