@@ -1247,6 +1247,40 @@ input:checked + .slider:before {
     }
 }
 
+/* --- Chatbot Mobile Responsiveness --- */
+@media (max-width: 600px) {
+  .chatbot-container {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    min-width: 0 !important;
+    height: 75vh !important;
+    max-height: 90vh !important;
+    right: 1vw !important;
+    left: 1vw !important;
+    bottom: 10px !important;
+    border-radius: 12px !important;
+    padding: 0 !important;
+  }
+  .chatbot-header,
+  .chatbot-body,
+  .chatbot-input-container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  .chatbot-title {
+    font-size: 1rem !important;
+  }
+  .chatbot-input {
+    font-size: 1rem !important;
+    padding: 8px 10px !important;
+  }
+  .chatbot-send {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1.1rem !important;
+  }
+}
+
 /* Chatbot Styles */
 .chatbot-container {
     position: fixed;
