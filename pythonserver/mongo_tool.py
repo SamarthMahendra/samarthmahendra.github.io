@@ -1,6 +1,7 @@
 import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
+import datetime
 
 load_dotenv()
 
@@ -11,6 +12,28 @@ COLLECTION_NAME = os.getenv("MONGO_COLLECTION_NAME", "candidate_profiles")
 client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
 collection = db[COLLECTION_NAME]
+
+
+def insert_into_results(user, id, result):
+    """Insert a result into the MongoDB collection."""
+    result_dict = {
+        "user": user,
+        "id": id,
+        "result": result,
+        "timestamp": datetime.datetime.utcnow()
+    }
+    results_collection = db["results"]
+    result = results_collection.insert_one(result_dict)
+    return str(result.inserted_id)
+
+def query_mongo_db_for_results(user, id):
+    """Query the results collection for a specific user and ID, sorted by timestamp and return the first match."""
+    results_collection = db["results"]
+    result = results_collection.find_one({"user": user, "id": id}, {"_id": 0, "result": 1})
+    if not result:
+        return {"error": "Results not found"}
+    return result["result"]
+
 
 def insert_candidate_profile(profile_dict):
     """Insert a candidate profile into the MongoDB collection."""
@@ -23,8 +46,6 @@ def query_mongo_db_for_candidate_profile():
     if not profile:
         return {"error": "Profile not found"}
     profile.pop('_id', None)
-
-    # Ensure all values are JSON-serializable and readable
     def serialize_value(val):
         if isinstance(val, list):
             # If it's a list of dicts, keep as is; if list of primitives, join as string
@@ -37,6 +58,37 @@ def query_mongo_db_for_candidate_profile():
 
     profile = {k: serialize_value(v) for k, v in profile.items()}
     return profile
+
+    # Ensure all values are JSON-serializable and readable
+def save_tool_message(call_id, name, args, result):
+    """Save a tool message to the messages collection."""
+    message_dict = {
+        "message_id": call_id,
+        "tool_name": name,
+        "args": args,
+        "content": result,
+        "timestamp": datetime.datetime.utcnow(),
+        "status": "completed" if result else "pending"
+    }
+    messages_collection = db["messages"]
+    insert_result = messages_collection.insert_one(message_dict)
+    return str(insert_result.inserted_id)
+
+
+def get_tool_message_status(message_id):
+    """Get the status of a tool message by its ID."""
+    messages_collection = db["messages"]
+    message = messages_collection.find_one({"message_id": message_id})
+    if not message:
+        return -1
+    
+    # Remove MongoDB's _id field which is not JSON serializable
+    message.pop('_id', None)
+    
+    # Return the complete message data
+    return message["content"]
+
+
 
 if __name__ == "__main__":
     # Insert the complete profile for Samarth Mahendra

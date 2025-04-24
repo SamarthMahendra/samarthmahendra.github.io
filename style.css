@@ -1390,6 +1390,22 @@ input:checked + .slider:before {
     word-wrap: break-word;
 }
 
+/* Waiting indicator styles */
+.waiting-indicator {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.waiting-timestamp {
+    font-size: 12px;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+
 .user-message {
     margin-left: auto;
     text-align: right;
@@ -1516,6 +1532,10 @@ input:checked + .slider:before {
 
 :root.theme-dark .typing-indicator {
     background: #2a2a2a;
+}
+
+:root.theme-dark .waiting-timestamp {
+    color: #f5f5f5;
 }
 
 :root.theme-dark .chatbot-input {
