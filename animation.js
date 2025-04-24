@@ -106,6 +106,9 @@ function initLottieAnimations() {
 
 // Text reveal animations using Splitting.js
 function initTextAnimations() {
+    console.log('[GSAP] initTextAnimations() called');
+    const headings = document.querySelectorAll('.reveal-text');
+    console.log(`[GSAP] .reveal-text count: ${headings.length}`);
     // Initialize Splitting
     const results = Splitting();
     
@@ -255,6 +258,9 @@ function initGsapAnimations() {
 
 // About section detail animations
 function animateAboutSection() {
+    console.log('[GSAP] animateAboutSection() called');
+    const aboutGrid = document.querySelectorAll('#about .about-grid p');
+    console.log(`[GSAP] #about .about-grid p count: ${aboutGrid.length}`);
     gsap.from("#about .about-grid p", {
         scrollTrigger: {
             trigger: "#about",
@@ -284,6 +290,9 @@ function animateAboutSection() {
 
 // Skills section detailed animations
 function animateSkillsSection() {
+    console.log('[GSAP] animateSkillsSection() called');
+    const skillCategories = document.querySelectorAll('.skill-category');
+    console.log(`[GSAP] .skill-category count: ${skillCategories.length}`);
     // Icon animations (only if #skills .skills-icons img exists)
     if (document.querySelector('#skills .skills-icons img')) {
         gsap.from("#skills .skills-icons img", {
@@ -318,6 +327,9 @@ function animateSkillsSection() {
 
 // Experience and education timeline animations
 function animateTimeline() {
+    console.log('[GSAP] animateTimeline() called');
+    const items = document.querySelectorAll('.timeline-item');
+    console.log(`[GSAP] .timeline-item count: ${items.length}`);
     // Timeline line drawing animation (pseudo-element cannot be animated directly)
     // Instead, consider adding a child .timeline-line and animate that if needed.
     // gsap.from('.timeline-line', { ... });
@@ -344,6 +356,9 @@ function animateTimeline() {
 
 // Project cards animations
 function animateProjects() {
+    console.log('[GSAP] animateProjects() called');
+    const projectCards = document.querySelectorAll('#projects .project-card');
+    console.log(`[GSAP] #projects .project-card count: ${projectCards.length}`);
     // Standard cards animation
     gsap.from("#projects .project-card", {
         scrollTrigger: {
@@ -383,6 +398,9 @@ function animateProjects() {
 
 // Stats animations
 function animateStats() {
+    console.log('[GSAP] animateStats() called');
+    const counterElements = document.querySelectorAll('.counter');
+    console.log(`[GSAP] .counter count: ${counterElements.length}`);
     // Stats counter animation
     const counterElements = document.querySelectorAll('.counter');
     counterElements.forEach(counter => {
@@ -447,6 +465,9 @@ function initMagneticButtons() {
 
 // Animate skill progress bars
 function animateProgressBars() {
+    console.log('[GSAP] animateProgressBars() called');
+    const progressBars = document.querySelectorAll('.progress-bar');
+    console.log(`[GSAP] .progress-bar count: ${progressBars.length}`);
     gsap.utils.toArray('.progress-bar').forEach(bar => {
         const percent = bar.getAttribute('data-percent');
         
