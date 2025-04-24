@@ -108,6 +108,11 @@ async def health():
 from celery import shared_task
 from celery_worker import celery_app
 
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "FastAPI server is running"}
+
 @celery_app.task
 def tool_call_fn(tool_name, call_id, args):
     if tool_name == "talk_to_samarth_discord":
