@@ -86,7 +86,7 @@
         
         <div class="hero-content-centered">
             <h1 class="reveal-text" data-splitting>Samarth Mahendra</h1>
-            <div class="typing-container">
+            <div class="typing-container" style="margin-bottom: 0.3rem;">
                 <span id="typing-text"></span>
             </div>
             
@@ -147,7 +147,7 @@
                 </a>
             </div>
             
-            <a href="#about" class="button magnetic-button">Discover More</a>
+            <a href="#about" class="button magnetic-button" style="margin-top: 0.3rem;">Discover More</a>
         </div>
         
         <div id="scroll-indicator"></div>
@@ -171,6 +171,17 @@
             <p><strong>💬 Ask me about</strong><br>How I improved chatbot performance by 60%, or how I optimized API costs using query partitioning and dynamic Query generation.</p>
             <p><strong>⚡ Fun fact</strong><br>I skated 22.3 km in a single session!</p>
         </div>
+    </div>
+</section>
+
+<!-- Interactive Mind Map Section -->
+<section id="mindmap-section" class="section highlight-section">
+    <div class="container">
+        <h2 id="mindmap-title" class="reveal-text" data-splitting>My Expertise & Interests</h2>
+        <div id="mindmap-container" class="mindmap-container">
+            <!-- D3.js will render the mindmap here -->
+        </div>
+        <p class="mindmap-instruction">Click on nodes to explore my skills and interests. Drag nodes to rearrange.</p>
     </div>
 </section>
 
@@ -756,7 +767,7 @@
             </div>
         </div>
         <div class="chatbot-input-container">
-            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type your message here..." autocomplete="off">
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type your message here..." autocomplete="off" inputmode="text">
             <button id="chatbot-send" class="chatbot-send">
                 <i class="fas fa-paper-plane"></i>
             </button>
@@ -769,6 +780,7 @@
 <script src="https://samarthmahendra.github.io/animation.js"></script>
 <script src="./chatbot.js"></script>
 <script src="./podcast-player.js"></script>
+<script src="./mindmap.js"></script>
 
 </body>
 </html>
