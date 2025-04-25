@@ -1183,9 +1183,9 @@ input:checked + .slider:before {
 .scroll-top {
     position: fixed;
     bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
+    right: 100px; /* Positioned to the left of the chatbot button */
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background-color: var(--accent-primary);
     color: white;
@@ -1196,17 +1196,24 @@ input:checked + .slider:before {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    z-index: 99;
+    z-index: 100; /* Lower than chatbot but higher than other elements */
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Adds subtle border */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); /* Adds depth */
 }
 
 .scroll-top.active {
-    opacity: 1;
+    opacity: 0.9;
     visibility: visible;
 }
 
 .scroll-top:hover {
     background-color: var(--accent-secondary);
     transform: translateY(-5px);
+    opacity: 1;
+}
+
+.scroll-top i {
+    font-size: 1.2rem;
 }
 
 /* Responsive Design */
@@ -1443,6 +1450,13 @@ input:checked + .slider:before {
   .message-content {
     font-size: 15px !important;
   }
+  /* Fix scroll-to-top position on mobile */
+  .scroll-top {
+    width: 40px !important;
+    height: 40px !important;
+    bottom: 15px !important;
+    right: 80px !important; /* Position to the left of the chatbot toggle */
+  }
 }
 
 /* Small iPhone SE / iPhone 5 */
@@ -1467,6 +1481,13 @@ input:checked + .slider:before {
   .chatbot-controls button {
     width: 26px !important;
     height: 26px !important;
+  }
+  /* Fix scroll-to-top position on very small screens */
+  .scroll-top {
+    width: 35px !important;
+    height: 35px !important;
+    bottom: 15px !important;
+    right: 70px !important; /* Better separation for small screens */
   }
 }
 
@@ -1618,7 +1639,7 @@ input:checked + .slider:before {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     border: none;
-    z-index: 999;
+    z-index: 101; /* Higher than scroll-top button */
     transition: all 0.3s ease;
     animation: pulse 2s infinite;
 }
