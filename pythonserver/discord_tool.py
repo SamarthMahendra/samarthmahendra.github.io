@@ -46,7 +46,7 @@ async def send_message_to_channel(message):
     client = DiscordSender(message, intents=intents)
     await client.start(DISCORD_TOKEN)
 
-def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=60):
+def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=30):
     import asyncio
     intents = discord.Intents.default()
     intents.messages = True

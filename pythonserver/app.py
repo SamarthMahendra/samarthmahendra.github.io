@@ -86,6 +86,13 @@ schedule_meeting_tool_schema = {
     }
 }
 
+
+
+
+
+
+
+
 def schedule_meeting(args):
     # args: dict with keys members, agenda, timing, user_email
     members = args.get("members", [])
@@ -98,58 +105,7 @@ def schedule_meeting(args):
     print(members, agenda, timing, user_email)
     meeting_url = generate_jitsi_meeting_url("samarth")
     meeting_id = mongo_tool.insert_meeting(members, agenda, timing, meeting_url)
-    # # Send email invite via celery
-    # celery_app.send_task("tool_call_fn", args=("send_meeting_email", None, {"email": user_email, "meeting_url": meeting_url}))
-    # @celery_app.task(bind=True)
-    # def tool_call_fn(self, tool_name, call_id, args):
-    #     logger.info(
-    #         f"[Celery Worker] Received task: tool_call_fn with tool_name={tool_name}, call_id={call_id}, args={args}")
-    #     try:
-    #         if tool_name == "talk_to_samarth_discord":
-    #             logger.info("[Celery Worker] Calling discord_tool.ask_and_get_reply")
-    #             result = discord_tool.ask_and_get_reply(args["message"]["content"])
-    #         elif tool_name == "query_profile_info":
-    #             logger.info("[Celery Worker] Calling mongo_tool.query_mongo_db_for_candidate_profile")
-    #             result = mongo_tool.query_mongo_db_for_candidate_profile()
-    #         elif tool_name == "send_meeting_email":
-    #             logger.info("[Celery Worker] Sending meeting email to %s", args.get("email"))
-    #             import smtplib
-    #             from email.message import EmailMessage
-    #             smtp_host = os.getenv("SMTP_HOST")
-    #             smtp_port = int(os.getenv("SMTP_PORT", 587))
-    #             smtp_user = os.getenv("SMTP_USER")
-    #             smtp_pass = os.getenv("SMTP_PASS")
-    #             sender = smtp_user or "no-reply@samarthmahendra.com"
-    #             recipient = args.get("email")
-    #             meeting_url = args.get("meeting_url")
-    #             subject = "Your Meeting Link with Samarth"
-    #             body = f"Hello,\n\nHere is your Jitsi meeting link: {meeting_url}\n\nSee you there!\n\nRegards,\nSamarth Mahendra"
-    #             msg = EmailMessage()
-    #             msg["Subject"] = subject
-    #             msg["From"] = sender
-    #             msg["To"] = recipient
-    #             msg.set_content(body)
-    #             try:
-    #                 with smtplib.SMTP(smtp_host, smtp_port) as server:
-    #                     server.starttls()
-    #                     server.login(smtp_user, smtp_pass)
-    #                     server.send_message(msg)
-    #                 logger.info(f"[Celery Worker] Email sent to {recipient}")
-    #                 result = {"status": "sent", "recipient": recipient}
-    #             except Exception as e:
-    #                 logger.error(f"[Celery Worker] Failed to send email: {e}")
-    #                 result = {"status": "error", "error": str(e)}
-    #         else:
-    #             logger.warning(f"[Celery Worker] Unknown tool_name: {tool_name}")
-    #             result = None
-    #
-    #         logger.info(f"[Celery Worker] Task result: {result}")
-    #         mongo_tool.save_tool_message(call_id, tool_name, args, result)
-    #         logger.info(f"[Celery Worker] Saved tool message for call_id={call_id}")
-    #         return result
-    #     except Exception as e:
-    #         logger.error(f"[Celery Worker] Error in tool_call_fn: {e}", exc_info=True)
-    #         raise
+
     print(" Sending email : ", user_email, meeting_url)
     tool_call_fn.delay("send_meeting_email", None, {"email": user_email, "meeting_url": meeting_url})
 
@@ -161,7 +117,7 @@ def schedule_meeting(args):
 mongo_query_tool_schema = {
 "type": "function",
   "name": "query_profile_info",
-  "description": "Function to query profile information, requiring no input parameters",
+  "description": "Function to query profile information, requiring no input parameters for Job fit or any resume information.",
   "strict": True,
   "parameters": {
     "type": "object",
@@ -172,7 +128,7 @@ mongo_query_tool_schema = {
 discord_tool_schema = {
     "type": "function",
     "name": "talk_to_samarth_discord",
-    "description": "Send a message to samarth via Discord bot integration.",
+    "description": "Send a message to samarth via Discord bot integration only once, and wait for a reply",
     "parameters": {
         "type": "object",
         "required": ["action", "message"],
@@ -194,6 +150,8 @@ discord_tool_schema = {
     },
     "strict": True
 }
+
+
 
 
 @app.post("/talk_to_samarth_discord")
@@ -238,7 +196,7 @@ async def chat(request: Request):
         conversation = [
             {
                 "role": "system",
-                "content": [{"type": "input_text", "text": "You are Samarth's AI Personal assistant that can talk to samarth on discord, query mongo db, and schedule meetings on jitsi., You are talking on behalf of samarth, Dont query mongodb for meeting availablity, check with samarth on discord"}]
+                "content": [{"type": "input_text", "text": "You are Samarth Mahendra’s AI personal assistant.\n\nYour capabilities include:\n- Communicating with Samarth via Discord to ask questions or relay information.\n- Querying a MongoDB database to retrieve or verify candidate profiles and job fit.\n- Scheduling meetings only using Jitsi and sending out meeting invitations.\n- You can query the database for any information about Samarth.\n\nGuidelines:\n- Before pinging Samarth on Discord, always gather all relevant information from the user or available sources.\n- When evaluating if someone is a good match for a job, always gather the job information first, then check the candidate profile using the MongoDB tool.\n- When checking Samarth’s availability for meetings, never query the database; always confirm with Samarth directly on Discord.\n- Always act professionally and on behalf of Samarth.\n- Don't ping again to discord if any reply is pending"}]
             },
             {
                 "role": "user",
@@ -252,81 +210,48 @@ async def chat(request: Request):
                 "role": "user",
                 "content": [{"type": "input_text", "text": message}]
             })
-
-    last_was_tool_call = data.get("last_was_tool_call", False)
-    tool_calls = data.get("tool_calls", None)
+    pending_calls = data.get("pending_calls", [])
 
     print(conversation)
-    if last_was_tool_call and tool_calls:
+    print("Payload", data)
+    if pending_calls:
+        # Check status of each pending call
+        updated_pending_calls = []
         tool_outputs = []
-        # fetch the last tool call and append it to the conversation
-        message_id = data.get("message_id")
-        print(" Pooling for tool call with message id", message_id)
-        tool_calls = data.get("tool_calls")
-        print("After receiving tool calls", tool_calls)
+        for call in pending_calls:
+            # Each call may have: {"tool_calls": [...], "message_id": ...}
+            message_id = call.get("message_id")
+            if not message_id:
+                continue
+            tools_calls = call.get("tool_calls")
+            print("tools_calls", tools_calls)
+            status, message = mongo_tool.get_tool_message_status(message_id)
+            if status== "completed":
+                print("Tool call completed", status)
+                # Tool call completed, add output to conversation
+                output_str = json.dumps(message, ensure_ascii=False)
+            else:
+                # Still pending or error
+                updated_pending_calls.append(call)
+            # Add outputs to conversation
+            if status == "completed":
+                conversation += [tc for tc in (tools_calls or [])]
+                conversation.append(
+                    {
+                        "type": "function_call_output",
+                        "call_id": message_id,
+                        "output": output_str
+                    }
+                )
+        # Replace pending_calls with updated list
+        pending_calls = updated_pending_calls
 
-        # tool_calls is already a list from the frontend; do not eval
-        conversation += [tc for tc in tool_calls]
-        result  = mongo_tool.get_tool_message_status(message_id)
-        if result is None or result ==-1:
-            return JSONResponse({
-                "status": "pending",
-            })
-        if not isinstance(result, str):
-            import json as _json
-            output_str = _json.dumps(result, ensure_ascii=False)
-        else:
-            output_str = result
-        tool_outputs.append({
-            "type": "function_call_output",
-            "call_id": message_id,
-            "output": output_str
-        })
-        conversation += tool_outputs
-        # Clean conversation: remove any objects with function/method values
-        import types
-        def is_serializable(item):
-            if isinstance(item, dict):
-                for v in item.values():
-                    if isinstance(v, (types.FunctionType, types.BuiltinFunctionType, types.MethodType)):
-                        return False
-                return True
-            return not isinstance(item, (types.FunctionType, types.BuiltinFunctionType, types.MethodType))
-        conversation = [item for item in conversation if is_serializable(item)]
-
-        response2 = client.responses.create(
-            model=model_name,
-            input=conversation,
-            text={"format": {"type": "text"}},
-            reasoning={},
-            tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
-            temperature=1,
-            max_output_tokens=2048,
-            top_p=1,
-            store=True
-        )
-
-        # Remove non-serializable objects from conversation before returning
-        def serializable_convo(convo):
-            serializable = []
-            for item in convo:
-                if isinstance(item, dict):
-                    serializable.append(item)
-                elif hasattr(item, '__dict__'):
-                    serializable.append(item.__dict__)
-                elif isinstance(item, str):
-                    serializable.append(item)
-                # else: skip non-serializable objects
-            return serializable
-        print("conversation after tool call response and before sending to frontend", conversation)
-        print(response2.output_text)
+    if pending_calls:
         return JSONResponse({
-            "output": response2.output_text,
-            "conversation": serializable_convo(conversation),
-            "status": "completed",
+            "retry": True,
+            "conversation": conversation,
+            "pending_calls": pending_calls
         })
-
-
 
     print("conversation from frontend", conversation)
     response = client.responses.create(
@@ -349,9 +274,13 @@ async def chat(request: Request):
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
             user = args.get("user")
-            if name == 'schedule_meeting_on_jitsi':
-                print("schedule_meeting_on_jitsi")
-                result = schedule_meeting(args)
+            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
+                if name == 'schedule_meeting_on_jitsi':
+                    print("schedule_meeting_on_jitsi")
+                    result = schedule_meeting(args)
+                elif name == 'query_profile_info':
+                    print("query_profile_info")
+                    result = mongo_tool.query_mongo_db_for_candidate_profile()
                 output_str = json.dumps(result, ensure_ascii=False)
                 conversation += [tc for tc in tool_calls]
                 tool_outputs.append({
@@ -394,7 +323,6 @@ async def chat(request: Request):
 
             else:
                 tool_call_fn.delay(name, call_id, args)
-
         conversation.append(
             {
                 "role": "system",
@@ -428,14 +356,21 @@ async def chat(request: Request):
             return serializable
         # print(" Before returning tools call" , tool_calls)
         # print(response2.output_text)
+        pending_calls.append({
+                "tool_calls": serializable_convo(tool_calls),
+                "message_id": call_id
+            }
+
+        )
+        conversation.append(
+            {
+                "role": "system",
+                "content": [{"type": "input_text", "text": response.output_text}]
+            })
         return JSONResponse({
             "output": response2.output_text,
             "conversation": serializable_convo(conversation),
-            # Frontend should poll with tool_calls and message_id until status is 'completed'
-            "waiting_for_tool_call": {
-                "tool_calls": serializable_convo(tool_calls),
-                "message_id": call_id,
-            }
+            "pending_calls":  pending_calls
         })
 
     # If no tool call, return model output and conversation history
@@ -451,8 +386,18 @@ async def chat(request: Request):
             # else: skip non-serializable objects
         return serializable
     print(response.output_text)
+
+    conversation.append(
+        {
+            "role": "system",
+            "content": [{"type": "input_text", "text": response.output_text}]
+        })
+
     return JSONResponse({
         "output": response.output_text,
-        "conversation": serializable_convo(conversation)
+        "conversation": serializable_convo(conversation),
+        "pending_calls": pending_calls
     })
+
+
 
