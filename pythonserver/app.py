@@ -58,6 +58,8 @@ client = OpenAI(api_key=api_key)
 def generate_jitsi_meeting_url(user_name=None):
     from mongo_tool import insert_meeting
     base_url = "https://meet.jit.si/"
+
+    # connvert into a html link
     if user_name:
         meeting_name = f"{user_name}-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
     else:
@@ -104,6 +106,7 @@ def schedule_meeting(args):
         members.append("samarth@samarthmahendra.com")
     print(members, agenda, timing, user_email)
     meeting_url = generate_jitsi_meeting_url("samarth")
+    meeting_url = '<a href="{}">{}</a>'.format(meeting_url, meeting_url)
     meeting_id = mongo_tool.insert_meeting(members, agenda, timing, meeting_url)
 
     print(" Sending email : ", user_email, meeting_url)
