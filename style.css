@@ -494,6 +494,106 @@ input:checked + .slider:before {
     position: relative;
 }
 
+/* Mind Map Styles */
+.mindmap-container {
+    width: 100%;
+    height: 500px;
+    margin: 20px 0;
+    background-color: rgba(20, 20, 30, 0.4);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    border: 1px solid rgba(138, 43, 226, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.mindmap-node {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mindmap-node:hover {
+    filter: brightness(1.2);
+}
+
+.mindmap-node.main-node {
+    font-weight: bold;
+}
+
+.mindmap-node-circle {
+    transition: all 0.3s ease;
+}
+
+.mindmap-link {
+    fill: none;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.mindmap-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    text-anchor: middle;
+    pointer-events: none;
+    fill: var(--text-primary);
+    font-weight: 500;
+}
+
+.mindmap-icon {
+    font-size: 12px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+.mindmap-tooltip {
+    position: absolute;
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    border-radius: 6px;
+    pointer-events: none;
+    font-size: 0.9rem;
+    z-index: 10;
+    max-width: 250px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(138, 43, 226, 0.2); /* Purple border */
+}
+
+.mindmap-tooltip h4 {
+    margin: 0 0 5px 0;
+    color: #9370DB; /* Medium purple */
+    font-size: 1rem;
+}
+
+.mindmap-tooltip p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.mindmap-instruction {
+    text-align: center;
+    color: rgba(178, 152, 218, 0.9);
+    font-style: italic;
+    margin-top: 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+}
+
+/* Ensure the nodes appear above links */
+.mindmap-nodes {
+    z-index: 2;
+}
+
+.mindmap-links {
+    z-index: 1;
+}
+
 /* Magnetic Buttons */
 .button, .magnetic-button {
     display: inline-block;
@@ -1287,6 +1387,87 @@ input:checked + .slider:before {
     height: 36px !important;
     font-size: 1.1rem !important;
   }
+  /* Improve message spacing */
+  .message-content {
+    padding: 8px 12px !important;
+    max-width: 85% !important;
+  }
+  .chatbot-messages {
+    padding: 12px 12px 6px 12px !important;
+    gap: 10px !important;
+  }
+  /* Better scroll handling */
+  .chatbot-body {
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* iPhone-specific improvements */
+@media (max-width: 414px) {
+  .chatbot-container {
+    height: 80vh !important;
+    bottom: 5px !important;
+    border-radius: 10px !important;
+  }
+  .chatbot-header {
+    padding: 8px 10px !important;
+  }
+  .chatbot-title {
+    font-size: 0.95rem !important;
+  }
+  .chatbot-input {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    padding: 8px !important;
+    border-radius: 16px !important;
+  }
+  .chatbot-input-container {
+    padding: 8px 10px 10px 10px !important;
+  }
+  .chatbot-send {
+    width: 42px !important;
+    height: 42px !important;
+    margin-left: 6px !important;
+  }
+  .chatbot-toggle {
+    width: 50px !important;
+    height: 50px !important;
+    bottom: 15px !important;
+    right: 15px !important;
+  }
+  .chatbot-controls button {
+    margin-left: 5px !important;
+    width: 28px !important;
+    height: 28px !important;
+  }
+  /* Improved touch targets */
+  .message-content {
+    font-size: 15px !important;
+  }
+}
+
+/* Small iPhone SE / iPhone 5 */
+@media (max-width: 320px) {
+  .chatbot-container {
+    height: 85vh !important;
+  }
+  .chatbot-title {
+    font-size: 0.85rem !important;
+    max-width: 60% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .chatbot-input {
+    font-size: 15px !important;
+  }
+  .chatbot-toggle {
+    width: 45px !important;
+    height: 45px !important;
+  }
+  .chatbot-controls button {
+    width: 26px !important;
+    height: 26px !important;
+  }
 }
 
 /* Chatbot Styles */
@@ -1610,6 +1791,9 @@ input:checked + .slider:before {
     font-size: 14px;
     background-color: #ffffff;
     color: #333333;
+    -webkit-appearance: none; /* Fix Safari styling */
+    appearance: none;
+    line-height: normal; /* Fix iOS height issues */
 }
 
 .chatbot-send {

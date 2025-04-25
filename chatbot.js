@@ -95,18 +95,40 @@ document.addEventListener('DOMContentLoaded', function() {
     let isResizing = false;
     let lastX, lastY;
     
-    resizeHandle.addEventListener('mousedown', function(e) {
-        isResizing = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
+    // Check if we're on a mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Hide resize handle on mobile devices smaller than 414px
+    if (window.innerWidth <= 414 && isMobile) {
+        if (resizeHandle) resizeHandle.style.display = 'none';
+    }
+    
+    // Add both mouse and touch events for better cross-device support
+    resizeHandle.addEventListener('mousedown', startResize);
+    resizeHandle.addEventListener('touchstart', startResize);
+    
+    function startResize(e) {
+        // Don't allow resizing on very small screens
+        if (window.innerWidth <= 414 && isMobile) return;
         
-        // Add event listeners for mouse movement and mouse up
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
+        isResizing = true;
+        
+        // Handle both mouse and touch events
+        if (e.type === 'touchstart') {
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+            document.addEventListener('touchmove', handleTouchMove);
+            document.addEventListener('touchend', handleTouchEnd);
+        } else {
+            lastX = e.clientX;
+            lastY = e.clientY;
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        }
         
         // Prevent text selection during resize
         e.preventDefault();
-    });
+    }
     
     function handleMouseMove(e) {
         if (!isResizing) return;
@@ -127,6 +149,28 @@ document.addEventListener('DOMContentLoaded', function() {
         lastY = e.clientY;
     }
     
+    function handleTouchMove(e) {
+        if (!isResizing) return;
+        
+        // Calculate new width and height
+        const deltaX = e.touches[0].clientX - lastX;
+        const deltaY = e.touches[0].clientY - lastY;
+        
+        const newWidth = Math.max(MIN_WIDTH, chatbotContainer.offsetWidth + deltaX);
+        const newHeight = Math.max(MIN_HEIGHT, chatbotContainer.offsetHeight + deltaY);
+        
+        // Update container size
+        chatbotContainer.style.width = `${newWidth}px`;
+        chatbotContainer.style.height = `${newHeight}px`;
+        
+        // Update last position
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
+        
+        // Prevent scrolling during resize
+        e.preventDefault();
+    }
+    
     function handleMouseUp() {
         isResizing = false;
         document.removeEventListener('mousemove', handleMouseMove);
@@ -136,6 +180,29 @@ document.addEventListener('DOMContentLoaded', function() {
         initialWidth = parseInt(chatbotContainer.style.width);
         initialHeight = parseInt(chatbotContainer.style.height);
     }
+    
+    function handleTouchEnd() {
+        isResizing = false;
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+        
+        // Update initial dimensions
+        initialWidth = parseInt(chatbotContainer.style.width);
+        initialHeight = parseInt(chatbotContainer.style.height);
+    }
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        // A small delay to allow the browser to complete the orientation change
+        setTimeout(function() {
+            // Adjust chatbot size for new orientation
+            if (window.innerWidth <= 414 && isMobile) {
+                // Reset to full width on small screens
+                chatbotContainer.style.width = '98vw';
+                chatbotContainer.style.height = '80vh';
+            }
+        }, 200);
+    });
     
     // Send message on button click
     chatbotSend.addEventListener('click', sendMessage);
@@ -147,6 +214,31 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         }
     });
+    
+    // Mobile-specific input handling
+    if (isMobile) {
+        // Adjust scroll when keyboard appears
+        chatbotInput.addEventListener('focus', function() {
+            // Scroll the messages to bottom when input is focused
+            setTimeout(function() {
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                // On very small devices, change height to account for keyboard
+                if (window.innerWidth <= 375) {
+                    chatbotContainer.style.height = '60vh';
+                }
+            }, 300);
+        });
+        
+        // Reset height when keyboard disappears
+        chatbotInput.addEventListener('blur', function() {
+            if (window.innerWidth <= 375) {
+                setTimeout(function() {
+                    chatbotContainer.style.height = '80vh';
+                }, 100);
+            }
+        });
+    }
 
     // Function to handle pending calls loop
     function handlePendingCalls() {
@@ -248,6 +340,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Clear input
         chatbotInput.value = '';
+        
+        // Blur input to hide keyboard on mobile
+        if (window.innerWidth <= 768) {
+            chatbotInput.blur();
+        }
         
         // Add user message to chat
         addMessage(message, 'user');
