@@ -29,8 +29,12 @@
     <!-- Locomotive Scroll for smooth scrolling -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.11/dist/locomotive-scroll.min.css">
     
+    <!-- D3.js for visualization -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./podcast-premium.css">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
 </head>
 <body data-scroll-container>
@@ -75,31 +79,76 @@
     src="https://lottie.host/1bca963d-9f21-422b-a455-8656a4e61531/0akKFojK24.lottie"
     background="transparent"
     speed="1"
-    style="width: 300px; height: 300px; margin: 0 auto 1.5rem;"
+    style="width: 260px; height: 260px; margin: -40px auto 0.5rem;"
     loop
     autoplay
 ></dotlottie-player>
-        <h1 class="reveal-text" data-splitting>Samarth Mahendra</h1>
-        <div class="typing-container">
-            <span id="typing-text"></span>
-        </div>
         
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/samarth-mahendra-7aab5a114/" target="_blank" aria-label="LinkedIn Profile">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="https://github.com/SamarthMahendra" target="_blank" aria-label="GitHub Profile">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.youtube.com/@msamarthmahendra8082" target="_blank" aria-label="YouTube Channel">
-                <i class="fab fa-youtube"></i>
-            </a>
-            <a href="mailto:contact@samarthmahendra.com" aria-label="Email">
-                <i class="fas fa-envelope"></i>
-            </a>
+        <div class="hero-content-centered">
+            <h1 class="reveal-text" data-splitting>Samarth Mahendra</h1>
+            <div class="typing-container">
+                <span id="typing-text"></span>
+            </div>
+            
+            <div class="podcast-mini-player-container">
+                <button id="podcast-trigger" class="podcast-mini-trigger">
+                    <i class="fas fa-podcast"></i> Listen to my resume
+                </button>
+                
+                <div class="podcast-mini-player" id="podcast-mini-player">
+                    <!-- D3 Visualization Container -->
+                    <div id="podcast-visualizer" class="podcast-visualizer"></div>
+                    
+                    <!-- Custom Audio Player -->
+                    <div class="d3-audio-player">
+                        <div class="d3-audio-controls">
+                            <button id="play-pause-btn" class="play-pause-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="d3-audio-progress-container">
+                                <div class="d3-audio-time current-time">0:00</div>
+                                <div class="d3-audio-progress">
+                                    <div class="d3-audio-progress-bar"></div>
+                                </div>
+                                <div class="d3-audio-time duration">0:00</div>
+                            </div>
+                            <div class="d3-audio-volume">
+                                <i class="fas fa-volume-up"></i>
+                                <div class="d3-volume-slider">
+                                    <div class="d3-volume-progress"></div>
+                                </div>
+                            </div>
+                            <button class="podcast-mini-close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden native audio element -->
+                    <audio id="podcast-audio" preload="metadata">
+                        <source src="podcast.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/samarth-mahendra-7aab5a114/" target="_blank" aria-label="LinkedIn Profile">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/SamarthMahendra" target="_blank" aria-label="GitHub Profile">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.youtube.com/@msamarthmahendra8082" target="_blank" aria-label="YouTube Channel">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="mailto:contact@samarthmahendra.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            
+            <a href="#about" class="button magnetic-button">Discover More</a>
         </div>
-        
-        <a href="#about" class="button magnetic-button">Discover More</a>
         
         <div id="scroll-indicator"></div>
     </div>
@@ -719,6 +768,7 @@
 <script src="./index.js"></script>
 <script src="https://samarthmahendra.github.io/animation.js"></script>
 <script src="./chatbot.js"></script>
+<script src="./podcast-player.js"></script>
 
 </body>
 </html>
