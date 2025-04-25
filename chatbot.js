@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Track completed message IDs to avoid re-sending them
     let completedMessageIds = [];
 
-    // Track if the last message was a tool call (for Discord polling logic)
-    let lastWasToolCall = false;
+    // Track pending tool calls (for all tools, not just Discord)
+    let pendingCalls = [];
 
     // Default and minimum dimensions
     const DEFAULT_WIDTH = 350;
@@ -139,13 +139,100 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Send message on button click
     chatbotSend.addEventListener('click', sendMessage);
-    
+
     // Send message on Enter key
-    chatbotInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
+    chatbotInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
             sendMessage();
         }
     });
+
+    // Function to handle pending calls loop
+    function handlePendingCalls() {
+        if (pendingCalls.length === 0) return;
+        // Show waiting indicator
+        showTypingIndicator();
+        fetch(`${SERVER_URL}/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: '', // No new user message, just polling for update
+                conversation: conversation,
+                username: window.chatUsername,
+                completedMessageIds: completedMessageIds,
+                pending_calls: pendingCalls
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function handlePendingResponse(data) {
+            conversation = data.conversation || conversation;
+            pendingCalls = data.pending_calls || [];
+            if (data.retry) {
+                // No output, just poll again
+                setTimeout(function() {
+                    fetch(`${SERVER_URL}/chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: '',
+                            conversation: conversation,
+                            username: window.chatUsername,
+                            completedMessageIds: completedMessageIds,
+                            pending_calls: pendingCalls
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(handlePendingResponse)
+                    .catch(error => {
+                        removeTypingIndicator();
+                        addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
+                        pendingCalls = [];
+                    });
+                }, 1000);
+            } else if (pendingCalls.length > 0) {
+                // Show output, then poll again
+                removeTypingIndicator();
+                if (data.output) addMessage(data.output, 'bot');
+                setTimeout(function() {
+                    fetch(`${SERVER_URL}/chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: '',
+                            conversation: conversation,
+                            username: window.chatUsername,
+                            completedMessageIds: completedMessageIds,
+                            pending_calls: pendingCalls
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(handlePendingResponse)
+                    .catch(error => {
+                        removeTypingIndicator();
+                        addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
+                        pendingCalls = [];
+                    });
+                }, 2000);
+            } else {
+                // No pending calls, normal response
+                removeTypingIndicator();
+                if (data.output) addMessage(data.output, 'bot');
+            }
+        })
+        .catch(error => {
+            removeTypingIndicator();
+            addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
+            pendingCalls = [];
+        });
+    }
     
     // Function to check if a message ID has been completed
     function isMessageCompleted(messageId) {
@@ -183,9 +270,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: message,
                 conversation: conversation,
                 username: window.chatUsername,
-                // Include the list of completed message IDs to avoid re-processing them
                 completedMessageIds: completedMessageIds,
-                last_was_tool_call: lastWasToolCall
+                pending_calls: pendingCalls
             })
         })
         .then(response => {
@@ -194,37 +280,62 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return response.json();
         })
-        .then(data => {
-            // Remove typing indicator
-            removeTypingIndicator();
-            
-            // Always update conversation history with everything returned by backend (including tool use/tool call objects)
-            conversation = data.conversation || [];
-            // Optionally log for debugging
-            // console.log('Updated conversation:', conversation);
-            
-            // Check if we're waiting for a tool call (e.g., Discord message)
-            if (data.waiting_for_tool_call) {
-                // Always display the output from backend (e.g., 'Using X tool, please wait...')
-                addMessage(data.output, 'bot');
-                // Start polling for any tool call, not just Discord
-                const toolCalls = data.waiting_for_tool_call.tool_calls;
-                const messageId = data.waiting_for_tool_call.message_id;
-                if (!isMessageCompleted(messageId)) {
-                    pollForDiscordResponse(toolCalls, messageId);
-                    lastWasToolCall = true;
-                } else {
-                    lastWasToolCall = false;
-                }
+        .then(function handleResponse(data) {
+            conversation = data.conversation || conversation;
+            pendingCalls = data.pending_calls || [];
+            if (data.retry) {
+                // No output, just poll again
+                setTimeout(function() {
+                    fetch(`${SERVER_URL}/chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: '',
+                            conversation: conversation,
+                            username: window.chatUsername,
+                            completedMessageIds: completedMessageIds,
+                            pending_calls: pendingCalls
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(handleResponse)
+                    .catch(error => {
+                        removeTypingIndicator();
+                        addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
+                        pendingCalls = [];
+                    });
+                }, 1000);
+            } else if (pendingCalls.length > 0) {
+                // Show output, then poll again
+                removeTypingIndicator();
+                if (data.output) addMessage(data.output, 'bot');
+                setTimeout(function() {
+                    fetch(`${SERVER_URL}/chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: '',
+                            conversation: conversation,
+                            username: window.chatUsername,
+                            completedMessageIds: completedMessageIds,
+                            pending_calls: pendingCalls
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(handleResponse)
+                    .catch(error => {
+                        removeTypingIndicator();
+                        addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
+                        pendingCalls = [];
+                    });
+                }, 2000);
             } else {
-                // Normal response - add the bot message
-                addMessage(data.output, 'bot');
-                // Set lastWasToolCall to false after getting a final message
-                lastWasToolCall = false;
+                // No pending calls, normal response
+                removeTypingIndicator();
+                if (data.output) addMessage(data.output, 'bot');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
             removeTypingIndicator();
             addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
         });
@@ -307,106 +418,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Chatbot server is offline:', error);
             });
-    }
-    
-    // Function to poll for Discord response
-    // Poll for tool response (generic for any tool)
-    function pollForDiscordResponse(toolCalls, messageId) {
-        // Create a message with a timestamp in the DOM
-        const timestampId = `waiting-${messageId}`;
-        const waitingElement = document.createElement('div');
-        waitingElement.id = timestampId;
-        waitingElement.classList.add('waiting-indicator');
-        
-        // Format current time
-        const now = new Date();
-        const timeString = now.toLocaleTimeString();
-        
-        waitingElement.innerHTML = `<div class="waiting-timestamp">Waiting for response since ${timeString}</div>
-                                   <div class="typing-indicator"><span></span><span></span><span></span></div>`;
-        
-        // Add to messages
-        chatbotMessages.appendChild(waitingElement);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-
-        let pollAttempts = 0;
-        const maxPollAttempts = 30; // e.g., poll for up to 30 seconds
-        const pollInterval = 2000; // 2 seconds
-
-        function poll() {
-            pollAttempts++;
-            // Gather tool call messages from conversation
-            // Only send toolCalls if they exist in the conversation
-            // Use the toolCalls and messageId provided by the backend for polling
-            fetch(`${SERVER_URL}/chat`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: '', // No new user message, just polling for update
-                    conversation: conversation,
-                    username: window.chatUsername,
-                    completedMessageIds: completedMessageIds,
-                    last_was_tool_call: true,
-                    message_id: messageId,
-                    tool_calls: toolCalls
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Check if we have a final response (status: 'completed')
-                if (data.status === 'completed') {
-                    // Update conversation history with the latest from backend
-                    conversation = data.conversation || conversation;
-                    // Remove the waiting indicator
-                    const waitingElement = document.getElementById(timestampId);
-                    if (waitingElement) waitingElement.remove();
-                    addMessage(data.output, 'bot');
-                    // Mark this message as completed
-                    if (!isMessageCompleted(messageId)) {
-                        completedMessageIds.push(messageId);
-                    }
-                    lastWasToolCall = false;
-                    // Clear tool_calls and message_id from state
-                    // (Assumes you store these in global or conversation state if needed)
-                    // If you use a state management approach, clear here:
-                    // e.g. toolCalls = null; messageId = null;
-                } else if (data.output && !data.waiting_for_tool_call && !data.status) {
-                    // Fallback: handle legacy or non-tool-call output
-                    const waitingElement = document.getElementById(timestampId);
-                    if (waitingElement) waitingElement.remove();
-                    addMessage(data.output, 'bot');
-                    lastWasToolCall = false;
-                } else {
-                    // Still waiting, poll again after interval
-                    if (pollAttempts < maxPollAttempts) {
-                        setTimeout(poll, pollInterval);
-                    } else {
-                        // Timeout: remove waiting indicator and show fallback
-                        const waitingElement = document.getElementById(timestampId);
-                        if (waitingElement) waitingElement.remove();
-                        addMessage("Sorry, still waiting for a response from the tool. Please try again later.", 'bot');
-                        lastWasToolCall = false;
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error while polling for Discord response:', error);
-                const waitingElement = document.getElementById(timestampId);
-                if (waitingElement) waitingElement.remove();
-                addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
-                lastWasToolCall = false;
-            });
-        }
-
-        // Start polling
-        poll();
     }
     
     // Check server health on load

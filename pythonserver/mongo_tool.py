@@ -91,16 +91,22 @@ def save_tool_message(call_id, name, args, result):
 
 def get_tool_message_status(message_id):
     """Get the status of a tool message by its ID."""
+    print(" [MongoDB] Getting message status for ID:", message_id)
+
+
     messages_collection = db["messages"]
     message = messages_collection.find_one({"message_id": message_id})
+
     if not message:
-        return -1
-    
+        return "not_found", {}
+    print(message)
+    print(" [MongoDB] Message status:", message["status"])
     # Remove MongoDB's _id field which is not JSON serializable
     message.pop('_id', None)
     
     # Return the complete message data
-    return message["content"]
+    print(" [MongoDB] Message data:", message["content"])
+    return message["status"], message["content"]
 
 
 

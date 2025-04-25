@@ -88,19 +88,6 @@ schedule_meeting_tool_schema = {
 
 
 
-# Tool schema for ChatGPT function calling
-schedule_meeting_tool_schema = {
-    "type": "function",
-    "name": "check_tool_output",
-    "description": "Function to check previous tool output",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "call_id": {"type": "string", "description": "tool call id"}
-        },
-        "required": ["call_id"]
-    }
-}
 
 
 
@@ -141,7 +128,7 @@ mongo_query_tool_schema = {
 discord_tool_schema = {
     "type": "function",
     "name": "talk_to_samarth_discord",
-    "description": "Send a message to samarth via Discord bot integration.",
+    "description": "Send a message to samarth via Discord bot integration only once, and wait for a reply",
     "parameters": {
         "type": "object",
         "required": ["action", "message"],
@@ -166,9 +153,6 @@ discord_tool_schema = {
 
 
 
-def check_tool_output(message_id):
-    result = mongo_tool.get_tool_message_status(message_id)
-    return result 
 
 @app.post("/talk_to_samarth_discord")
 async def talk_to_samarth_discord_api(request: Request):
@@ -212,7 +196,7 @@ async def chat(request: Request):
         conversation = [
             {
                 "role": "system",
-                "content": [{"type": "input_text", "text": "You are Samarth Mahendra’s AI personal assistant.\n\nYour capabilities include:\n- Communicating with Samarth via Discord to ask questions or relay information.\n- Querying a MongoDB database to retrieve or verify candidate profiles and job fit.\n- Scheduling meetings using Jitsi and sending out meeting invitations.\n- You can query the database for any information about Samarth.\n\nGuidelines:\n- Before pinging Samarth on Discord, always gather all relevant information from the user or available sources.\n- When evaluating if someone is a good match for a job, always gather the job information first, then check the candidate profile using the MongoDB tool.\n- When checking Samarth’s availability for meetings, never query the database; always confirm with Samarth directly on Discord.\n- Always act professionally and on behalf of Samarth.\n- If you are unsure or need Samarth’s input, communicate with him via Discord."}]
+                "content": [{"type": "input_text", "text": "You are Samarth Mahendra’s AI personal assistant.\n\nYour capabilities include:\n- Communicating with Samarth via Discord to ask questions or relay information.\n- Querying a MongoDB database to retrieve or verify candidate profiles and job fit.\n- Scheduling meetings only using Jitsi and sending out meeting invitations.\n- You can query the database for any information about Samarth.\n\nGuidelines:\n- Before pinging Samarth on Discord, always gather all relevant information from the user or available sources.\n- When evaluating if someone is a good match for a job, always gather the job information first, then check the candidate profile using the MongoDB tool.\n- When checking Samarth’s availability for meetings, never query the database; always confirm with Samarth directly on Discord.\n- Always act professionally and on behalf of Samarth.\n- Don't ping again to discord if any reply is pending"}]
             },
             {
                 "role": "user",
@@ -226,166 +210,48 @@ async def chat(request: Request):
                 "role": "user",
                 "content": [{"type": "input_text", "text": message}]
             })
-
-    last_was_tool_call = data.get("last_was_tool_call", False)
-    tool_calls = data.get("tool_calls", None)
+    pending_calls = data.get("pending_calls", [])
 
     print(conversation)
-    if last_was_tool_call and tool_calls:
+    print("Payload", data)
+    if pending_calls:
+        # Check status of each pending call
+        updated_pending_calls = []
         tool_outputs = []
-        # fetch the last tool call and append it to the conversation
-        message_id = data.get("message_id")
-        print(" Pooling for tool call with message id", message_id)
-        tool_calls = data.get("tool_calls")
-        print("After receiving tool calls", tool_calls)
-
-        # tool_calls is already a list from the frontend; do not eval
-        conversation += [tc for tc in tool_calls]
-        result  = mongo_tool.get_tool_message_status(message_id)
-        if result is None or result ==-1:
-            return JSONResponse({
-                "status": "pending",
-            })
-        if not isinstance(result, str):
-            import json as _json
-            output_str = _json.dumps(result, ensure_ascii=False)
-        else:
-            output_str = result
-        tool_outputs.append({
-            "type": "function_call_output",
-            "call_id": message_id,
-            "output": output_str
-        })
-        conversation += tool_outputs
-        # Clean conversation: remove any objects with function/method values
-        import types
-        def is_serializable(item):
-            if isinstance(item, dict):
-                for v in item.values():
-                    if isinstance(v, (types.FunctionType, types.BuiltinFunctionType, types.MethodType)):
-                        return False
-                return True
-            return not isinstance(item, (types.FunctionType, types.BuiltinFunctionType, types.MethodType))
-        conversation = [item for item in conversation if is_serializable(item)]
-
-        response3 = client.responses.create(
-            model=model_name,
-            input=conversation,
-            text={"format": {"type": "text"}},
-            reasoning={},
-            tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
-            temperature=1,
-            max_output_tokens=2048,
-            top_p=1,
-            store=True
-        )
-
-        tool_outputs = []
-        tool_calls = [tc for tc in response3.output if getattr(tc, 'type', None) == 'function_call']
-        if tool_calls:
-            for tool_call in tool_calls:
-                print("tool call", tool_call.name)
-                name = tool_call.name
-                args = json.loads(tool_call.arguments)
-                call_id = tool_call.call_id
-                user = args.get("user")
-                if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
-                    if name == 'schedule_meeting_on_jitsi':
-                        print("schedule_meeting_on_jitsi")
-                        result = schedule_meeting(args)
-                    elif name == 'query_profile_info':
-                        print("query_profile_info")
-                        result = mongo_tool.query_mongo_db_for_candidate_profile()
-                    output_str = json.dumps(result, ensure_ascii=False)
-                    conversation += [tc for tc in tool_calls]
-                    tool_outputs.append({
+        for call in pending_calls:
+            # Each call may have: {"tool_calls": [...], "message_id": ...}
+            message_id = call.get("message_id")
+            if not message_id:
+                continue
+            tools_calls = call.get("tool_calls")
+            print("tools_calls", tools_calls)
+            status, message = mongo_tool.get_tool_message_status(message_id)
+            if status== "completed":
+                print("Tool call completed", status)
+                # Tool call completed, add output to conversation
+                output_str = json.dumps(message, ensure_ascii=False)
+            else:
+                # Still pending or error
+                updated_pending_calls.append(call)
+            # Add outputs to conversation
+            if status == "completed":
+                conversation += [tc for tc in (tools_calls or [])]
+                conversation.append(
+                    {
                         "type": "function_call_output",
-                        "call_id": call_id,
+                        "call_id": message_id,
                         "output": output_str
-                    })
-                    conversation += tool_outputs
-                    response4 = client.responses.create(
-                        model=model_name,
-                        input=conversation,
-                        text={"format": {"type": "text"}},
-                        reasoning={},
-                        tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
-                        temperature=1,
-                        max_output_tokens=2048,
-                        top_p=1,
-                        store=True
-                    )
+                    }
+                )
+        # Replace pending_calls with updated list
+        pending_calls = updated_pending_calls
 
-                    #
-                    # # Remove non-serializable objects from conversation before returning
-                    def serializable_convo(convo):
-                        serializable = []
-                        for item in convo:
-                            if isinstance(item, dict):
-                                serializable.append(item)
-                            elif hasattr(item, '__dict__'):
-                                serializable.append(item.__dict__)
-                            elif isinstance(item, str):
-                                serializable.append(item)
-                            # else: skip non-serializable objects
-                        return serializable
-
-                    return JSONResponse({
-                        "output": response4.output_text,
-                        "conversation": serializable_convo(conversation),
-                    })
-
-
-                else:
-                    tool_call_fn.delay(name, call_id, args)
-
-            conversation.append(
-                {
-                    "role": "system",
-                    "content": [{"type": "input_text",
-                                 "text": f" tell user that tool call is in progress {name}, in professional way"}]
-                }
-            )
-            print(conversation)
-            response5 = client.responses.create(
-                model=model_name,
-                input=conversation,
-                text={"format": {"type": "text"}},
-                reasoning={},
-                tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
-                temperature=1,
-                max_output_tokens=2048,
-                top_p=1,
-                store=True
-            )
-
-            #
-            # # Remove non-serializable objects from conversation before returning
-            def serializable_convo(convo):
-                serializable = []
-                for item in convo:
-                    if isinstance(item, dict):
-                        serializable.append(item)
-                    elif hasattr(item, '__dict__'):
-                        serializable.append(item.__dict__)
-                    elif isinstance(item, str):
-                        serializable.append(item)
-                    # else: skip non-serializable objects
-                return serializable
-
-            # print(" Before returning tools call" , tool_calls)
-            # print(response2.output_text)
-            return JSONResponse({
-                "output": response5.output_text,
-                "conversation": serializable_convo(conversation),
-                # Frontend should poll with tool_calls and message_id until status is 'completed'
-                "waiting_for_tool_call": {
-                    "tool_calls": serializable_convo(tool_calls),
-                    "message_id": call_id,
-                }
-            })
-
-
+    if pending_calls:
+        return JSONResponse({
+            "retry": True,
+            "conversation": conversation,
+            "pending_calls": pending_calls
+        })
 
     print("conversation from frontend", conversation)
     response = client.responses.create(
@@ -457,7 +323,6 @@ async def chat(request: Request):
 
             else:
                 tool_call_fn.delay(name, call_id, args)
-
         conversation.append(
             {
                 "role": "system",
@@ -491,14 +356,21 @@ async def chat(request: Request):
             return serializable
         # print(" Before returning tools call" , tool_calls)
         # print(response2.output_text)
+        pending_calls.append({
+                "tool_calls": serializable_convo(tool_calls),
+                "message_id": call_id
+            }
+
+        )
+        conversation.append(
+            {
+                "role": "system",
+                "content": [{"type": "input_text", "text": response.output_text}]
+            })
         return JSONResponse({
             "output": response2.output_text,
             "conversation": serializable_convo(conversation),
-            # Frontend should poll with tool_calls and message_id until status is 'completed'
-            "waiting_for_tool_call": {
-                "tool_calls": serializable_convo(tool_calls),
-                "message_id": call_id,
-            }
+            "pending_calls":  pending_calls
         })
 
     # If no tool call, return model output and conversation history
@@ -514,8 +386,18 @@ async def chat(request: Request):
             # else: skip non-serializable objects
         return serializable
     print(response.output_text)
+
+    conversation.append(
+        {
+            "role": "system",
+            "content": [{"type": "input_text", "text": response.output_text}]
+        })
+
     return JSONResponse({
         "output": response.output_text,
-        "conversation": serializable_convo(conversation)
+        "conversation": serializable_convo(conversation),
+        "pending_calls": pending_calls
     })
+
+
 
