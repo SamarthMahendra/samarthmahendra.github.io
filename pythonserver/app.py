@@ -106,7 +106,7 @@ def schedule_meeting(args):
         members.append("samarth@samarthmahendra.com")
     print(members, agenda, timing, user_email)
     meeting_url = generate_jitsi_meeting_url("samarth")
-    meeting_url = '<a href="{}">{}</a>'.format(meeting_url, meeting_url)
+    meeting_url_full = '<a href="{}">{}</a>'.format(meeting_url, meeting_url)
     meeting_id = mongo_tool.insert_meeting(members, agenda, timing, meeting_url)
 
     print(" Sending email : ", user_email, meeting_url)
@@ -115,7 +115,7 @@ def schedule_meeting(args):
     # ping samarth on discord about the meeting
     # celery_app.send_task("tool_call_fn", args=("talk_to_samarth_discord", None, {"action": "send", "message": {"content": f"Meeting scheduled with {', '.join(members)} on {timing} for {agenda}. Meeting link: {meeting_url}"}}))
     tool_call_fn.delay("talk_to_samarth_discord", None, {"action": "send", "message": {"content": f"Meeting scheduled with {', '.join(members)} on {timing} for {agenda}. Meeting link: {meeting_url}"}})
-    return {"meeting_url": meeting_url, "meeting_id": meeting_id}
+    return {"meeting_url": meeting_url_full, "meeting_id": meeting_id}
 
 mongo_query_tool_schema = {
 "type": "function",
