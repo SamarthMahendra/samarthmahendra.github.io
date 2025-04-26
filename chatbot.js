@@ -60,8 +60,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Toggle chatbot visibility (open)
     chatbotToggle.addEventListener('click', function() {
-        chatbotContainer.classList.add('active');
-        chatbotInput.focus();
+        // Scroll to top before opening
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Delay chatbot open until scroll starts
+        setTimeout(() => {
+            chatbotContainer.classList.add('active');
+            chatbotInput.focus();
+        }, 300);
     });
     
     // Close chatbot

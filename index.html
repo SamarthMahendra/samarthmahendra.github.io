@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./podcast-premium.css">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
+    <!-- AOS Library CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 </head>
 <body data-scroll-container>
 
@@ -65,6 +67,39 @@
         </div>
     </div>
 </nav>
+
+<!-- Chatbot Interface -->
+<!-- Chatbot Toggle Button (always visible) -->
+<button class="chatbot-toggle" id="chatbot-toggle">
+  <i class="fas fa-comment"></i>
+</button>
+<div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+        <div class="chatbot-title"><i class="fas fa-robot"></i> Chat with Samarth's Assistant</div>
+        <div class="chatbot-controls">
+            <button class="chatbot-resize" id="chatbot-resize" title="Resize"><i class="fas fa-expand-alt"></i></button>
+            <button id="chatbot-fullscreen" title="Fullscreen" style="font-size:1.2em;">&#x26F6;</button>
+            <button class="chatbot-close" id="chatbot-close" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    <div class="resize-handle" id="resize-handle"></div>
+    <div class="chatbot-body" id="chatbot-body">
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot-message">
+                <div class="message-content">Hi there! I'm Samarth's assistant. How can I help you today?</div>
+            </div>
+        </div>
+        <div id="chatbot-starter-prompts" class="chatbot-starter-prompts">
+            <button class="chatbot-starter-prompt">Which of Samarth's projects best showcase his AI and data engineering expertise?</button>
+            <button class="chatbot-starter-prompt">Could you pull up a Samarth’s profile and highlight his main qualifications?</button>
+            <button class="chatbot-starter-prompt">How well does Samarth's profile match this job description?</button>
+        </div>
+        <div class="chatbot-input-container">
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type your message here..." autocomplete="off" inputmode="text">
+            <button id="chatbot-send" class="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 
 <!-- Hero Section -->
 <section class="hero-section" id="home">
@@ -163,13 +198,38 @@
             <div class="about-image">
                 <!-- Replace with your real profile image -->
                 <img src="https://avatars.githubusercontent.com/u/6503425?v=4" alt="Samarth Mahendra" style="width:160px;border-radius:50%;box-shadow:0 2px 12px #0002;" />
+                <p class="intro-text">Software Engineer passionate about backend systems and AI integrations.</p>
             </div>
-            <p><strong>🎯 Currently working on</strong><br>A distributed job tracking system (JobStats) that scrapes and analyzes job postings from 15+ sources, processing over 50,000 records daily, using Celery, Redis, Prometheus, and Puppeteer.</p>
-            <p><strong>🤝 Looking to collaborate on</strong><br>LLM-powered productivity tools, scalable backend infrastructure, or real-time systems.</p>
-            <p><strong>🧠 Looking for help with</strong><br>Fine-tuning LLMs for production, designing stealth scraping systems, and optimizing data-intensive systems.</p>
-            <p><strong>🌱 Currently learning</strong><br>Advanced database systems, mobile app development, and system design for distributed platforms.</p>
-            <p><strong>💬 Ask me about</strong><br>How I improved chatbot performance by 60%, or how I optimized API costs using query partitioning and dynamic Query generation.</p>
-            <p><strong>⚡ Fun fact</strong><br>I skated 22.3 km in a single session!</p>
+            <div class="about-card" data-aos="fade-up">
+                <div class="card-icon"><i class="fas fa-cog"></i></div>
+                <h3>Currently working on</h3>
+                <p>A distributed job tracking system (JobStats) that scrapes and analyzes job postings from 15+ sources, processing over 50,000 records daily, using Celery, Redis, Prometheus, and Puppeteer.</p>
+            </div>
+            <div class="about-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>Looking to collaborate on</h3>
+                <p>LLM-powered productivity tools, scalable backend infrastructure, or real-time systems.</p>
+            </div>
+            <div class="about-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-icon"><i class="fas fa-user"></i></div>
+                <h3>Looking for help with</h3>
+                <p>Fine-tuning LLMs for production, designing stealth scraping systems, and optimizing data-intensive systems.</p>
+            </div>
+            <div class="about-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-icon"><i class="fas fa-book"></i></div>
+                <h3>Currently learning</h3>
+                <p>Advanced database systems, mobile app development, and system design for distributed platforms.</p>
+            </div>
+            <div class="about-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="card-icon"><i class="fas fa-comments"></i></div>
+                <h3>Ask me about</h3>
+                <p>How I improved chatbot performance by 60%, or how I optimized API costs using query partitioning and dynamic Query generation.</p>
+            </div>
+            <div class="about-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Fun fact</h3>
+                <p>I skated 22.3 km in a single session!</p>
+            </div>
         </div>
     </div>
 </section>
@@ -741,47 +801,16 @@
 <!-- Locomotive Scroll for Smooth Scrolling -->
 <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.11/dist/locomotive-scroll.min.js"></script>
 
-<!-- Chatbot Interface -->
-<!-- Chatbot Toggle Button (Outside container to be always visible) -->
-<button class="chatbot-toggle" id="chatbot-toggle">
-    <i class="fas fa-comment"></i>
-</button>
+<!-- D3.js for visualization -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
 
-<div class="chatbot-container" id="chatbot-container">
-    <div class="chatbot-header">
-        <div class="chatbot-title"><i class="fas fa-robot"></i> Chat with Samarth's Assistant</div>
-        <div class="chatbot-controls">
-            <button class="chatbot-resize" id="chatbot-resize" title="Resize">
-                <i class="fas fa-expand-alt"></i>
-            </button>
-            <button id="chatbot-fullscreen" title="Fullscreen" style="font-size:1.2em;">&#x26F6;</button>
-            <button class="chatbot-close" id="chatbot-close" title="Close">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    <div class="resize-handle" id="resize-handle"></div>
-    <div class="chatbot-body" id="chatbot-body">
-        <div class="chatbot-messages" id="chatbot-messages">
-            <div class="message bot-message">
-                <div class="message-content">Hi there! I'm Samarth's assistant. How can I help you today?</div>
-            </div>
-        </div>
-        <div id="chatbot-starter-prompts" class="chatbot-starter-prompts">
-            <button class="chatbot-starter-prompt">Which of Samarth's projects best showcase his AI and data engineering expertise?</button>
-            <button class="chatbot-starter-prompt">Could you pull up a Samarth’s profile and highlight his main qualifications?</button>
-            <button class="chatbot-starter-prompt">How well does Samarth's profile match this job description?</button>
-        </div>
-        <div class="chatbot-input-container">
-            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type your message here..." autocomplete="off" inputmode="text">
-            <button id="chatbot-send" class="chatbot-send">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Custom JavaScript -->
+<!-- Custom Stylesheet -->
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
+<!-- AOS Library JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+</script>
 <script src="./index.js"></script>
 <script src="https://samarthmahendra.github.io/animation.js"></script>
 <script src="./podcast-player.js"></script>
