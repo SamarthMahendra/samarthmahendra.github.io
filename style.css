@@ -2388,3 +2388,10 @@ input:checked + .slider:before {
 
 /* Global Animations */
 @keyframes fadeDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+
+/* Mobile: smaller hero name */
+@media (max-width: 480px) {
+    h1.reveal-text {
+        font-size: 2.5rem !important;
+    }
+}

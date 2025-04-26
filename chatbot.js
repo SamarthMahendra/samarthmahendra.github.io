@@ -66,12 +66,16 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             chatbotContainer.classList.add('active');
             chatbotInput.focus();
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         }, 300);
     });
     
     // Close chatbot
     chatbotClose.addEventListener('click', function() {
         chatbotContainer.classList.remove('active');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     });
     
     // Toggle between default size and expanded size
