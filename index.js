@@ -1,4 +1,3 @@
-
 // Main JavaScript for profile website
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Happy developing ✨');
@@ -250,10 +249,24 @@ function initScrollToTop() {
         
         // Scroll to top when clicked
         scrollButton.addEventListener('click', () => {
+            // Smooth scroll to top
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
+            // Fallback for older browsers
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        });
+    }
+    
+    // Ensure click handler for existing scroll-top button
+    const scrollExisting = document.querySelector('.scroll-top');
+    if (scrollExisting) {
+        scrollExisting.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
         });
     }
     

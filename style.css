@@ -304,7 +304,6 @@ input:checked + .slider:before {
     font-family: 'Inter', sans-serif;
     font-weight: 600; color: #fff;
     transition: color 0.3s;
-    margin: 0 1rem;
 }
 
 .nav-menu .nav-links li a:hover { color: #66b2ff; }
@@ -749,6 +748,134 @@ input:checked + .slider:before {
 
 .about-image:hover img {
     transform: scale(1.05);
+}
+
+/* About Section Customizations */
+#about {
+    background: var(--background-alt) !important;
+    padding-top: 180px !important;
+    padding-bottom: 180px !important;
+}
+#about h2.reveal-text {
+    margin-top: 48px !important;
+    margin-bottom: 48px !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+    font-size: 2.75rem !important;
+    text-align: center;
+}
+.about-grid {
+    gap: 24px !important;
+    align-items: stretch !important;
+    margin-top: 32px !important;
+}
+@media (min-width: 1024px) {
+    .about-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+.about-card {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+.card-icon {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+.about-card h3 {
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 8px 0;
+}
+.about-card p {
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+.about-image .intro-text {
+    margin-top: 16px;
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    text-align: center;
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Tweak About Cards per feedback */
+.about-card p {
+    border-left: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    margin: 0;
+    color: rgba(255,255,255,0.9) !important;
+}
+.about-card {
+    min-height: 300px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+}
+.about-card:hover {
+    box-shadow: 0 12px 28px rgba(0,0,0,0.2) !important;
+}
+.about-grid {
+    align-items: stretch !important;
+    margin-top: 32px !important;
+}
+
+/* Dark Theme About Section Overrides */
+#about {
+    background: #0d0d0d !important;
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+}
+.about-grid {
+    gap: 24px !important;
+    margin-top: 48px !important;
+}
+/* Cards & Profile card unified style */
+.about-card,
+.about-image {
+    background: #1e1e1e !important;
+    border: 1px solid rgba(0,123,255,0.2) !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    min-height: 300px !important;
+}
+.about-card:hover,
+.about-image:hover {
+    box-shadow: 0 0 16px rgba(0,123,255,0.5) !important;
+    transform: translateY(-2px) !important;
+}
+/* Card typography adjustments */
+#about h2.reveal-text {
+    color: #fff !important;
+}
+.about-card h3 {
+    color: #7ab6ff !important;
+}
+.about-card p,
+.about-image .intro-text {
+    color: #cccccc !important;
 }
 
 /* Skills Section */
