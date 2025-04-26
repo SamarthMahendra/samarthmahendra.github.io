@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Conversation history
     let conversation = [];
+    // Debounce timestamp for starter prompts
+    let lastPromptClickTime = 0;
     
     // Get close button
     const chatbotClose = document.getElementById('chatbot-close');
@@ -519,4 +521,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check server health on load
     checkServerHealth();
+
+    // --- Starter Prompts Logic ---
+    function handleStarterPromptClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const now = Date.now();
+        if (now - lastPromptClickTime < 300) return;
+        lastPromptClickTime = now;
+        const prompt = e.currentTarget.textContent;
+        if (chatbotInput && prompt) {
+            chatbotInput.value = prompt;
+            // Optionally, you can show it in the chat immediately:
+            sendMessage();
+        }
+    }
+    
+    // Attach click listeners to starter prompts
+    const starterPromptButtons = document.querySelectorAll('.chatbot-starter-prompt');
+    starterPromptButtons.forEach(btn => {
+        btn.addEventListener('click', handleStarterPromptClick);
+    });
 });
