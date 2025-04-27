@@ -314,6 +314,7 @@ sub {
   }
 }
 
+.chatbot-popover {
   position: fixed;
   right: 36px;
   bottom: 108px;
@@ -2019,7 +2020,7 @@ sub {
     padding: 4px 8px;
     border-radius: 50%;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.2s;
     margin-left: 6px;
     margin-right: 0;
 }

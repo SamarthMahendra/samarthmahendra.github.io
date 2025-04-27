@@ -77,6 +77,33 @@ celery -A celery_worker.celery_app worker --loglevel=info
 - Edit `discord_tool.py` for Discord bot logic.
 - Edit `app.py` for API and agent orchestration.
 
+## Datadog RUM Integration
+
+The portfolio site is instrumented with Datadog Real User Monitoring (RUM) to collect client-side performance metrics and session replays. The RUM agent is loaded and initialized in the `<head>` of `index.html`. Replace the placeholders below with your actual credentials:
+
+```html
+<!-- Datadog RUM Initialization -->
+<script>
+  (function(h,o,u,n,d){
+    h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}};
+    d=o.createElement(u);d.async=1;d.src='https://www.datadoghq-browser-agent.com/us5/v6/datadog-rum.js';
+    n=o.getElementsByTagName(u)[0];n.parentNode.insertBefore(d,n);
+  })(window,document,'script','https://www.datadoghq-browser-agent.com/us5/v6/datadog-rum.js','DD_RUM');
+  window.DD_RUM.onReady(function(){
+    window.DD_RUM.init({
+      clientToken: 'YOUR_CLIENT_TOKEN',
+      applicationId: 'YOUR_APPLICATION_ID',
+      site: 'us5.datadoghq.com',
+      service: 'mygithubsite',
+      env: 'prod',
+      sessionSampleRate: 100,
+      sessionReplaySampleRate: 20,
+      defaultPrivacyLevel: 'mask-user-input',
+    });
+  });
+</script>
+```
+
 ---
 
 For further help, see the code comments or open an issue!
