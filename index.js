@@ -129,9 +129,30 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollToTop();
 });
 
-
 // Smooth scroll to section when clicking on navigation links
 function initScrollBehavior() {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+
+    // IntersectionObserver-based highlighting
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -60% 0px', // triggers when section top is 40% from top
+        threshold: 0
+    };
+    function onSectionIntersect(entries) {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            const navLink = document.querySelector('.nav-links a[href="#' + id + '"]');
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                if (navLink) navLink.classList.add('active');
+            }
+        });
+    }
+    const observer = new window.IntersectionObserver(onSectionIntersect, observerOptions);
+    sections.forEach(section => observer.observe(section));
+
     // Create navigation if it doesn't exist
     if (!document.querySelector('.nav-menu')) {
         const navHTML = `
