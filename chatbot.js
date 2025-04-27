@@ -461,43 +461,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to add message to chat
+    // Helper to escape HTML
+    function escapeHTML(str) {
+        return str.replace(/[&<>"']/g, function(tag) {
+            const charsToReplace = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+            return charsToReplace[tag] || tag;
+        });
+    }
+    // Helper to linkify URLs
+    function linkify(text) {
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlPattern, function(url) {
+            // Escape HTML in URL
+            const safeUrl = escapeHTML(url);
+            return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>`;
+        });
+    }
     function addMessage(message, sender) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', `${sender}-message`);
-        
         const messageContent = document.createElement('div');
         messageContent.classList.add('message-content');
-        
-        // Format the message with proper line breaks
+        messageContent.style.wordBreak = 'break-word'; // Ensure long words/links wrap
         if (typeof message === 'string') {
             // Split the message by newlines and create paragraph elements
             const paragraphs = message.split('\n').filter(line => line.trim() !== '');
-            
             if (paragraphs.length > 1) {
-                // Multiple paragraphs - create a paragraph for each line
                 paragraphs.forEach((paragraph, index) => {
                     const p = document.createElement('p');
-                    p.textContent = paragraph;
+                    p.innerHTML = linkify(escapeHTML(paragraph));
                     messageContent.appendChild(p);
-                    
-                    // Add a small margin between paragraphs
                     if (index < paragraphs.length - 1) {
                         p.style.marginBottom = '8px';
                     }
                 });
             } else {
-                // Single paragraph - just set the text content
-                messageContent.textContent = message;
+                messageContent.innerHTML = linkify(escapeHTML(message));
             }
         } else {
-            // Fallback if message is not a string
             messageContent.textContent = String(message);
         }
-        
         messageElement.appendChild(messageContent);
         chatbotMessages.appendChild(messageElement);
-        
-        // Scroll to bottom
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
     
