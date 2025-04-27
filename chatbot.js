@@ -349,6 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Don't send empty messages
         if (!message) return;
         
+        // Hide starter prompts when user sends any message
+        hideStarterPrompts();
+        
         // Clear input
         chatbotInput.value = '';
         
@@ -532,6 +535,12 @@ document.addEventListener('DOMContentLoaded', function() {
     checkServerHealth();
 
     // --- Starter Prompts Logic ---
+    // Hide starter prompts utility
+    function hideStarterPrompts() {
+        const starterPrompts = document.getElementById('chatbot-starter-prompts');
+        if (starterPrompts) starterPrompts.style.display = 'none';
+    }
+
     function handleStarterPromptClick(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -541,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const prompt = e.currentTarget.textContent;
         if (chatbotInput && prompt) {
             chatbotInput.value = prompt;
-            // Optionally, you can show it in the chat immediately:
+            hideStarterPrompts(); // Hide prompts when a sample is clicked
             sendMessage();
         }
     }
