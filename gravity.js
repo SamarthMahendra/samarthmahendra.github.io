@@ -6,10 +6,18 @@ window.addEventListener('DOMContentLoaded', () => {
     // Collect elements in hero-content and hero-content-centered
     const heroContent = heroSection.querySelector('.hero-content');
     const heroCentered = heroSection.querySelector('.hero-content-centered');
-    const elements = [
-        ...Array.from(heroContent ? heroContent.children : []),
-        ...Array.from(heroCentered ? heroCentered.children : [])
-    ];
+    // Collect elements to animate: individual social icons float separately
+    const elements = [];
+    if (heroContent) elements.push(...heroContent.children);
+    if (heroCentered) {
+        Array.from(heroCentered.children).forEach(child => {
+            if (child.classList.contains('social-links')) {
+                elements.push(...child.querySelectorAll('a'));
+            } else {
+                elements.push(child);
+            }
+        });
+    }
 
     // Create fun toggle button
     const floatBtn = document.createElement('button');
