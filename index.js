@@ -1,5 +1,117 @@
 // Main JavaScript for profile website
 document.addEventListener('DOMContentLoaded', function() {
+    // Show chatbot popover animation on first load (once per session)
+    const popover = document.getElementById('chatbot-popover');
+    const popoverText = popover ? popover.querySelector('.chatbot-popover-text') : null;
+    const popoverIcon = popover ? popover.querySelector('.chatbot-popover-icon') : null;
+    const popoverMessages = [
+        "👋 Need help? Chat with Samarth's AI!",
+        "🚀 Have a question? I'm here!",
+        "🤖 Let's chat! Ask away."
+    ];
+    let lastPopoverIndex = -1;
+    function setRandomPopoverMessage() {
+        if (!popoverText) return;
+        let idx;
+        do {
+            idx = Math.floor(Math.random() * popoverMessages.length);
+        } while (popoverMessages.length > 1 && idx === lastPopoverIndex);
+        lastPopoverIndex = idx;
+        popoverText.textContent = popoverMessages[idx];
+    }
+    setRandomPopoverMessage();
+    // Always show chatbot popover animation on page load
+    if (popover) {
+        setTimeout(() => {
+            if (!popoverEnabled) return;
+            popover.classList.add('popover-show');
+            setTimeout(() => {
+                popover.classList.remove('popover-show');
+            }, 4000);
+        }, 1200);
+    }
+
+    // Show popover when mouse moves near chatbot button or popover
+    let popoverTimeout = null;
+    function showPopover() {
+        setRandomPopoverMessage();
+        if (popoverTimeout) clearTimeout(popoverTimeout);
+        popover.classList.add('popover-show');
+        popoverTimeout = setTimeout(() => {
+            popover.classList.remove('popover-show');
+        }, 4000);
+    }
+    let mouseWasNear = false;
+    document.addEventListener('mousemove', function(e) {
+        if (!popoverEnabled) return;
+        const toggleBtn = document.getElementById('chatbot-toggle');
+        if (!toggleBtn || !popover) return;
+        const btnRect = toggleBtn.getBoundingClientRect();
+        const popRect = popover.getBoundingClientRect();
+        const mouseX = e.clientX, mouseY = e.clientY;
+        function isNear(rect) {
+            return (
+                mouseX >= rect.left - 80 && mouseX <= rect.right + 80 &&
+                mouseY >= rect.top - 80 && mouseY <= rect.bottom + 80
+            );
+        }
+        const isHot = isNear(btnRect) || isNear(popRect);
+        if (isHot && !mouseWasNear) {
+            showPopover();
+        }
+        mouseWasNear = isHot;
+    });
+    // Animate icon wiggle every 12s
+    if (popoverIcon) {
+        setInterval(() => {
+            popoverIcon.style.animation = 'none';
+            // Force reflow to restart animation
+            void popoverIcon.offsetWidth;
+            popoverIcon.style.animation = '';
+        }, 12000);
+    }
+    // On click: expand popover and open chatbot
+    if (popover) {
+        popover.addEventListener('click', () => {
+            popover.classList.add('popover-expand');
+            setTimeout(() => {
+                popover.classList.remove('popover-show');
+                // Try to open chatbot (simulate clicking chatbot-toggle)
+                const toggleBtn = document.getElementById('chatbot-toggle');
+                if (toggleBtn) toggleBtn.click();
+            }, 350);
+        });
+    }
+    // Hide popover when chat is open
+    let popoverEnabled = true;
+    function hidePopover() {
+        if (popoverTimeout) clearTimeout(popoverTimeout);
+        popover.classList.remove('popover-show');
+    }
+    // Detect chat open (assume #chatbot-container becomes visible)
+    const chatbotContainer = document.getElementById('chatbot-container');
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    if (chatbotToggle && chatbotContainer) {
+        chatbotToggle.addEventListener('click', () => {
+            setTimeout(() => {
+                if (window.getComputedStyle(chatbotContainer).display !== 'none' && chatbotContainer.offsetHeight > 0) {
+                    popoverEnabled = false;
+                    hidePopover();
+                }
+            }, 150);
+        });
+        // Re-enable popover when chat is closed
+        const closeBtn = document.getElementById('chatbot-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    popoverEnabled = true;
+                }, 200);
+            });
+        }
+    }
+
+
     console.log('Happy developing ✨');
     
 
