@@ -236,59 +236,6 @@ sub {
     display: inline-block;
 }
 
-/* Theme Toggle Switch */
-.theme-switch-wrapper {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-}
-
-.theme-switch {
-    display: inline-block;
-    height: 26px;
-    position: relative;
-    width: 50px;
-}
-
-.theme-switch input {
-    display: none;
-}
-
-.slider {
-    background-color: #ccc;
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    background-color: white;
-    bottom: 3px;
-    content: "";
-    height: 20px;
-    left: 4px;
-    position: absolute;
-    transition: .4s;
-    width: 20px;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: var(--accent-primary);
-}
-
-input:checked + .slider:before {
-    transform: translateX(24px);
-}
-
 /* Navigation styles */
 .nav-menu {
     padding: 16px 0; /* Add vertical breathing room above and below links */
@@ -435,9 +382,12 @@ input:checked + .slider:before {
 /* Chatbot Starter Prompts */
 .chatbot-starter-prompts {
     display: flex;
-    gap: 0.5rem;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
     margin: 0.7rem 0 0.5rem 0;
+    width: 100% !important;
+    padding: 0 1rem !important;
 }
 
 .chatbot-starter-prompt {
@@ -451,6 +401,11 @@ input:checked + .slider:before {
     cursor: pointer;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 8px rgba(31, 38, 135, 0.07);
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
 }
 
 .chatbot-starter-prompt:hover, .chatbot-starter-prompt:focus {
@@ -762,12 +717,14 @@ input:checked + .slider:before {
     color: #fff !important;
     font-weight: 800 !important;
     font-size: 2.75rem !important;
-    text-align: center;
+    text-align: left !important;
 }
 .about-grid {
     gap: 24px !important;
     align-items: stretch !important;
     margin-top: 32px !important;
+    justify-items: start !important;
+    text-align: left !important;
 }
 @media (min-width: 1024px) {
     .about-grid {
@@ -808,12 +765,13 @@ input:checked + .slider:before {
     line-height: 1.5;
     margin: 0;
     flex: 1;
+    text-align: left !important;
 }
 .about-image .intro-text {
     margin-top: 16px;
     color: rgba(255,255,255,0.9);
     font-size: 1rem;
-    text-align: center;
+    text-align: left !important;
     background: none !important;
     box-shadow: none !important;
     padding: 0 !important;
@@ -876,6 +834,7 @@ input:checked + .slider:before {
 .about-card p,
 .about-image .intro-text {
     color: #cccccc !important;
+    text-align: left !important;
 }
 
 /* Skills Section */

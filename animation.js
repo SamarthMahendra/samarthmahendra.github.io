@@ -43,22 +43,8 @@ function initTheme() {
     // Check for saved theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.body.classList.add(`theme-${savedTheme}`);
-    
-    // Initialize theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        // Set initial state
-        themeToggle.checked = savedTheme === 'dark';
-        
-        // Toggle theme on click
-        themeToggle.addEventListener('change', function() {
-            const newTheme = this.checked ? 'dark' : 'light';
-            document.body.classList.remove('theme-light', 'theme-dark');
-            document.body.classList.add(`theme-${newTheme}`);
-            localStorage.setItem('theme', newTheme);
-            
-            // Animate transition
-            gsap.to('body', {
+
+
                 backgroundColor: this.checked ? '#121212' : '#f4f7f6',
                 color: this.checked ? '#e0e0e0' : '#333',
                 duration: 0.5
