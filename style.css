@@ -1790,7 +1790,7 @@ sub {
     animation: pulse 2s infinite;
 }
 .chatbot-toggle:hover {
-    background: var(--accent-secondary) !important;
+    background: var(--accent-secondary);
     transform: scale(1.05);
     animation: none;
 }
@@ -2505,4 +2505,29 @@ sub {
     h1.reveal-text {
         font-size: 2.5rem !important;
     }
+}
+
+/* Toggle download icon visibility */
+.podcast-download-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  font-size: 1.25rem;
+  margin-left: 8px;
+}
+@media (max-width: 768px) {
+  .podcast-download-icon {
+    display: none !important;
+  }
+  .social-links a.social-icon {
+    display: none !important;
+  }
+}
+
+/* Align 'Listen to my resume' and its download icon */
+.podcast-mini-player-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
