@@ -1,0 +1,110 @@
+/* Desktop & default styles for float button */
+.float-button {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 999;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #0066FF 0%, #33CCFF 100%);
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  transition: all 200ms cubic-bezier(.4,1.2,.6,1);
+  letter-spacing: 0.01em;
+  box-sizing: border-box;
+  outline: none;
+  /* gap removed to bring emoji and text closer */
+  min-width: 0;
+  font-family: inherit;
+  margin: 0;
+}
+.float-button:active {
+  transform: scale(0.97);
+}
+.float-button:hover {
+  background: linear-gradient(135deg, #338DFF 0%, #66E6FF 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.20);
+}
+
+/* Responsive: mobile screens */
+@media (max-width: 768px) {
+  .float-button {
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0066FF 0%, #33CCFF 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0px; /* Hide text on mobile */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+  }
+  /* .float-btn-label removed for icon-only button */
+    display: none !important;
+  }
+  .float-btn-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0;
+}
+  font-size: 24px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  font-size: 24px !important;
+  margin: 0 !important;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 56px;
+}
+    margin-right: 0 !important;
+    font-size: 24px !important;
+  }
+}
+
+/* Desktop/Default: show label, adjust spacing and font size */
+
+/* .float-btn-label removed for icon-only button */
+  font-size: 14px;
+  margin-left: 2px;
+}
+
+.float-btn-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0;
+}
+  font-size: 24px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  font-size: 24px !important;
+  margin: 0 !important;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 56px;
+}
+  margin-right: 0;
+}
