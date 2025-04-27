@@ -44,13 +44,6 @@ function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.body.classList.add(`theme-${savedTheme}`);
 
-
-                backgroundColor: this.checked ? '#121212' : '#f4f7f6',
-                color: this.checked ? '#e0e0e0' : '#333',
-                duration: 0.5
-            });
-        });
-    }
 }
 
 // Initialize Lottie animations
