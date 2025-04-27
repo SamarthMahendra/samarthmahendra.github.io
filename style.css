@@ -1669,6 +1669,8 @@ sub {
   }
   /* Improve message spacing */
   .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     padding: 8px 12px !important;
     max-width: 85% !important;
   }
@@ -1721,6 +1723,8 @@ sub {
   }
   /* Improved touch targets */
   .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     font-size: 15px !important;
   }
   /* Fix scroll-to-top position on mobile */
@@ -1883,6 +1887,8 @@ sub {
 
 .user-message .message-content,
 .bot-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     border-radius: 18px;
     box-shadow: 0 2px 8px rgba(31,38,135,0.06);
     font-family: 'Inter', sans-serif;
@@ -1891,18 +1897,24 @@ sub {
 }
 
 .user-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     font-weight: 500;
     color: #0D1B2A; /* dark blue for user text */
     background: rgba(255,255,255,0.23);
 }
 
 .bot-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     font-weight: 400;
     color: #1F2937 !important;
     background-color: rgba(255,255,255,0.1) !important;
 }
 
 :root.theme-dark .bot-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     background-color: rgba(0,0,0,0.2) !important;
     color: #1F2937 !important;
 }
@@ -2130,6 +2142,8 @@ sub {
 }
 
 .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     padding: 10px 15px;
     border-radius: 18px;
     display: inline-block;
@@ -2144,12 +2158,16 @@ sub {
 }
 
 .user-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     background-color: rgba(255,255,255,0.23);
     color: #222;
     border-bottom-right-radius: 5px;
 }
 
 .bot-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     background-color: rgba(var(--accent-primary-rgb), 0.12);
     color: #1F2937 !important;
     border-bottom-left-radius: 5px;
@@ -2273,6 +2291,8 @@ sub {
 
 /* Dark mode support */
 :root.theme-dark .bot-message .message-content {
+    word-break: break-word;
+    overflow-wrap: anywhere;
     background-color: #2a2a2a;
     color: #1F2937 !important;
 }
