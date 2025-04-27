@@ -553,6 +553,45 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check server health on load
     checkServerHealth();
 
+    // Populate starter prompts dynamically
+    const allStarterPrompts = [
+      "Which of Samarth's projects best showcase his AI and data engineering expertise?",
+      "Could you pull up Samarth’s profile and highlight his main qualifications?",
+      "How well does Samarth's profile match this job description?",
+      "How well does Samarth fit the Software Development Engineer role at Google based on his profile?",
+      "Can you evaluate Samarth’s suitability for an SDE position at Amazon?",
+      "Assess how Samarth’s experience aligns with Microsoft's Software Engineer role.",
+      "Determine Samarth’s fit for Apple's Machine Learning Engineer position.",
+      "Review Samarth’s skills and tell me how he matches a data engineer role at Netflix.",
+      // Additional backend-driven prompts
+      "Could you pull up Samarth’s full candidate profile from the database?",
+      "What are Samarth’s top three technical skills listed in his profile?",
+      "Give me an overview of his most recent work experience.",
+      "What degrees and certifications does Samarth hold?",
+      "Retrieve Samarth’s preferred contact email and phone number.",
+      "Can you tell me Samarth’s strengths and soft skills from his profile?",
+      "Ask Samarth on Discord if he’s available for a quick call tomorrow.",
+      "Is Samarth free next Tuesday at 2 PM? If so, schedule a Jitsi meeting.",
+      "Set up a 30-minute Jitsi call with Samarth and me this Friday at 10 AM.",
+      "Schedule a team meeting with Samarth and our HR lead on June 5th at 3 PM.",
+      "Please query the database for any GitHub or project links he’s shared.",
+      "What major achievements are highlighted in Samarth’s profile?",
+      "Ask Samarth via Discord to send over his latest portfolio link.",
+      "Gather job-fit insights for a DevOps role from his candidate profile.",
+      "Can you confirm Samarth’s availability for a follow-up discussion next week?"
+    ];
+    // Randomly select 3 prompts
+    function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+    const selectedPrompts = shuffle([...allStarterPrompts]).slice(0, 3);
+    const starterPromptsContainer = document.getElementById('chatbot-starter-prompts');
+    selectedPrompts.forEach(text => {
+      const btn = document.createElement('button');
+      btn.className = 'chatbot-starter-prompt';
+      btn.textContent = text;
+      btn.addEventListener('click', handleStarterPromptClick);
+      starterPromptsContainer.appendChild(btn);
+    });
+
     // --- Starter Prompts Logic ---
     // Hide starter prompts utility
     function hideStarterPrompts() {
