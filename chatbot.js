@@ -228,21 +228,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mobile-specific input handling
     if (isMobile) {
+        let lastScrollY = 0;
         // Adjust scroll when keyboard appears
         chatbotInput.addEventListener('focus', function() {
+            // Save scroll position and prevent background scroll
+            lastScrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${lastScrollY}px`;
+            document.body.style.width = '100%';
             // Scroll the messages to bottom when input is focused
             setTimeout(function() {
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                
                 // On very small devices, change height to account for keyboard
                 if (window.innerWidth <= 375) {
                     chatbotContainer.style.height = '60vh';
                 }
             }, 300);
         });
-        
-        // Reset height when keyboard disappears
+        // Reset height and background scroll when keyboard disappears
         chatbotInput.addEventListener('blur', function() {
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, lastScrollY);
             if (window.innerWidth <= 375) {
                 setTimeout(function() {
                     chatbotContainer.style.height = '80vh';
