@@ -92,6 +92,7 @@ def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=30):
             await asyncio.wait_for(bot.reply_event.wait(), timeout=timeout)
         except Exception as e:
             print(f"[AskReplyBot] Timeout or error: {e}")
-        return bot.reply
+        # Fallback if no reply received
+        return bot.reply or "Samarth didn't respond, he is away, but go ahead and schedule"
 
     return asyncio.run(run_bot())
