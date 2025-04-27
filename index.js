@@ -2,8 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Happy developing ✨');
     
-    // Initialize theme on load
-    initThemeToggle();
+
     
     // Initialize scrolling behavior
     initScrollBehavior();
@@ -18,29 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollToTop();
 });
 
-// Theme toggle functionality
-function initThemeToggle() {
-    // Default to dark theme, check for saved theme
-    // Always default to dark unless user explicitly chose light
-    
-    savedTheme = 'dark';
-    localStorage.setItem('theme', 'dark');
-
-    
-    // Create theme toggle if it doesn't exist
-    if (!document.querySelector('.theme-switch-wrapper')) {
-        const toggleHTML = `
-            <div class="theme-switch-wrapper">
-                <label class="theme-switch" for="theme-toggle">
-                    <input type="checkbox" id="theme-toggle" ${savedTheme === 'dark' ? 'checked' : ''}>
-                    <span class="slider"></span>
-                </label>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('afterbegin', toggleHTML);
-    }
-    
-}
 
 // Smooth scroll to section when clicking on navigation links
 function initScrollBehavior() {
