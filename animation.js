@@ -90,6 +90,49 @@ function initTextAnimations() {
     console.log(`[GSAP] .reveal-text count: ${headings.length}`);
     // Initialize Splitting
     const results = Splitting();
+
+    // Custom: Animate hero name (first .hero-content-centered h1.reveal-text)
+    const heroName = document.querySelector('.hero-content-centered h1.reveal-text[data-splitting]');
+    if (heroName) {
+        const chars = heroName.querySelectorAll('.char');
+        gsap.fromTo(chars, {
+            opacity: 0,
+            y: 30,
+        }, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.05,
+            ease: 'power2.out',
+            delay: 0.2,
+        });
+    }
+
+    // Animate headings (except hero name) on scroll
+    gsap.utils.toArray('.reveal-text').forEach(heading => {
+        // Skip hero name (already animated)
+        if (heading === heroName) return;
+        const chars = heading.querySelectorAll('.char');
+        gsap.from(chars, {
+            scrollTrigger: {
+                trigger: heading,
+                start: "top 85%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            y: 100,
+            rotateX: -90,
+            stagger: 0.02,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+        });
+    });
+}
+    console.log('[GSAP] initTextAnimations() called');
+    const headings = document.querySelectorAll('.reveal-text');
+    console.log(`[GSAP] .reveal-text count: ${headings.length}`);
+    // Initialize Splitting
+    const results = Splitting();
     
     // Animate headings
     gsap.utils.toArray('.reveal-text').forEach(heading => {
