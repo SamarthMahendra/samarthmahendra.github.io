@@ -433,6 +433,7 @@ sub {
     position: relative; overflow: hidden;
     padding-top: 80px; /* Add space for fixed navbar */
     min-height: 120vh; /* Extend background full viewport height */
+    margin-bottom: 120px; /* Prevent overlap with float/discover buttons */
 }
 
 .hero-content {
