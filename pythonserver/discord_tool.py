@@ -99,6 +99,6 @@ def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=30):
             await bot.close()
             await start_task
         # Return the reply or fallback message
-        return bot.reply or "Samarth didn't respond, he is away, but go ahead and schedule"
+        return bot.reply or "Samarth didn't respond, he is away, but go ahead and schedule if its meeting"
 
     return asyncio.run(run_bot())
