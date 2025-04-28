@@ -86,13 +86,19 @@ def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=30):
 
     async def run_bot():
         bot = AskReplyBot(prompt_message, wait_user_id, intents=intents)
-        await bot.start(DISCORD_TOKEN, reconnect=False)
+        # Start Discord client in background
+        start_task = asyncio.create_task(bot.start(DISCORD_TOKEN, reconnect=False))
         try:
+            # Wait for bot to be ready and for a reply
             await asyncio.wait_for(bot.ready_event.wait(), timeout=10)
             await asyncio.wait_for(bot.reply_event.wait(), timeout=timeout)
         except Exception as e:
             print(f"[AskReplyBot] Timeout or error: {e}")
-        # Fallback if no reply received
+        finally:
+            # Ensure client closes and background task finishes
+            await bot.close()
+            await start_task
+        # Return the reply or fallback message
         return bot.reply or "Samarth didn't respond, he is away, but go ahead and schedule"
 
     return asyncio.run(run_bot())
