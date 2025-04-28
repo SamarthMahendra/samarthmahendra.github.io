@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize theme (dark/light)
     initTheme();
-    
+
     // Initialize Lottie animations
     initLottieAnimations();
-    
+
     // Initialize text animations (Splitting.js headings)
     initTextAnimations();
-    
+
     // Animate About section
     animateAboutSection();
     // Animate Skills section
@@ -40,15 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Theme toggling
 function initTheme() {
-    // Check for saved theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.body.classList.add(`theme-${savedTheme}`);
-
 }
 
 // Initialize Lottie animations
 function initLottieAnimations() {
-    // Header developer animation
     const developerAnimation = lottie.loadAnimation({
         container: document.getElementById('developer-animation'),
         renderer: 'svg',
@@ -56,8 +53,7 @@ function initLottieAnimations() {
         autoplay: true,
         path: 'https://assets3.lottiefiles.com/packages/lf20_w51pcehl.json'
     });
-    
-    // Skills section animation
+
     const skillsAnimation = lottie.loadAnimation({
         container: document.getElementById('skills-animation'),
         renderer: 'svg',
@@ -65,21 +61,19 @@ function initLottieAnimations() {
         autoplay: false,
         path: 'https://assets6.lottiefiles.com/packages/lf20_3vbOcw.json'
     });
-    
-    // Trigger skills animation on scroll
+
     ScrollTrigger.create({
         trigger: "#skills",
         start: "top 70%",
         onEnter: () => skillsAnimation.play()
     });
-    
-    // Scroll down indicator
+
     const scrollAnimation = lottie.loadAnimation({
         container: document.getElementById('scroll-indicator'),
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: 'https://assets2.lottiefiles.com/packages/lf20_qdbb21wb.json' // Scroll down animation
+        path: 'https://assets2.lottiefiles.com/packages/lf20_qdbb21wb.json'
     });
 }
 
@@ -88,10 +82,9 @@ function initTextAnimations() {
     console.log('[GSAP] initTextAnimations() called');
     const headings = document.querySelectorAll('.reveal-text');
     console.log(`[GSAP] .reveal-text count: ${headings.length}`);
-    // Initialize Splitting
+
     const results = Splitting();
 
-    // Custom: Animate hero name (first .hero-content-centered h1.reveal-text)
     const heroName = document.querySelector('.hero-content-centered h1.reveal-text[data-splitting]');
     if (heroName) {
         const chars = heroName.querySelectorAll('.char');
@@ -108,36 +101,9 @@ function initTextAnimations() {
         });
     }
 
-    // Animate headings (except hero name) on scroll
     gsap.utils.toArray('.reveal-text').forEach(heading => {
-        // Skip hero name (already animated)
         if (heading === heroName) return;
         const chars = heading.querySelectorAll('.char');
-        gsap.from(chars, {
-            scrollTrigger: {
-                trigger: heading,
-                start: "top 85%",
-                toggleActions: "play none none none"
-            },
-            opacity: 0,
-            y: 100,
-            rotateX: -90,
-            stagger: 0.02,
-            duration: 0.8,
-            ease: "back.out(1.7)"
-        });
-    });
-}
-    console.log('[GSAP] initTextAnimations() called');
-    const headings = document.querySelectorAll('.reveal-text');
-    console.log(`[GSAP] .reveal-text count: ${headings.length}`);
-    // Initialize Splitting
-    const results = Splitting();
-    
-    // Animate headings
-    gsap.utils.toArray('.reveal-text').forEach(heading => {
-        const chars = heading.querySelectorAll('.char');
-        
         gsap.from(chars, {
             scrollTrigger: {
                 trigger: heading,
@@ -156,14 +122,15 @@ function initTextAnimations() {
 
 // Smooth scroll using Locomotive Scroll
 function initSmoothScroll() {
-    // Check if LocomotiveScroll is available
     if (typeof LocomotiveScroll === 'undefined') {
         console.warn('LocomotiveScroll is not defined. Smooth scrolling disabled.');
         return;
     }
-    
+
+    let scroller;
+
     try {
-        const scroller = new LocomotiveScroll({
+        scroller = new LocomotiveScroll({
             el: document.querySelector('[data-scroll-container]'),
             smooth: true,
             smartphone: {
@@ -173,27 +140,25 @@ function initSmoothScroll() {
                 smooth: true
             }
         });
-        
-        // Update ScrollTrigger when scroll updates (if ScrollTrigger is available)
+
         if (typeof ScrollTrigger !== 'undefined') {
             scroller.on('scroll', ScrollTrigger.update);
         }
     } catch (error) {
         console.warn('Error initializing smooth scroll:', error);
     }
-    
-    // Update scroll position on page refresh (if ScrollTrigger is available)
+
     if (typeof ScrollTrigger !== 'undefined') {
         try {
             ScrollTrigger.scrollerProxy('[data-scroll-container]', {
                 scrollTop(value) {
-                    if (typeof scroller !== 'undefined') {
+                    if (scroller) {
                         return arguments.length ? scroller.scrollTo(value, 0, 0) : scroller.scroll.instance.scroll.y;
                     }
                     return 0;
                 },
                 getBoundingClientRect() {
-                    return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+                    return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
                 },
                 pinType: document.querySelector('[data-scroll-container]').style.transform ? "transform" : "fixed"
             });
@@ -201,9 +166,8 @@ function initSmoothScroll() {
             console.warn('Error setting up ScrollTrigger proxy:', error);
         }
     }
-    
-    // Each time the window updates, refresh ScrollTrigger and locomotive scroll
-    if (typeof ScrollTrigger !== 'undefined' && typeof scroller !== 'undefined') {
+
+    if (typeof ScrollTrigger !== 'undefined' && scroller) {
         try {
             ScrollTrigger.addEventListener('refresh', () => scroller.update());
             ScrollTrigger.refresh();
@@ -215,7 +179,6 @@ function initSmoothScroll() {
 
 // Project animation (no carousel)
 function initProjectCarousel() {
-    // Animate project cards
     gsap.from(".featured-projects-grid .project-card", {
         scrollTrigger: {
             trigger: ".featured-projects-grid",
@@ -231,7 +194,6 @@ function initProjectCarousel() {
 
 // Initialize all GSAP animations
 function initGsapAnimations() {
-    // Hero section
     gsap.from('.hero-content > *', {
         opacity: 0,
         y: 50,
@@ -239,8 +201,7 @@ function initGsapAnimations() {
         duration: 1,
         ease: 'power3.out',
     });
-    
-    // Parallax effect for background elements
+
     gsap.utils.toArray('.parallax-bg').forEach(bg => {
         gsap.to(bg, {
             scrollTrigger: {
@@ -255,26 +216,13 @@ function initGsapAnimations() {
             }
         });
     });
-    
-    // About section animations
-    if (document.querySelector('#about .about-grid p') || document.querySelector('.about-image')) {
-        animateAboutSection();
-    }
-    // Skills section animations
-    if (document.querySelector('#skills .skill-category')) {
-        animateSkillsSection();
-    }
-    // Experience timeline animations
-    if (document.querySelector('.timeline') && document.querySelector('.timeline-item')) {
-        animateTimeline();
-    }
-    // Projects animations
+
+    animateAboutSection();
+    animateSkillsSection();
+    animateTimeline();
     animateProjects();
-    // Stats animations
     animateStats();
-    // Magnetic button effects
     initMagneticButtons();
-    // Scroll-triggered progress bars
     animateProgressBars();
 }
 
@@ -295,8 +243,7 @@ function animateAboutSection() {
         duration: 0.7,
         ease: "power1.out"
     });
-    
-    // Image reveal animation (only if .about-image exists)
+
     if (document.querySelector('.about-image')) {
         gsap.from(".about-image", {
             scrollTrigger: {
@@ -315,7 +262,7 @@ function animateSkillsSection() {
     console.log('[GSAP] animateSkillsSection() called');
     const skillCategories = document.querySelectorAll('.skill-category');
     console.log(`[GSAP] .skill-category count: ${skillCategories.length}`);
-    // Icon animations (only if #skills .skills-icons img exists)
+
     if (document.querySelector('#skills .skills-icons img')) {
         gsap.from("#skills .skills-icons img", {
             scrollTrigger: {
@@ -331,9 +278,8 @@ function animateSkillsSection() {
             ease: "back.out(1.4)"
         });
     }
-    
-    // Category groups animations
-    gsap.utils.toArray('.skill-category').forEach((category, i) => {
+
+    skillCategories.forEach((category, i) => {
         gsap.from(category, {
             scrollTrigger: {
                 trigger: category,
@@ -352,12 +298,6 @@ function animateTimeline() {
     console.log('[GSAP] animateTimeline() called');
     const items = document.querySelectorAll('.timeline-item');
     console.log(`[GSAP] .timeline-item count: ${items.length}`);
-    // Timeline line drawing animation (pseudo-element cannot be animated directly)
-    // Instead, consider adding a child .timeline-line and animate that if needed.
-    // gsap.from('.timeline-line', { ... });
-    // Skipping direct animation of .timeline::before
-    
-    // Timeline items
     gsap.from(".timeline-item", {
         scrollTrigger: {
             trigger: ".timeline",
@@ -370,10 +310,6 @@ function animateTimeline() {
         duration: 0.8,
         ease: "power2.out"
     });
-    
-    // Timeline dots (pseudo-element cannot be animated directly)
-    // Instead, consider adding a child element for the dot and animate that if needed.
-    // Skipping direct animation of .timeline-item::before
 }
 
 // Project cards animations
@@ -381,7 +317,6 @@ function animateProjects() {
     console.log('[GSAP] animateProjects() called');
     const projectCards = document.querySelectorAll('#projects .project-card');
     console.log(`[GSAP] #projects .project-card count: ${projectCards.length}`);
-    // Standard cards animation
     gsap.from("#projects .project-card", {
         scrollTrigger: {
             trigger: "#projects",
@@ -394,9 +329,7 @@ function animateProjects() {
         duration: 0.7,
         ease: "power1.out"
     });
-    
-    // Hover effects
-    const projectCards = document.querySelectorAll('.project-card');
+
     projectCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
             gsap.to(this, {
@@ -406,7 +339,7 @@ function animateProjects() {
                 duration: 0.3
             });
         });
-        
+
         card.addEventListener('mouseleave', function() {
             gsap.to(this, {
                 y: 0,
@@ -423,11 +356,10 @@ function animateStats() {
     console.log('[GSAP] animateStats() called');
     const counterElements = document.querySelectorAll('.counter');
     console.log(`[GSAP] .counter count: ${counterElements.length}`);
-    // Stats counter animation
-    const counterElements = document.querySelectorAll('.counter');
+
     counterElements.forEach(counter => {
         const target = parseInt(counter.getAttribute('data-target'));
-        
+
         gsap.to(counter, {
             scrollTrigger: {
                 trigger: counter,
@@ -439,8 +371,7 @@ function animateStats() {
             ease: "power2.out"
         });
     });
-    
-    // Github stats
+
     gsap.from("#stats .stats-images img", {
         scrollTrigger: {
             trigger: "#stats",
@@ -457,13 +388,13 @@ function animateStats() {
 // Animate buttons with magnetic effect
 function initMagneticButtons() {
     const buttons = document.querySelectorAll('.magnetic-button');
-    
+
     buttons.forEach(btn => {
         btn.addEventListener('mousemove', function(e) {
             const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
-            
+
             gsap.to(this, {
                 x: x * 0.2,
                 y: y * 0.2,
@@ -472,7 +403,7 @@ function initMagneticButtons() {
                 ease: "power2.out"
             });
         });
-        
+
         btn.addEventListener('mouseleave', function() {
             gsap.to(this, {
                 x: 0,
@@ -490,9 +421,10 @@ function animateProgressBars() {
     console.log('[GSAP] animateProgressBars() called');
     const progressBars = document.querySelectorAll('.progress-bar');
     console.log(`[GSAP] .progress-bar count: ${progressBars.length}`);
-    gsap.utils.toArray('.progress-bar').forEach(bar => {
+
+    progressBars.forEach(bar => {
         const percent = bar.getAttribute('data-percent');
-        
+
         gsap.from(bar, {
             scrollTrigger: {
                 trigger: bar,
@@ -502,8 +434,7 @@ function animateProgressBars() {
             duration: 1.5,
             ease: "power2.out"
         });
-        
-        // Update percentage counter
+
         const counter = bar.querySelector('.progress-percent');
         if (counter) {
             gsap.to(counter, {
