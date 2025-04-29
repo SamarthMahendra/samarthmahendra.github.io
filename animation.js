@@ -68,13 +68,7 @@ function initLottieAnimations() {
         onEnter: () => skillsAnimation.play()
     });
 
-    const scrollAnimation = lottie.loadAnimation({
-        container: document.getElementById('scroll-indicator'),
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        path: 'https://assets2.lottiefiles.com/packages/lf20_qdbb21wb.json'
-    });
+
 }
 
 // Text reveal animations using Splitting.js
