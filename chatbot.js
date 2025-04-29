@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Delay chatbot open until scroll starts
         setTimeout(() => {
             chatbotContainer.classList.add('active');
+            chatbotContainer.style.width = '600px'; // Set initial width for consistent resize toggle
+            isExpanded = false;
             chatbotInput.focus();
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
@@ -79,26 +81,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Toggle between default size and expanded size
+    // isExpanded is declared above
     chatbotResize.addEventListener('click', function() {
-        if (chatbotContainer.style.width === '500px') {
-            // Return to default size
-            chatbotContainer.style.width = `${initialWidth}px`;
-            chatbotContainer.style.height = `${initialHeight}px`;
+        if (isExpanded) {
+            // Collapse to 600px width
+            chatbotContainer.style.width = '600px';
             chatbotResize.innerHTML = '<i class="fas fa-expand-alt"></i>';
             chatbotResize.title = 'Expand';
+            isExpanded = false;
         } else {
-            // Save current dimensions if they're not the expanded ones
-            if (chatbotContainer.style.width && chatbotContainer.style.width !== '500px') {
-                initialWidth = parseInt(chatbotContainer.style.width);
-                initialHeight = parseInt(chatbotContainer.style.height);
-            }
-            // Expand to larger size
-            chatbotContainer.style.width = '500px';
-            chatbotContainer.style.height = '600px';
+            // Expand to 1000px width
+            chatbotContainer.style.width = '1000px';
             chatbotResize.innerHTML = '<i class="fas fa-compress-alt"></i>';
             chatbotResize.title = 'Shrink';
+            isExpanded = true;
         }
-        // Scroll to bottom of messages
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     });
     
@@ -488,7 +485,8 @@ document.addEventListener('DOMContentLoaded', function() {
         messageElement.classList.add('message', `${sender}-message`);
         const messageContent = document.createElement('div');
         messageContent.classList.add('message-content');
-        messageContent.style.wordBreak = 'break-word'; // Ensure long words/links wrap
+        messageContent.style.wordBreak = 'normal';
+        messageContent.style.whiteSpace = 'normal';
         if (typeof message === 'string') {
             // Split the message by newlines and create paragraph elements
             const paragraphs = message.split('\n').filter(line => line.trim() !== '');
