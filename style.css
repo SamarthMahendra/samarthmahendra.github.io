@@ -2255,12 +2255,12 @@ sub {
 .typing-indicator {
     display: flex;
     padding: 8px 12px;
-    background: rgba(255,255,255,0.15) !important;
-    backdrop-filter: blur(6px) !important;
-    -webkit-backdrop-filter: blur(6px) !important;
     border-radius: 12px;
     margin-bottom: 15px;
     width: fit-content;
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 .typing-indicator span {
