@@ -68,6 +68,7 @@ def generate_jitsi_meeting_url(user_name=None):
     return base_url + meeting_name
 
 # Tool schema for ChatGPT function calling
+# --- Tool Schemas ---
 schedule_meeting_tool_schema = {
     "type": "function",
     "name": "schedule_meeting_on_jitsi",
@@ -88,11 +89,123 @@ schedule_meeting_tool_schema = {
     }
 }
 
+mongo_query_tool_schema = {
+    "type": "function",
+    "name": "query_profile_info",
+    "description": "Function to query profile information, requiring no input parameters for Job fit or any resume information.",
+    "strict": True,
+    "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": False
+    }
+}
+discord_tool_schema = {
+    "type": "function",
+    "name": "talk_to_samarth_discord",
+    "description": "Send a message to samarth via Discord bot integration only once, and wait for a reply",
+    "parameters": {
+        "type": "object",
+        "required": ["action", "message"],
+        "properties": {
+            "action": {
+                "type": "string",
+                "description": "The action to perform, either 'send' or 'receive'"
+            },
+            "message": {
+                "type": "object",
+                "properties": {
+                    "content": {"type": "string", "description": "The content of the message"},
+                },
+                "required": ["content"],
+                "additionalProperties": False
+            }
+        },
+        "additionalProperties": False
+    },
+    "strict": True
+}
 
+from fastapi import WebSocket, WebSocketDisconnect
+import base64
 
+# --- WebSocket Voice Chat Endpoint (Proxy OpenAI Realtime) ---
+import aiohttp
 
-
-
+@app.websocket("/ws/voicechat")
+async def websocket_voicechat(websocket: WebSocket):
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger("voicechat")
+    await websocket.accept()
+    openai_url = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17"
+    api_key = os.environ.get("OPENAI_API_KEY")
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "OpenAI-Beta": "realtime=v1"
+    }
+    session_update = {
+        "type": "session.update",
+        "session": {
+            "tools": [],
+            "tool_choice": "auto",
+            "input_audio_format": "pcm16",
+            "output_audio_format": "pcm16",
+            "instructions": (
+                "You are Samarth Mahendra’s AI personal assistant who usually talks to recruiters or anyone who is interested in samarth's profile or would want to hire him.\n\n"
+                "Your capabilities include:\n"
+                "- Communicating with Samarth via Discord to ask questions or relay information.\n"
+                "- Querying a MongoDB database to retrieve or verify candidate profiles and job fit.\n"
+                "- Scheduling meetings only using Jitsi and sending out meeting invitations.\n"
+                "- You can query the database for any information about Samarth.\n\n"
+                "Guidelines:\n"
+                "- Before pinging Samarth on Discord, always gather all relevant information from the user or available sources.\n"
+                "- When evaluating if someone is a good match for a job, always gather the job information first, then check the candidate profile using the MongoDB tool.\n"
+                "- When checking Samarth’s availability for meetings, never query the database; always confirm with Samarth directly on Discord.\n"
+                "- Always act professionally and on behalf of Samarth.\n"
+                "- Don't ping again to discord if any reply is pending"
+            )
+        }
+    }
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.ws_connect(openai_url, headers=headers) as openai_ws:
+                print("Connected to OpenAI Realtime API.")
+                await openai_ws.send_str(json.dumps(session_update))
+                print(f"Sent session.update: {json.dumps(session_update)}")
+                async def frontend_to_openai():
+                    while True:
+                        msg = await websocket.receive_text()
+                        print(f"Frontend -> Backend: {msg[:200]}")
+                        data = json.loads(msg)
+                        if data["type"] == "input_audio_buffer.append":
+                            await openai_ws.send_str(json.dumps(data))
+                            print("Forwarded input_audio_buffer.append to OpenAI.")
+                        elif data["type"] == "input_audio_buffer.commit":
+                            await openai_ws.send_str(json.dumps(data))
+                            print("Forwarded input_audio_buffer.commit to OpenAI.")
+                        elif data["type"] == "response.create":
+                            await openai_ws.send_str(json.dumps(data))
+                            print("Forwarded response.create to OpenAI.")
+                async def openai_to_frontend():
+                    async for msg in openai_ws:
+                        if msg.type == aiohttp.WSMsgType.TEXT:
+                            print(f"OpenAI -> Frontend: {msg.data[:200]}")
+                            await websocket.send_text(msg.data)
+                        elif msg.type == aiohttp.WSMsgType.BINARY:
+                            print(f"OpenAI -> Frontend: [binary data, {len(msg.data)} bytes]")
+                            await websocket.send_bytes(msg.data)
+                        elif msg.type == aiohttp.WSMsgType.CLOSE:
+                            print("OpenAI connection closed")
+                            await websocket.close()
+                            break
+                # Run both forwarding tasks concurrently, keep alive for multiple turns
+                await asyncio.gather(frontend_to_openai(), openai_to_frontend())
+    except WebSocketDisconnect:
+        print("WebSocket disconnected")
+    except Exception as e:
+        logger.error(f"Error in proxy: {e}")
+        await websocket.send_text(json.dumps({"type": "error", "message": str(e)}))
 
 
 def schedule_meeting(args):
@@ -382,25 +495,23 @@ async def chat(request: Request):
         for item in convo:
             if isinstance(item, dict):
                 serializable.append(item)
-            elif hasattr(item, '__dict__'):
-                serializable.append(item.__dict__)
-            elif isinstance(item, str):
-                serializable.append(item)
             # else: skip non-serializable objects
         return serializable
-    print(response.output_text)
-
+    print(f"Model output: {response.output_text}")
     conversation.append(
         {
             "role": "system",
             "content": [{"type": "input_text", "text": response.output_text}]
         })
 
+    print(f"Returning response: {response.output_text}")
+    print(f"Conversation: {serializable_convo(conversation)}")
+    print(f"Pending calls: {pending_calls}")
+
     return JSONResponse({
         "output": response.output_text,
         "conversation": serializable_convo(conversation),
         "pending_calls": pending_calls
     })
-
 
 
