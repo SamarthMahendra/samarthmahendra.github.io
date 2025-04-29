@@ -517,12 +517,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const typingIndicator = document.createElement('div');
         typingIndicator.classList.add('typing-indicator');
         typingIndicator.id = 'typing-indicator';
-        
-        for (let i = 0; i < 3; i++) {
-            const dot = document.createElement('span');
-            typingIndicator.appendChild(dot);
-        }
-        
+
+        // Add Lottie animation
+        const lottie = document.createElement('dotlottie-player');
+        lottie.setAttribute('src', 'https://lottie.host/944deb9d-e345-433a-a9ba-5e79ec1b5a45/S2V4GVLLpG.lottie');
+        lottie.setAttribute('background', 'transparent');
+        lottie.setAttribute('speed', '1');
+        lottie.setAttribute('style', 'width: 120px; height: 120px; margin: 0 auto; display: block; background: none !important;');
+        lottie.setAttribute('loop', '');
+        lottie.setAttribute('autoplay', '');
+        typingIndicator.appendChild(lottie);
+
         chatbotMessages.appendChild(typingIndicator);
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
