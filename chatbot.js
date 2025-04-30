@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         addMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", 'bot');
                         pendingCalls = [];
                     });
-                }, 2000);
+                }, 1000);
             } else {
                 // No pending calls, normal response
                 removeTypingIndicator();
