@@ -1,8 +1,8 @@
 /* Desktop & default styles for float button */
 .float-button {
   position: fixed;
-  bottom: 24px;
-  left: 24px;
+  top: 24px;
+  right: 24px;
   z-index: 999;
   height: 48px;
   padding: 0 20px;

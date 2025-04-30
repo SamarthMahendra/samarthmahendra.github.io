@@ -19,50 +19,50 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Create fun toggle button
-    const floatBtn = document.createElement('button');
-    floatBtn.id = 'float-toggle-btn';
-    floatBtn.className = 'float-button';
-    floatBtn.innerHTML = `<span class=\"float-btn-emoji\" style=\"font-size:24px;vertical-align:middle;line-height:1;display:inline-block;\">🪶</span>`;
-    floatBtn.style.position = 'fixed';
-    floatBtn.style.bottom = '24px';
-    floatBtn.style.left = '24px';
-    floatBtn.style.zIndex = '999';
-    floatBtn.style.height = '48px';
-    floatBtn.style.padding = '0 20px';
-    floatBtn.style.borderRadius = '24px';
-    floatBtn.style.background = 'linear-gradient(135deg, #0066FF 0%, #33CCFF 100%)';
-    floatBtn.style.border = 'none';
-    floatBtn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.12)';
-    floatBtn.style.display = 'flex';
-    floatBtn.style.alignItems = 'center';
-    floatBtn.style.fontSize = '16px';
-    floatBtn.style.fontWeight = '600';
-    floatBtn.style.color = '#fff';
-    floatBtn.style.cursor = 'pointer';
-    floatBtn.style.userSelect = 'none';
-    floatBtn.style.transition = 'all 200ms cubic-bezier(.4,1.2,.6,1)';
-    floatBtn.style.letterSpacing = '0.01em';
-    floatBtn.style.boxSizing = 'border-box';
-    floatBtn.style.outline = 'none';
+    // // Create fun toggle button
+    // const floatBtn = document.createElement('button');
+    // floatBtn.id = 'float-toggle-btn';
+    // floatBtn.className = 'float-button';
+    // floatBtn.innerHTML = `<span class=\"float-btn-emoji\" style=\"font-size:24px;vertical-align:middle;line-height:1;display:inline-block;\">🪶</span>`;
+    // floatBtn.style.position = 'fixed';
+    // floatBtn.style.bottom = '24px';
+    // floatBtn.style.left = '24px';
+    // floatBtn.style.zIndex = '999';
+    // floatBtn.style.height = '48px';
+    // floatBtn.style.padding = '0 20px';
+    // floatBtn.style.borderRadius = '24px';
+    // floatBtn.style.background = 'linear-gradient(135deg, #0066FF 0%, #33CCFF 100%)';
+    // floatBtn.style.border = 'none';
+    // floatBtn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.12)';
+    // floatBtn.style.display = 'flex';
+    // floatBtn.style.alignItems = 'center';
+    // floatBtn.style.fontSize = '16px';
+    // floatBtn.style.fontWeight = '600';
+    // floatBtn.style.color = '#fff';
+    // floatBtn.style.cursor = 'pointer';
+    // floatBtn.style.userSelect = 'none';
+    // floatBtn.style.transition = 'all 200ms cubic-bezier(.4,1.2,.6,1)';
+    // floatBtn.style.letterSpacing = '0.01em';
+    // floatBtn.style.boxSizing = 'border-box';
+    // floatBtn.style.outline = 'none';
     
-    floatBtn.style.minWidth = '0';
-    floatBtn.style.fontFamily = 'inherit';
-    floatBtn.style.margin = '0';
-    // Modern shadow always-on
-    floatBtn.onmouseenter = () => {
-        floatBtn.style.background = 'linear-gradient(135deg, #338DFF 0%, #66E6FF 100%)';
-        floatBtn.style.transform = 'translateY(-2px)';
-        floatBtn.style.boxShadow = '0 8px 16px rgba(0,0,0,0.20)';
-    };
-    floatBtn.onmouseleave = () => {
-        floatBtn.style.background = 'linear-gradient(135deg, #0066FF 0%, #33CCFF 100%)';
-        floatBtn.style.transform = 'none';
-        floatBtn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.12)';
-    };
+    // floatBtn.style.minWidth = '0';
+    // floatBtn.style.fontFamily = 'inherit';
+    // floatBtn.style.margin = '0';
+    // // Modern shadow always-on
+    // floatBtn.onmouseenter = () => {
+    //     floatBtn.style.background = 'linear-gradient(135deg, #338DFF 0%, #66E6FF 100%)';
+    //     floatBtn.style.transform = 'translateY(-2px)';
+    //     floatBtn.style.boxShadow = '0 8px 16px rgba(0,0,0,0.20)';
+    // };
+    // floatBtn.onmouseleave = () => {
+    //     floatBtn.style.background = 'linear-gradient(135deg, #0066FF 0%, #33CCFF 100%)';
+    //     floatBtn.style.transform = 'none';
+    //     floatBtn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.12)';
+    // };
 
 
-    document.body.appendChild(floatBtn);
+    // document.body.appendChild(floatBtn);
 
     let floatingEnabled = false;
     let animId = null;

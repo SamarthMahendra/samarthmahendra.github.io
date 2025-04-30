@@ -84,6 +84,7 @@
     </div>
 </nav>
 
+
 <!-- Chatbot Interface -->
 <!-- Chatbot Toggle Button (always visible) -->
 <button class="chatbot-toggle" id="chatbot-toggle">
@@ -831,6 +832,21 @@
 <script src="./podcast-player.js"></script>
 <script src="./mindmap.js"></script>
 <script src="./chatbot.js"></script>
+
+  <!-- Floating Call Assistant Button -->
+  <div id="call-assistant-btn" class="call-assistant-btn" title="Call my personal assistant">
+    <i class="fas fa-phone"></i>
+  </div>
+
+  <!-- Call Assistant Modal -->
+  <div id="call-assistant-modal" class="call-assistant-modal">
+    <div class="call-assistant-modal-content">
+      <span class="call-assistant-close" id="call-assistant-close">&times;</span>
+      <h3>Call my personal assistant</h3>
+      <p>Click below to call:</p>
+      <a href="tel:18339703274" class="call-assistant-number">(833) 970-3274</a>
+    </div>
+  </div>
 
 </body>
 </html>

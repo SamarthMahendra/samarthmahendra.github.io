@@ -1,5 +1,22 @@
 // Main JavaScript for profile website
 document.addEventListener('DOMContentLoaded', function() {
+    // --- Call Assistant Button & Modal Logic ---
+    const callBtn = document.getElementById('call-assistant-btn');
+    const callModal = document.getElementById('call-assistant-modal');
+    const callClose = document.getElementById('call-assistant-close');
+    if (callBtn && callModal && callClose) {
+        callBtn.addEventListener('click', function() {
+            callModal.classList.add('show');
+        });
+        callClose.addEventListener('click', function() {
+            callModal.classList.remove('show');
+        });
+        callModal.addEventListener('click', function(e) {
+            if (e.target === callModal) callModal.classList.remove('show');
+        });
+    }
+    // --- End Call Assistant Logic ---
+
     // Show chatbot popover animation on first load (once per session)
     const popover = document.getElementById('chatbot-popover');
     const popoverText = popover ? popover.querySelector('.chatbot-popover-text') : null;
