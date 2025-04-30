@@ -54,6 +54,58 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
 
+# --- API Endpoints for Function Calling Integration ---
+from fastapi import APIRouter
+from fastapi import status
+from fastapi.responses import JSONResponse
+
+@app.post("/api/discord_tool", summary="Call Discord tool action", tags=["tools"])
+async def discord_tool_api(request: Request):
+    """Call Discord tool action (e.g., send message, get reply). Accepts JSON: {"message": ..., "wait_user_id": ...}"""
+    data = await request.json()
+    message = data.get("message")
+    wait_user_id = data.get("wait_user_id")
+    timeout = data.get("timeout", 60)
+    try:
+        reply = talk_to_manager_discord(message, wait_user_id=wait_user_id, timeout=timeout)
+        return {"result": reply}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+@app.post("/api/mongo_tool/query", summary="Query candidate profile info", tags=["tools"])
+async def mongo_query_tool_api(request: Request):
+    """Query candidate profile info. Accepts JSON: {"query": {...}} (query is optional for all profiles)."""
+    data = await request.json()
+    query = data.get("query", {})
+    try:
+        result = mongo_tool.query_mongo_db_for_candidate_profile(query)
+        return {"result": result}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+@app.post("/api/mongo_tool/insert", summary="Insert candidate profile", tags=["tools"])
+async def mongo_insert_tool_api(request: Request):
+    """Insert candidate profile. Accepts JSON: {"profile": {...}}."""
+    data = await request.json()
+    profile = data.get("profile")
+    if not profile:
+        return JSONResponse(status_code=400, content={"error": "Missing profile data"})
+    try:
+        result = mongo_tool.insert_candidate_profile(profile)
+        return {"result": result}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+@app.post("/api/schedule_interview", summary="Schedule interview/meeting", tags=["tools"])
+async def schedule_interview_api(request: Request):
+    """Schedule an interview/meeting. Accepts JSON: {"candidate_name": ..., "interviewer_name": ..., "datetime": ...}."""
+    data = await request.json()
+    try:
+        meeting_url = generate_jitsi_meeting_url(user_name=data.get("candidate_name"))
+        # Optionally, store meeting in DB or calendar here
+        return {"meeting_url": meeting_url}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
 def generate_jitsi_meeting_url(user_name=None):
     from mongo_tool import insert_meeting
@@ -147,7 +199,61 @@ async def websocket_voicechat(websocket: WebSocket):
     session_update = {
         "type": "session.update",
         "session": {
-            "tools": [],
+            "tools": [
+            {
+                "type": "function",
+                "name": "talk_to_samarth_discord",
+                "description": "Send a message to samarth via Discord bot integration only once, and wait for a reply",
+                "parameters": {
+                    "type": "object",
+                    "required": ["action", "message"],
+                    "properties": {
+                        "action": {
+                            "type": "string",
+                            "description": "The action to perform, either 'send' or 'receive'"
+                        },
+                        "message": {
+                            "type": "object",
+                            "properties": {
+                                "content": {"type": "string", "description": "The content of the message"}
+                            },
+                            "required": ["content"],
+                            "additionalProperties": False
+                        }
+                    },
+                    "additionalProperties": False
+                },
+            },
+            {
+                "type": "function",
+                "name": "query_profile_info",
+                "description": "Function to query profile information, requiring no input parameters for Job fit or any resume information.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": False
+                }
+            },
+            {
+                "type": "function",
+                "name": "schedule_meeting_on_jitsi",
+                "description": "Function to Schedule a meeting with Samarth and others on Jitsi, store meeting in MongoDB, and send an email invite with the Jitsi link. dont ask too much just schedule the meeting",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "members": {
+                            "type": "array",
+                            "items": {"type": "string"},
+                            "description": "List of member emails (apart from Samarth)"
+                        },
+                        "agenda": {"type": "string", "description": "Agenda for the meeting"},
+                        "timing": {"type": "string", "description": "Timing for the meeting (ISO format or natural language)"},
+                        "user_email": {"type": "string", "description": "Email of the user scheduling the meeting (for invite)"}
+                    },
+                    "required": ["members", "agenda", "timing", "user_email"]
+                }
+            }
+        ],
             "tool_choice": "auto",
             "input_audio_format": "pcm16",
             "output_audio_format": "pcm16",
