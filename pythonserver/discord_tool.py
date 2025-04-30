@@ -46,7 +46,7 @@ async def send_message_to_channel(message):
     client = DiscordSender(message, intents=intents)
     await client.start(DISCORD_TOKEN)
 
-def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=30):
+def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=60):
     import asyncio
     intents = discord.Intents.default()
     intents.messages = True
@@ -90,7 +90,7 @@ def ask_and_get_reply(prompt_message, wait_user_id=None, timeout=30):
         start_task = asyncio.create_task(bot.start(DISCORD_TOKEN, reconnect=False))
         try:
             # Wait for bot to be ready and for a reply
-            await asyncio.wait_for(bot.ready_event.wait(), timeout=10)
+            await asyncio.wait_for(bot.ready_event.wait(), timeout=30)
             await asyncio.wait_for(bot.reply_event.wait(), timeout=timeout)
         except Exception as e:
             print(f"[AskReplyBot] Timeout or error: {e}")
