@@ -32,7 +32,6 @@ import uuid
 from datetime import datetime
 from fastapi import Body
 
-model_name = "gpt-4.1"
 
 def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
     loop = asyncio.new_event_loop()
@@ -51,6 +50,10 @@ def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
 
 # get api key from environment variable
 api_key = os.getenv("OPENAI_API_KEY")
+
+
+# models : gpt-4.1, gpt-4.1-mini, gpt-4.1-nano
+model_name = os.getenv("OPENAI_MODEL_NAME")
 
 client = OpenAI(api_key=api_key)
 
