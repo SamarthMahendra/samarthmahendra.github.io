@@ -53,7 +53,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 
 # models : gpt-4.1, gpt-4.1-mini, gpt-4.1-nano
-model_name = os.getenv("OPENAI_MODEL_NAME")
+model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4.1-nano")
 
 client = OpenAI(api_key=api_key)
 
