@@ -822,6 +822,95 @@ sub {
     z-index: 1;
 }
 
+/* Call Popover Styles */
+.call-popover {
+    position: fixed;
+    left: 32px;
+    bottom: 108px; /* Position above the call button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+    background: linear-gradient(135deg, #ffece0 60%, #ffffff 100%);
+    color: #9b3613;
+    padding: 0.55em 1.1em 0.55em 0.9em;
+    border-radius: 14px;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.13);
+    border: 1.2px solid #ffe0d0;
+    cursor: pointer;
+    user-select: none;
+    z-index: 1002;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
+    font-size: 0.97em;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.4s cubic-bezier(.4,1.6,.7,.7), transform 0.4s cubic-bezier(.4,1.6,.7,.7), background 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(155,54,19,0.08);
+}
+
+.call-popover.popover-show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.call-popover::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 34px;
+    border-width: 12px 0 0 12px;
+    border-style: solid;
+    border-color: #ffe0d0 transparent transparent transparent;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+}
+
+.call-popover-text {
+    font-weight: 600;
+    color: #9b3613;
+    letter-spacing: 0.01em;
+}
+
+.call-popover:hover {
+    background: linear-gradient(135deg, #ffd0b0 60%, #fff5e5 100%);
+    box-shadow: 0px 8px 24px rgba(243,156,33,0.12);
+    transform: scale(1.05) translateY(-2px);
+    cursor: pointer;
+}
+
+.call-popover:active {
+    background: linear-gradient(135deg, #ffc2a0 60%, #ffdfdf 100%);
+    transform: scale(0.98) translateY(1px);
+}
+
+.call-popover.popover-expand {
+    animation: call-popover-expand 0.35s cubic-bezier(.45,1.6,.7,.7) forwards;
+}
+
+@keyframes call-popover-expand {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.3) translateY(-10px);
+    }
+}
+
+@media (max-width: 480px) {
+    .call-popover {
+        right: 20px;
+        bottom: 150px;
+        font-size: 0.85em;
+        padding: 0.5em 0.9em;
+    }
+}
+
 /* Magnetic Buttons */
 .button, .magnetic-button {
     display: inline-block;
@@ -2618,6 +2707,7 @@ sub {
 
 /* Global Animations */
 @keyframes fadeDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+
 
 /* Mobile: smaller hero name */
 @media (max-width: 480px) {
