@@ -67,6 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Track if mouse was near to avoid repeated triggers
     let mouseWasNearCall = false;
+
+    if (window.innerWidth > 480) {
     
     // Listen for mouse movement to show popover when near the call button
     document.addEventListener('mousemove', function(e) {
@@ -86,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mouseWasNearCall = isHot;
     });
     
+}   
     // Show call popover automatically after 5 seconds of page load
     setTimeout(() => {
         showCallPopover();
