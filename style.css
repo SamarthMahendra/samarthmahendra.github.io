@@ -904,10 +904,11 @@ sub {
 
 @media (max-width: 480px) {
     .call-popover {
-        right: 20px;
-        bottom: 150px;
+        left: 15px;
+        bottom: 80px;
         font-size: 0.85em;
         padding: 0.5em 0.9em;
+        max-width: 220px;
     }
 }
 
