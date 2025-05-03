@@ -5,11 +5,13 @@ python-dotenv
 pymongo
 redis
 celery
+discord.py
+httpx
 requests
 # Optional: For async tasks
-httpx
+
 # For Discord bot (if needed)
-discord.py
+
 # For CORS if using frontend
 fastapi[all]
 openai

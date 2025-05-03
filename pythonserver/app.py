@@ -33,19 +33,7 @@ from datetime import datetime
 from fastapi import Body
 
 
-def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        reply = loop.run_until_complete(discord_tool.ask_and_get_reply(message, wait_user_id=wait_user_id, timeout=timeout))
-        if reply:
-            return reply
-        else:
-            return "No reply received from Discord manager in time."
-    except Exception as e:
-        return f"Failed to send message to Discord or receive reply: {e}"
-    finally:
-        loop.close()
+
 
 
 # get api key from environment variable
@@ -74,7 +62,7 @@ def generate_jitsi_meeting_url(user_name=None):
 schedule_meeting_tool_schema = {
     "type": "function",
     "name": "schedule_meeting_on_jitsi",
-    "description": "Function to Schedule a meeting with Samarth and others on Jitsi, store meeting in MongoDB, and send an email invite with the Jitsi link. dont ask too much just schedule the meeting",
+    "description": "Function to Schedule a meeting with Samarth and others on Jitsi, store meeting in MongoDB, and send an email invite with the Jitsi link. dont ask too much just schedule the meeting and don't need to ask for Samarth's availability",
     "parameters": {
         "type": "object",
         "properties": {
@@ -159,6 +147,47 @@ discord_tool_schema = {
 
 
 
+make_calls_tool_schema = {
+    "type": "function",
+    "name": "make_calls",
+    "description": "Make calls to the given numbers on behalf of the user",
+    "parameters": {
+        "type": "object",
+        "required": ["numbers", "name", "password"],
+        "properties": {
+            "numbers": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "List of phone numbers to call"
+            },
+            "name": {
+                "type": "string",
+                "description": "Name of the person to call"
+            },
+            "password": {
+                "type": "string",
+                "description": "Password to authenticate the user"
+            }
+        },
+        "additionalProperties": False
+    },
+    "strict": True
+}
+
+
+def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        reply = loop.run_until_complete(discord_tool.ask_and_get_reply(message, wait_user_id=wait_user_id, timeout=timeout))
+        if reply:
+            return reply
+        else:
+            return "No reply received from Discord manager in time."
+    except Exception as e:
+        return f"Failed to send message to Discord or receive reply: {e}"
+    finally:
+        loop.close()
 
 @app.post("/talk_to_samarth_discord")
 async def talk_to_samarth_discord_api(request: Request):
@@ -265,7 +294,7 @@ async def chat(request: Request):
         input=conversation,
         text={"format": {"type": "text"}},
         reasoning={},
-        tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
+        tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema],
         temperature=1,
         max_output_tokens=2048,
         top_p=1,
@@ -280,7 +309,28 @@ async def chat(request: Request):
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
             user = args.get("user")
-            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
+            if name == 'make_calls':
+                # post request to https://twillio-ai-assistant.onrender.com/start-calls?script=2
+                nums = args.get("numbers")
+                name = args.get("name")
+                password_to_make_calls = args.get("password")
+                if password_to_make_calls != "samarthmahendra":
+                    result = "Unauthorized"
+                # body json
+                #                 {
+                #   "numbers": ["+917829532914"],
+                #   "name":"Pururav"
+                # }
+                else:
+                    headers = {
+                        "Content-Type": "application/json"
+                    }
+
+                    response = requests.post("https://twillio-ai-assistant.onrender.com/start-calls?script=2", json={"numbers": nums, "name": name}, headers=headers)
+                    result = response.json()
+                
+
+            elif name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
                 if name == 'schedule_meeting_on_jitsi':
                     print("schedule_meeting_on_jitsi")
                     result = schedule_meeting(args)
@@ -341,7 +391,7 @@ async def chat(request: Request):
             input=conversation,
             text={"format": {"type": "text"}},
             reasoning={},
-            tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
+            tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema],
             temperature=1,
             max_output_tokens=2048,
             top_p=1,

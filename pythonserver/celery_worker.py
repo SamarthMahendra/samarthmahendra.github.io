@@ -36,6 +36,8 @@ celery_app.conf.update(
 )
 logger.info(f"[Celery Worker] Celery configuration: {celery_app.conf}")
 
+
+
 @celery_app.task(bind=True)
 def tool_call_fn(self, tool_name, call_id, args):
     logger.info(f"[Celery Worker] Received task: tool_call_fn with tool_name={tool_name}, call_id={call_id}, args={args}")
