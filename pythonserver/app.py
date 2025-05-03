@@ -315,7 +315,10 @@ async def chat(request: Request):
                     nums = args.get("numbers")
                     name = args.get("name")
                     password_to_make_calls = args.get("password")
-                    if password_to_make_calls != "samarthmahendra":
+                    import bcrypt
+                    password_hash_from_mongo = b'$2b$12$v8KgvocjUlYSKOOm4/Ybiuiq7.j7CCfT.jypvNC8biDX/ZPUA0IyS'
+                    flag = bcrypt.checkpw(password_to_make_calls.encode('utf-8'), password_hash_from_mongo)
+                    if not flag:
                         result = "Unauthorized without password"
                     # body json
                     #                 {

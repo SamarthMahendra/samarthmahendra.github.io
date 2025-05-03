@@ -15,3 +15,4 @@ requests
 # For CORS if using frontend
 fastapi[all]
 openai
+bcrypt
