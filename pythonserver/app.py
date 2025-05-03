@@ -62,7 +62,7 @@ def generate_jitsi_meeting_url(user_name=None):
 schedule_meeting_tool_schema = {
     "type": "function",
     "name": "schedule_meeting_on_jitsi",
-    "description": "Function to Schedule a meeting with Samarth and others on Jitsi, store meeting in MongoDB, and send an email invite with the Jitsi link. dont ask too much just schedule the meeting and don't need to ask for Samarth's availability",
+    "description": "Function to Schedule a meeting with Samarth and others on Jitsi, store meeting in MongoDB, and send an email invite with the Jitsi link. dont ask too much just schedule the meeting and don't need to ask for Samarth's availability, ask for alL input before scheduling the meeting.",
     "parameters": {
         "type": "object",
         "properties": {
