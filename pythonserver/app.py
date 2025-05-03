@@ -311,9 +311,11 @@ async def chat(request: Request):
             if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls':
                 if name == 'make_calls':
                     print("make_calls")
+                    from urllib.parse import quote
                     # post request to https://twillio-ai-assistant.onrender.com/start-calls?script=2
                     nums = args.get("numbers")
                     name = args.get("name")
+                    name = quote(name)
                     password_to_make_calls = args.get("password")
                     import bcrypt
                     password_hash_from_mongo = b'$2b$12$v8KgvocjUlYSKOOm4/Ybiuiq7.j7CCfT.jypvNC8biDX/ZPUA0IyS'
