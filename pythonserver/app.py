@@ -153,7 +153,6 @@ make_calls_tool_schema = {
     "description": "Make calls to the given numbers on behalf of the user, take numbers and password before making call",
     "parameters": {
         "type": "object",
-        "required": ["numbers", "password"],
         "properties": {
             "numbers": {
                 "type": "array",
@@ -169,10 +168,11 @@ make_calls_tool_schema = {
                 "description": "Password to authenticate the user"
             }
         },
+        "required": ["numbers", "name", "password"],
         "additionalProperties": False
-    },
-    "strict": True
+    }
 }
+
 
 
 def talk_to_manager_discord(message, wait_user_id=None, timeout=60):
