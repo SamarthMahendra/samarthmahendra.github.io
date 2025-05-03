@@ -150,10 +150,10 @@ discord_tool_schema = {
 make_calls_tool_schema = {
     "type": "function",
     "name": "make_calls",
-    "description": "Make calls to the given numbers on behalf of the user",
+    "description": "Make calls to the given numbers on behalf of the user, take numbers and password before making call",
     "parameters": {
         "type": "object",
-        "required": ["numbers", "name", "password"],
+        "required": ["numbers", "password"],
         "properties": {
             "numbers": {
                 "type": "array",
@@ -308,15 +308,15 @@ async def chat(request: Request):
             name = tool_call.name
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
-            user = args.get("user")
             if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls':
                 if name == 'make_calls':
+                    print("make_calls")
                     # post request to https://twillio-ai-assistant.onrender.com/start-calls?script=2
                     nums = args.get("numbers")
                     name = args.get("name")
                     password_to_make_calls = args.get("password")
                     if password_to_make_calls != "samarthmahendra":
-                        result = "Unauthorized"
+                        result = "Unauthorized without password"
                     # body json
                     #                 {
                     #   "numbers": ["+917829532914"],
@@ -326,7 +326,7 @@ async def chat(request: Request):
                         headers = {
                             "Content-Type": "application/json"
                         }
-
+                        import requests
                         response = requests.post("https://twillio-ai-assistant.onrender.com/start-calls?script=2", json={"numbers": nums, "name": name}, headers=headers)
                         result = response.json()
                 if name == 'schedule_meeting_on_jitsi':
