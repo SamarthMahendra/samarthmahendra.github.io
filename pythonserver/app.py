@@ -309,28 +309,26 @@ async def chat(request: Request):
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
             user = args.get("user")
-            if name == 'make_calls':
-                # post request to https://twillio-ai-assistant.onrender.com/start-calls?script=2
-                nums = args.get("numbers")
-                name = args.get("name")
-                password_to_make_calls = args.get("password")
-                if password_to_make_calls != "samarthmahendra":
-                    result = "Unauthorized"
-                # body json
-                #                 {
-                #   "numbers": ["+917829532914"],
-                #   "name":"Pururav"
-                # }
-                else:
-                    headers = {
-                        "Content-Type": "application/json"
-                    }
+            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls':
+                if name == 'make_calls':
+                    # post request to https://twillio-ai-assistant.onrender.com/start-calls?script=2
+                    nums = args.get("numbers")
+                    name = args.get("name")
+                    password_to_make_calls = args.get("password")
+                    if password_to_make_calls != "samarthmahendra":
+                        result = "Unauthorized"
+                    # body json
+                    #                 {
+                    #   "numbers": ["+917829532914"],
+                    #   "name":"Pururav"
+                    # }
+                    else:
+                        headers = {
+                            "Content-Type": "application/json"
+                        }
 
-                    response = requests.post("https://twillio-ai-assistant.onrender.com/start-calls?script=2", json={"numbers": nums, "name": name}, headers=headers)
-                    result = response.json()
-                
-
-            elif name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info':
+                        response = requests.post("https://twillio-ai-assistant.onrender.com/start-calls?script=2", json={"numbers": nums, "name": name}, headers=headers)
+                        result = response.json()
                 if name == 'schedule_meeting_on_jitsi':
                     print("schedule_meeting_on_jitsi")
                     result = schedule_meeting(args)
@@ -350,7 +348,7 @@ async def chat(request: Request):
                     input=conversation,
                     text={"format": {"type": "text"}},
                     reasoning={},
-                    tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema],
+                    tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema],
                     temperature=1,
                     max_output_tokens=2048,
                     top_p=1,
