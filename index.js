@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const popoverIcon = popover ? popover.querySelector('.chatbot-popover-icon') : null;
     const popoverMessages = [
         "👋 Need help? Chat with Samarth's AI!",
-        "🚀 Have a question? I'm here!",
-        "🤖 Let's chat! Ask away."
+        "🚀 Have a question? I'm here (AI)!",
+        "🤖 Let's chat! Ask away (AI)."
     ];
     let lastPopoverIndex = -1;
     function setRandomPopoverMessage() {
