@@ -14,6 +14,7 @@ db = client[DB_NAME]
 collection = db[COLLECTION_NAME]
 
 
+
 def insert_meeting(members, agenda, timing, meeting_url):
     """Insert a meeting into the MongoDB 'meetings' collection."""
     meeting_doc = {

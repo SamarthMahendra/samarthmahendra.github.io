@@ -163,6 +163,10 @@ make_calls_tool_schema = {
                 "type": "string",
                 "description": "Name of the person to call"
             },
+            "message": {
+                "type": "string",
+                "description": " Purpose of the call with message"
+            },
             "password": {
                 "type": "string",
                 "description": "Password to authenticate the user"
@@ -315,24 +319,22 @@ async def chat(request: Request):
                     # post request to https://twillio-ai-assistant.onrender.com/start-calls?script=2
                     nums = args.get("numbers")
                     name = args.get("name")
+                    message = args.get("message", "")
                     name = quote(name)
+                    message = quote(message)
+
                     password_to_make_calls = args.get("password")
                     import bcrypt
                     password_hash_from_mongo = b'$2b$12$v8KgvocjUlYSKOOm4/Ybiuiq7.j7CCfT.jypvNC8biDX/ZPUA0IyS'
                     flag = bcrypt.checkpw(password_to_make_calls.encode('utf-8'), password_hash_from_mongo)
                     if not flag:
                         result = "Unauthorized without password"
-                    # body json
-                    #                 {
-                    #   "numbers": ["+917829532914"],
-                    #   "name":"Pururav"
-                    # }
                     else:
                         headers = {
                             "Content-Type": "application/json"
                         }
                         import requests
-                        response = requests.post("https://twillio-ai-assistant.onrender.com/start-calls?script=2", json={"numbers": nums, "name": name}, headers=headers)
+                        response = requests.post("https://twillio-ai-assistant.onrender.com/start-calls?script=2", json={"numbers": nums, "name": name, "message": message}, headers=headers)
                         result = response.json()
                 if name == 'schedule_meeting_on_jitsi':
                     print("schedule_meeting_on_jitsi")
