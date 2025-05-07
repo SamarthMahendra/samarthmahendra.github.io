@@ -2787,7 +2787,7 @@ sub {
     padding-top: 70px;
     min-height: calc(100vh - 80px);
     box-sizing: border-box;
-    padding-bottom: 150px;
+    padding-bottom: 190px;
   }
   
   @media (max-width: 767px) {
