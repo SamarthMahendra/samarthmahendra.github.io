@@ -123,19 +123,15 @@
 </div>
 
 <!-- Hero Section -->
-<section class="hero-section" id="home">
-    <div class="parallax-bg">
-        <div class="parallax-shape shape-1" data-depth="0.2"></div>
-        <div class="parallax-shape shape-2" data-depth="0.3"></div>
-        <div class="parallax-shape shape-3" data-depth="0.1"></div>
-    </div>
-    
+<!-- <section class="hero-section" id="home"> -->
+<section class="hero-section" id="home" style="background: url('./bg.png') center center / cover no-repeat fixed;">
+
     <div class="container hero-content">
         <dotlottie-player
     src="https://lottie.host/1bca963d-9f21-422b-a455-8656a4e61531/0akKFojK24.lottie"
     background="transparent"
     speed="1"
-    style="width: 100%; height: 100%; margin: 0 auto 0.5rem; display: block;"
+    style="width: 100%; height: 100%; margin: 0 auto 0.1rem; display: block;"
     loop
     autoplay
 ></dotlottie-player>
@@ -860,5 +856,19 @@
     </div>
   </div>
 
+
+  <script>
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const chatbotClose = document.getElementById("chatbot-close");
+    const heroHeading = document.querySelector(".hero-content-centered h1");
+  
+    chatbotToggle.addEventListener("click", () => {
+      if (heroHeading) heroHeading.style.visibility = "hidden";
+    });
+  
+    chatbotClose.addEventListener("click", () => {
+      if (heroHeading) heroHeading.style.visibility = "visible";
+    });
+  </script>
 </body>
 </html>

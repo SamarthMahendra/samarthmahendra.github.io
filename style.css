@@ -513,14 +513,6 @@ sub {
     cursor: pointer;
 }
 
-/* Hero Section / Header */
-.hero-section {
-    background: linear-gradient(135deg, #1a73e8, #8bc4ff); /* Lighter gradient for Contact button */
-    position: relative; overflow: hidden;
-    padding-top: 80px; /* Add space for fixed navbar */
-    min-height: 120vh; /* Extend background full viewport height */
-    margin-bottom: 120px; /* Prevent overlap with float/discover buttons */
-}
 
 .hero-content {
     text-align: center;
@@ -577,10 +569,7 @@ sub {
     background: rgba(255, 255, 255, 0.35);
 }
 
-/* Lottie float */
-.hero-section dotlottie-player {
-    animation: float 6s ease-in-out infinite;
-}
+
 
 @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
 
@@ -2107,8 +2096,8 @@ sub {
     white-space: normal;
     hyphens: manual;
     font-weight: 500;
-    color: #0D1B2A; /* dark blue for user text */
-    background: rgba(255,255,255,0.23);
+    color: #ffffff; /* dark blue for user text */
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .bot-message .message-content {
@@ -2117,15 +2106,15 @@ sub {
     white-space: normal;
     hyphens: manual;
     font-weight: 400;
-    color: #1F2937 !important;
-    background-color: rgba(255,255,255,0.1) !important;
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 :root.theme-dark .bot-message .message-content {
     word-break: normal;
     overflow-wrap: break-word;
     background-color: rgba(0,0,0,0.2) !important;
-    color: #1F2937 !important;
+    color: #ffffff !important;
 }
 
 .chatbot-input-container {
@@ -2371,20 +2360,20 @@ sub {
     word-break: normal;
     overflow-wrap: break-word;
     background-color: rgba(255,255,255,0.23);
-    color: #222;
+    color: #ffffff;
     border-bottom-right-radius: 5px;
 }
 
 .bot-message .message-content {
     word-break: normal;
     overflow-wrap: break-word;
-    background-color: rgba(var(--accent-primary-rgb), 0.12);
-    color: #1F2937 !important;
+    background-color: rgba(var(--accent-primary-rgb), 0.08);
+    color: #ffffff !important;
     border-bottom-left-radius: 5px;
 }
 
 .bot-message .message-content p {
-    color: #1F2937 !important;
+    color: #ffffff !important;
 }
 
 .chatbot-input-container {
@@ -2456,6 +2445,7 @@ sub {
 }
 
 .chatbot-send:hover {
+    transform: scale(1.1);
     background: var(--accent-secondary);
 }
 
@@ -2539,7 +2529,7 @@ sub {
     text-align: center;
     max-width: 280px;
     margin: 0.5rem 0;
-    color: #1F2937 !important;
+    color: #ffffff !important;
 }
 
 /* Podcast Section Styles */
@@ -2767,7 +2757,7 @@ sub {
     font-family: 'Inter', sans-serif;           /* Recommended modern font */
     font-style: italic;
     font-weight: 100;                           /* Light, airy appearance */
-    font-size: clamp(1.10rem, 2vw, 1.2rem);      /* Responsive typography */
+    font-size: clamp(1.10rem, 2vw, 1.rem);      /* Responsive typography */
     line-height: 1.6;
     color: #f0f0f0;
     text-align: center;
@@ -2791,3 +2781,29 @@ sub {
       transform: translateY(0);
     }
   }
+
+
+  .hero-section {
+    padding-top: 100px; /* or 70px, whatever matches your nav height */
+    min-height: calc(100vh - 80px);
+    box-sizing: border-box;
+    padding-bottom: 150px;
+  }
+
+
+  .chatbot-input::placeholder {
+    color: #ffffff !important;
+  }
+  
+  .chatbot-input::-webkit-input-placeholder {
+    color: #ffffff !important;
+  }
+  
+  .chatbot-input:-ms-input-placeholder {
+    color: #ffffff !important;
+  }
+
+  .chatbot-input {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  }
+  
