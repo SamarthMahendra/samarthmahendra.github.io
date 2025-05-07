@@ -124,7 +124,13 @@
 
 <!-- Hero Section -->
 <!-- <section class="hero-section" id="home"> -->
-<section class="hero-section" id="home" style="background: url('./bg.png') center center / cover no-repeat fixed;">
+    <section class="hero-section" id="home" style="
+    background-image: url('./bg.png');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* or remove this line for default mobile behavior */
+">
 
     <div class="container hero-content">
         <dotlottie-player
