@@ -2784,7 +2784,7 @@ sub {
 
 
   .hero-section {
-    padding-top: 100px; /* or 70px, whatever matches your nav height */
+    padding-top: 70px; /* or 70px, whatever matches your nav height */
     min-height: calc(100vh - 80px);
     box-sizing: border-box;
     padding-bottom: 150px;
