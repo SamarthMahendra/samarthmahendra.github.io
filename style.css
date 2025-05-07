@@ -621,22 +621,22 @@ sub {
 
 /* Lottie Animation Containers */
 #developer-animation {
-    width: 460px;
-    height: 460px;
+    width: 450px;
+    height: 450px;
     margin: 0 auto 2rem;
 }
 
 .hero-content > dotlottie-player {
     width: 100%;
     height: 100%;
-    max-width: 460px;
-    max-height: 460px;
-    margin: -40px auto 0.2rem;
+    max-width: 450px;
+    max-height: 450px;
+    margin: 0 auto 0.1rem;
     display: block;
 }
 
 .hero-content h1 {
-    margin-bottom: 0.3em;
+    margin-bottom: 0.1em;
 }
 
 #scroll-indicator {
@@ -2762,3 +2762,32 @@ sub {
     align-items: center;
     gap: 8px;
 }
+
+.animated-quote {
+    font-family: 'Inter', sans-serif;           /* Recommended modern font */
+    font-style: italic;
+    font-weight: 100;                           /* Light, airy appearance */
+    font-size: clamp(1.10rem, 2vw, 1.2rem);      /* Responsive typography */
+    line-height: 1.6;
+    color: #f0f0f0;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeSlideUp 1.4s ease-out forwards;
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes fadeSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
