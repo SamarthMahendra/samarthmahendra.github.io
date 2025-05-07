@@ -2784,12 +2784,17 @@ sub {
 
 
   .hero-section {
-    padding-top: 70px; /* or 70px, whatever matches your nav height */
+    padding-top: 70px;
     min-height: calc(100vh - 80px);
     box-sizing: border-box;
     padding-bottom: 150px;
   }
-
+  
+  @media (max-width: 767px) {
+    .hero-section {
+      padding-top: 50px;
+    }
+  }
 
   .chatbot-input::placeholder {
     color: #ffffff !important;
