@@ -74,6 +74,25 @@ def query_mongo_db_for_candidate_profile():
     profile = {k: serialize_value(v) for k, v in profile.items()}
     return profile
 
+def query_phone_numbers(name):
+    collections = db["phone_numbers"]
+    phone_numbers = collections.find_one({"name": name})
+    if not phone_numbers:
+        return {"error": "Phone numbers not found"}
+    phone_numbers.pop('_id', None)
+    # serialize the phone numbers
+    def serialize_value(val):
+        if isinstance(val, list):
+            # If it's a list of dicts, keep as is; if list of primitives, join as string
+            if all(isinstance(item, dict) for item in val):
+                return val
+            return ', '.join(str(item) for item in val)
+        if isinstance(val, dict):
+            return {k: serialize_value(v) for k, v in val.items()}
+        return val
+    phone_numbers = {k: serialize_value(v) for k, v in phone_numbers.items()}
+    return phone_numbers
+
     # Ensure all values are JSON-serializable and readable
 def save_tool_message(call_id, name, args, result):
     """Save a tool message to the messages collection."""
