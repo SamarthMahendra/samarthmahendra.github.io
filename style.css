@@ -2703,7 +2703,7 @@ sub {
 /* Mobile: smaller hero name */
 @media (max-width: 480px) {
     h1.reveal-text {
-        font-size: 2.5rem !important;
+        font-size: 1.5rem !important;
     }
 }
 
