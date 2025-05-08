@@ -75,6 +75,7 @@ def query_mongo_db_for_candidate_profile():
     return profile
 
 def query_phone_numbers(name):
+    print(" Querying phone numbers for:", name)
     collections = db["phone_numbers"]
     phone_numbers = collections.find_one({"name": name})
     if not phone_numbers:
