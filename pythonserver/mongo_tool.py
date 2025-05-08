@@ -336,5 +336,7 @@ Cloud & Big Data Laboratory with ProjectC Programming for Problem Solving Discre
     "email" : "samarth.mahendragowda@gmail.com",
 }
     print("Inserted profile ID:", insert_candidate_profile(profile_dict))
+
+
     # Example: query
     print(query_mongo_db_for_candidate_profile())

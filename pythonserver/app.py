@@ -357,10 +357,10 @@ async def chat(request: Request):
                 if name == 'schedule_meeting_on_jitsi':
                     print("schedule_meeting_on_jitsi")
                     result = schedule_meeting(args)
-                elif name == 'query_profile_info':
+                if name == 'query_profile_info':
                     print("query_profile_info")
                     result = mongo_tool.query_mongo_db_for_candidate_profile()
-                elif name == 'query_phone_numbers':
+                if name == 'query_phone_numbers':
                     print("query_phone_numbers")
                     result = mongo_tool.query_phone_numbers(args["name"])
                     print(" result", result)
