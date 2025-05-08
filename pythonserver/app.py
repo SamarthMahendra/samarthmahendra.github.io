@@ -330,7 +330,7 @@ async def chat(request: Request):
             name = tool_call.name
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
-            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls':
+            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls' or name == 'query_phone_numbers':
                 if name == 'make_calls':
                     print("make_calls")
                     from urllib.parse import quote
