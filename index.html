@@ -876,5 +876,22 @@
       if (heroHeading) heroHeading.style.visibility = "visible";
     });
   </script>
+<script>
+    const toggleBtn = document.querySelector('.nav-mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const navItems = document.querySelectorAll('.nav-links a');
+  
+    toggleBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  
+    navItems.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+  </script>
+  
+  
 </body>
 </html>
