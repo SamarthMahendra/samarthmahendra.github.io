@@ -2811,4 +2811,35 @@ sub {
   .chatbot-input {
     box-shadow: 0 4px 10px rgba(0,0,0,0.12);
   }
+
+/* === PATCH FOR 125% ZOOM COMPATIBILITY === */
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%; /* Prevents iOS/Chrome zoom issues */
+  }
+  
+  body {
+    overflow-x: hidden;
+    word-wrap: break-word;
+  }
+  
+  .container {
+    max-width: 1200px;
+    padding: 0 30px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .hero-section {
+    padding-top: clamp(50px, 7vh, 90px);
+    padding-bottom: clamp(140px, 15vh, 190px);
+    min-height: 100vh;
+  }
+  
+  @media (max-width: 1200px) {
+    html {
+      font-size: 15px;
+    }
+  }
   
