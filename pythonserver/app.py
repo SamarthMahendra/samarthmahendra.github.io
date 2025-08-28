@@ -360,10 +360,10 @@ async def chat(request: Request):
                 if name == 'query_profile_info':
                     print("query_profile_info")
                     result = mongo_tool.query_mongo_db_for_candidate_profile()
-                if name == 'query_phone_numbers':
-                    print("query_phone_numbers")
-                    result = mongo_tool.query_phone_numbers(args["name"])
-                    print(" result", result)
+                # if name == 'query_phone_numbers':
+                #     print("query_phone_numbers")
+                #     result = mongo_tool.query_phone_numbers(args["name"])
+                #     print(" result", result)
                 output_str = json.dumps(result, ensure_ascii=False)
                 conversation += [tc for tc in tool_calls]
                 tool_outputs.append({
@@ -377,7 +377,7 @@ async def chat(request: Request):
                     input=conversation,
                     text={"format": {"type": "text"}},
                     reasoning={},
-                    tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema, phone_numbers],
+                    tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema],
                     temperature=1,
                     max_output_tokens=2048,
                     top_p=1,
