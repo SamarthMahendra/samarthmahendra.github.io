@@ -146,23 +146,23 @@ discord_tool_schema = {
 }
 
 
-
-phone_numbers = {
-    "type": "function",
-    "name": "query_phone_numbers",
-    "description": "Function to query phone numbers to make calls, mom and dad is saved as mom and dad in the database",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "type": "string",
-                "description": "Name of the person to call"
-            }
-        },
-        "required": ["name"],
-        "additionalProperties": False
-    }
-}
+#
+# phone_numbers = {
+#     "type": "function",
+#     "name": "query_phone_numbers",
+#     "description": "Function to query phone numbers to make calls, mom and dad is saved as mom and dad in the database",
+#     "parameters": {
+#         "type": "object",
+#         "properties": {
+#             "name": {
+#                 "type": "string",
+#                 "description": "Name of the person to call"
+#             }
+#         },
+#         "required": ["name"],
+#         "additionalProperties": False
+#     }
+# }
 
 
 make_calls_tool_schema = {
@@ -316,7 +316,7 @@ async def chat(request: Request):
         input=conversation,
         text={"format": {"type": "text"}},
         reasoning={},
-        tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema, phone_numbers],
+        tools=[mongo_query_tool_schema, discord_tool_schema, schedule_meeting_tool_schema, make_calls_tool_schema],
         temperature=1,
         max_output_tokens=2048,
         top_p=1,
@@ -330,7 +330,7 @@ async def chat(request: Request):
             name = tool_call.name
             args = json.loads(tool_call.arguments)
             call_id = tool_call.call_id
-            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls' or name == 'query_phone_numbers':
+            if name == 'schedule_meeting_on_jitsi' or name == 'query_profile_info' or name == 'make_calls':
                 if name == 'make_calls':
                     print("make_calls")
                     from urllib.parse import quote
