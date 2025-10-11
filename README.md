@@ -79,7 +79,6 @@ celery -A celery_worker.celery_app worker --loglevel=info
 
 ## Datadog RUM Integration
 
-The portfolio site is instrumented with Datadog Real User Monitoring (RUM) to collect client-side performance metrics and session replays. The RUM agent is loaded and initialized in the `<head>` of `index.html`. Replace the placeholders below with your actual credentials:
 
 ```html
 <!-- Datadog RUM Initialization -->
@@ -106,4 +105,3 @@ The portfolio site is instrumented with Datadog Real User Monitoring (RUM) to co
 
 ---
 
-For further help, see the code comments or open an issue!
