@@ -619,7 +619,27 @@ document.addEventListener('DOMContentLoaded', function() {
       "“Could Samarth lead a small AI/infra team for an early-stage FAANG initiative?",
       "How does Samarth’s experience with streaming WebSockets and real-time voice AI demonstrate backend depth?",
       "Evaluate Samarth’s contributions in distributed systems and scalability from his candidate profile?",
-      "Which of Samarth’s projects showcase mastery in LLM integration with efficient backend orchestration?"
+      "Which of Samarth’s projects showcase mastery in LLM integration with efficient backend orchestration?",
+      "How well does Samarth’s backend experience at Draup translate to Stripe’s payment processing and real-time data workflows?",
+  "Evaluate whether Samarth’s work on dynamic query generation and Elasticsearch aligns with Stripe’s data pipeline design principles.",
+  "How does Samarth’s understanding of distributed systems fit Stripe’s real-time transaction reconciliation systems?",
+  "Which of Samarth’s projects best demonstrate his ability to build idempotent, high-availability APIs similar to Stripe’s architecture?",
+  "Assess Samarth’s experience with Celery and Redis in terms of readiness for Stripe’s asynchronous task orchestration systems.",
+  "Has Samarth built systems that ensure consistency and reliability under high load, similar to Stripe’s financial ledgers?",
+  "Can Samarth’s background in building subscription access control map to Stripe’s billing and invoicing platform?",
+  "Compare Samarth’s query optimization and API migration experience to the scale of Stripe’s financial data services.",
+  "Would Samarth’s observability work with Datadog and Prometheus strengthen Stripe’s production monitoring reliability?",
+  "Based on Samarth’s experience, how would he debug issues in a multi-service Stripe-like architecture with Kafka and Redis?",
+  "How would Samarth approach designing a refund and dispute workflow like Stripe’s, based on his Draup background?",
+  "Evaluate Samarth’s readiness to handle reconciliation tasks similar to Stripe’s clearing file ingestion and settlement pipelines.",
+  "Has Samarth demonstrated the ability to think in terms of financial correctness, auditability, and idempotency in his past roles?",
+  "What aspects of Samarth’s design patterns (Factory, Strategy, Validator) would be valuable in Stripe’s modular service architecture?",
+  "Assess how Samarth’s experience in LLM integrations could help automate internal Stripe tooling for ops or reconciliation.",
+  "How might Samarth apply his skills to Stripe’s data warehouse or transaction analytics layers?",
+  "Could Samarth design a microservice to handle merchant payouts with retries, timeouts, and reconciliation safety?",
+  "Does Samarth’s work show he can meet Stripe’s reliability bar for financial systems (five-nines availability)?",
+  "How does Samarth’s system design knowledge align with Stripe’s priorities of correctness, observability, and developer velocity?",
+  "Generate 3 talking points for a Stripe interviewer about Samarth’s backend engineering strengths."
 
     ];
     // Randomly select 3 prompts
