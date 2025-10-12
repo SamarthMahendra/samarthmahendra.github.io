@@ -102,6 +102,7 @@ celery -A celery_worker.celery_app worker --loglevel=info
   });
 </script>
 ```
+<img width="2684" height="1722" alt="image" src="https://github.com/user-attachments/assets/6f3fbac0-a434-4df9-bdd0-dd5b20e78f8c" />
 
 ---
 
