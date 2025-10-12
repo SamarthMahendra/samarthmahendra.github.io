@@ -4,7 +4,7 @@
 /* --- 1. THEME & VARIABLES --- */
 :root {
   /* Colors */
-  --background: #0a0f18;
+  --background: transparent;
   --background-alt: #101522;
   --text-primary: #f0f0f0;
   --text-secondary: #a0a0b0;
@@ -260,7 +260,9 @@ li:hover::before { transform: translateX(5px); }
   transform: translateY(-3px);
 }
 
-.social-links { display: flex; gap: 1.5rem; }
+.social-links {
+    display: flex; gap: 3rem;
+}
 
 .social-links a {
   font-size: 1.5rem;
@@ -468,7 +470,7 @@ li:hover::before { transform: translateX(5px); }
 
 .certification-item h4 { margin-bottom: 0.2rem; }
 
-#stats { background: var(--background-alt); }
+
 
 .stats-images {
   display: flex;
@@ -792,3 +794,77 @@ li:hover::before { transform: translateX(5px); }
     max-height: none;
   }
 }
+
+.social-links {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.social-links a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 16px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: url("backgroundv3.png") no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed; /* Optional: creates a smooth parallax-like effect */
+  overflow: hidden;
+}
+
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  /* background image setup */
+  background: url("backgroundv3.png") no-repeat center center / cover;
+  background-attachment: fixed;
+  background-color: rgba(10, 10, 20, 0.85);
+  background-blend-mode: overlay;
+
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+
+
+.hero-content-centered {
+  position: relative;
+  z-index: 2; /* ensures text is above overlay */
+}
+
+body {
+  background: url("backgroundv3.png") no-repeat center center fixed;
+  background-size: cover;
+  background-color: rgba(10, 10, 20, 0.85);
+  background-blend-mode: overlay;
+}
+.hero-section {
+  background: transparent;
+}
+
