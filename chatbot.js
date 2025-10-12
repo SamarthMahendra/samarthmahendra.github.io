@@ -695,7 +695,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatbotToggle = document.getElementById('chatbot-toggle');
     const chatbotPopover = document.getElementById('chatbot-popover');
     const chatbotClose = document.getElementById('chatbot-close');
-    const chatbotFullscreen = document.getElementById('chatbot-fullscreen');
     const chatbotMessages = document.getElementById('chatbot-messages');
     const chatbotInput = document.getElementById('chatbot-input');
     const chatbotSend = document.getElementById('chatbot-send');
@@ -729,12 +728,6 @@ document.addEventListener('DOMContentLoaded', function() {
     chatbotClose.addEventListener('click', () => {
         chatbotContainer.classList.remove('active');
     });
-
-    chatbotFullscreen.addEventListener('click', () => {
-        isFullscreen = !isFullscreen;
-        chatbotContainer.classList.toggle('fullscreen', isFullscreen);
-    });
-
     chatbotSend.addEventListener('click', sendMessage);
     chatbotInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
