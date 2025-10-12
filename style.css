@@ -861,10 +861,32 @@ li:hover::before { transform: translateX(5px); }
 body {
   background: url("backgroundv3.png") no-repeat center center fixed;
   background-size: cover;
-  background-color: rgba(10, 10, 20, 0.85);
 }
 .hero-section {
   background: transparent;
+}
+
+/* --- VIDEO BACKGROUND --- */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2; /* keeps it behind all other content */
+  background-color: #0a0f18; /* fallback in case video doesn't load */
+}
+
+/* optional overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* above video, below content */
 }
 
 /* --- 🌟 MOBILE OPTIMIZATION (≤768px) --- */
