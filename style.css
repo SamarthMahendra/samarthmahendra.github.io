@@ -1068,3 +1068,15 @@ body::before {
     min-height: 44px;
   }
 }
+
+
+@media (max-width: 700px) {
+  body {
+    background: url('backgroundv3.png') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  #bg-video {
+    display: none !important;
+  }
+}
