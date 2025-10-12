@@ -862,7 +862,6 @@ body {
   background: url("backgroundv3.png") no-repeat center center fixed;
   background-size: cover;
   background-color: rgba(10, 10, 20, 0.85);
-  background-blend-mode: overlay;
 }
 .hero-section {
   background: transparent;
