@@ -755,7 +755,7 @@ li:hover::before { transform: translateX(5px); }
 }
 
 .education-card {
-  background: var(--background-alt);
+  background: #1015227d;
   border: 1px solid var(--border-color);
   border-radius: 1rem;
   padding: 2rem;
