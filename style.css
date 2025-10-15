@@ -870,13 +870,14 @@ body {
 /* --- VIDEO BACKGROUND --- */
 #bg-video {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 50%;
+  left: 50%;
+  width: 110vw;
+  height: 110vh;
+  transform: translate(-50%, -50%);
   object-fit: cover;
-  z-index: -2; /* keeps it behind all other content */
-  background-color: #0a0f18; /* fallback in case video doesn't load */
+  z-index: -2;
+  background-color: #0a0f18;
 }
 
 /* optional overlay for readability */
